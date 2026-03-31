@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isabella Siqueira | Advocacia Previdenciária</title>
+    <meta name="description" content="Especialista em Direito Previdenciário. Aposentadorias, Auxílio Doença, Pensão por Morte, BPC/LOAS e mais. Atuação em todo o Brasil.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <header class="header" id="header">
+        <nav class="navbar">
+            <div class="container nav-container">
+                <a href="#" class="logo">
+                    <span class="logo-icon">IS</span>
+                    <div class="logo-text">
+                        <span class="name">Isabella Siqueira</span>
+                        <span class="subtitle">Advocacia</span>
+                    </div>
+                </a>
+                <ul class="nav-links">
+                    <li><button type="button" onclick="scrollToSection('home')">Início</button></li>
+                    <li><button type="button" onclick="scrollToSection('servicos')">Serviços</button></li>
+                    <li><button type="button" onclick="scrollToSection('sobre')">Sobre</button></li>
+                    <li><button type="button" onclick="scrollToSection('restituicao')">Restituição</button></li>
+                    <li><button type="button" onclick="scrollToSection('duvidas')">Dúvidas</button></li>
+                    <li><button type="button" onclick="scrollToSection('contato')">Contato</button></li>
+                </ul>
+                <a href="https://wa.me/message/KTXG35WKL24JI1" id="header-whatsapp-a" class="btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span id="header-whatsapp-text">(62) 9 8300-0708</span>
+                </a>
+                <button class="mobile-toggle" id="mobileToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-bg">
+                <div class="hero-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                </div>
+                <div class="hero-gradient"></div>
+            </div>
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="hero-badge" data-aos="fade-down">
+                        <span class="badge-dot"></span>
+                        <span id="hero-badge">Direito Previdenciário</span>
+                    </div>
+                    <h1 class="hero-title" data-aos="fade-up" data-delay="100" id="hero-title">
+                        Seus direitos, nossa <span class="highlight">missão</span>
+                    </h1>
+                    <p class="hero-desc" data-aos="fade-up" data-delay="200" id="hero-desc">
+                        Especialistas em benefícios do INSS e direitos de servidores públicos. 
+                        Atuação em todo o Brasil com atendimento humanizado.
+                    </p>
+                    <div class="hero-buttons" data-aos="fade-up" data-delay="300">
+                        <a href="https://wa.me/message/KTXG35WKL24JI1" class="btn-primary" id="hero-btn-whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                            <span id="hero-btn-text">Falar com a Advogada</span>
+                        </a>
+                        <button type="button" class="btn-secondary" id="hero-btn-services" onclick="scrollToSection('servicos')">
+                            <span id="hero-services-text">Conhecer Serviços</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual" data-aos="fade-left" data-delay="200">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=650&fit=crop&crop=face" alt="Isabella Siqueira" class="hero-image" id="hero-image">
+                        <div class="image-accent"></div>
+                    </div>
+                    <div class="floating-card card-1" id="float-card-1">
+                        <i class="fas fa-check-circle"></i>
+                        <span>OAB/GO 50.839</span>
+                    </div>
+                    <div class="floating-card card-2" id="float-card-2">
+                        <i class="fas fa-globe"></i>
+                        <span>Atendimento Nacional</span>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <section class="services" id="servicos">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <span class="section-tag">O que fazemos</span>
+                    <h2 class="section-title" id="section-servicos-title">Áreas de Atuação</h2>
+                </div>
+
+                <div class="services-tabs">
+                    <button class="tab-btn active" data-tab="previdenciario">Previdenciário</button>
+                    <button class="tab-btn" data-tab="consultoria">Consultoria</button>
+                    <button class="tab-btn" data-tab="calculos">Cálculos</button>
+                    <button class="tab-btn" data-tab="parcerias">Parcerias</button>
+                </div>
+
+                <div class="services-content">
+                    <div class="tab-panel active" id="previdenciario">
+                        <div class="services-grid compact">
+                            <div class="service-card">
+                                <i class="fas fa-ban"></i>
+                                <h3>INSS Negado</h3>
+                                <span class="tooltip">Atendimento aos que tiveram seu requerimento negado pelo INSS. Análise do indeferimento e recursos judiciais.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-user-clock"></i>
+                                <h3>Aposentadorias</h3>
+                                <span class="tooltip">Aposentadoria por idade, tempo de contribuição, especial ou rural. Análise completa para garantir o melhor benefício.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-wheelchair"></i>
+                                <h3>BPC/LOAS</h3>
+                                <span class="tooltip">Benefício de Prestação Continuada para idosos com 65+ ou pessoas com deficiência. Garantia de renda mínima.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-stethoscope"></i>
+                                <h3>Auxílio Doença</h3>
+                                <span class="tooltip">Benefício para quem está temporariamente incapacitado por doença ou acidente. Análise e acompanhamento do pedido.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-heart-pulse"></i>
+                                <h3>Apos. Invalidez</h3>
+                                <span class="tooltip">Aposentadoria para quem perdeu permanentemente a capacidade de trabalho. Concessão e manutenção do benefício.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-car-crash"></i>
+                                <h3>Auxílio Acidente</h3>
+                                <span class="tooltip">Benefício para quem sofreu acidente e ficou com sequelas que reduzem a capacidade de trabalho.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-users"></i>
+                                <h3>Pensão Morte</h3>
+                                <span class="tooltip">Pensão para dependentes de trabalhador que faleceu. Garantia de proteção financeira para a família.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-warehouse"></i>
+                                <h3>Auxílio Reclusão</h3>
+                                <span class="tooltip">Benefício para dependentes de pessoa presa em regime fechado. Garantia de renda para a família.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-baby"></i>
+                                <h3>Salário Maternidade</h3>
+                                <span class="tooltip">Benefício para mães seguradas do INSS durante a gravidez e após o parto. Direitos trabalhistas e previdenciários.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-tractor"></i>
+                                <h3>Benefícios Rurais</h3>
+                                <span class="tooltip">Benefícios específicos para trabalhadores rurais: aposentadoria, pensão e auxílio-doença.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-panel" id="consultoria">
+                        <div class="services-grid compact">
+                            <div class="service-card">
+                                <i class="fas fa-file-csv"></i>
+                                <h3>CNIS</h3>
+                                <span class="tooltip">Regularização de inconsistências constatadas no Cadastro Nacional de Informações Sociais. Correção de dados incorretos.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-clock"></i>
+                                <h3>Averbação</h3>
+                                <span class="tooltip">Averbação de tempo de serviço, tanto no INSS quanto em ente federativo para contagem de tempo de contribuição.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-calendar-minus"></i>
+                                <h3>Tempo sem Contribuição</h3>
+                                <span class="tooltip">Averbação de período trabalhado sem contribuição. Regularização de tempo de serviço.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-globe"></i>
+                                <h3>Tempo Exterior</h3>
+                                <span class="tooltip">Averbação de período trabalhado no exterior. Validação para contagem no Brasil.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-file-signature"></i>
+                                <h3>CTC</h3>
+                                <span class="tooltip">Emissão de Certidão de Tempo de Contribuição. Documentação oficial do tempo de trabalho.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-comments"></i>
+                                <h3>Consultoria</h3>
+                                <span class="tooltip">Consultoria previdenciária em geral. Esclarecimento de dúvidas sobre direitos e benefícios.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-panel" id="calculos">
+                        <div class="services-grid compact">
+                            <div class="service-card">
+                                <i class="fas fa-sync-alt"></i>
+                                <h3>Revisão</h3>
+                                <span class="tooltip">Revisão de benefício concedido com erro. Recuperação de valores indevidos.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-chess"></i>
+                                <h3>Planejamento</h3>
+                                <span class="tooltip">Planejamento previdenciário para garantir a melhor aposentadoria. Análise de contribuições.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-user-tie"></i>
+                                <h3>Servidor Público</h3>
+                                <span class="tooltip">Planejamento previdenciário específico para servidores públicos. Averbação e aposentadoria pública.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-calculator"></i>
+                                <h3>Cálculos</h3>
+                                <span class="tooltip">Cálculos previdenciários precisos. Verificação de valores devidos e correção monetária.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-list-ol"></i>
+                                <h3>Contagem Tempo</h3>
+                                <span class="tooltip">Contagem de tempo de contribuição. Análise completa do histórico previdenciário.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <h3>Renda Mensal</h3>
+                                <span class="tooltip">Cálculo de renda mensal inicial. Simulação do valor do benefício a ser recebido.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-panel" id="parcerias">
+                        <div class="services-grid compact">
+                            <div class="service-card">
+                                <i class="fas fa-briefcase"></i>
+                                <h3>Trabalho</h3>
+                                <span class="tooltip">Direito do Trabalho: rescisões, assédio, verbas rescisórias e acordos trabalhistas.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-gavel"></i>
+                                <h3>Civil</h3>
+                                <span class="tooltip">Direito Civil: contratos, responsabilidade civil e indenizações.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-home"></i>
+                                <h3>Família</h3>
+                                <span class="tooltip">Família e Sucessões: divórcio, pensão alimentícia, guarda e inventário.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-user-tie"></i>
+                                <h3>Servidores</h3>
+                                <span class="tooltip">Servidores Públicos em Geral: direitos funcionais, aposentadorias e licenças.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-shopping-cart"></i>
+                                <h3>Consumidor</h3>
+                                <span class="tooltip">Direito do Consumidor: proteção contra práticas abusivas, revisão de contratos.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-balance-scale"></i>
+                                <h3>Criminal</h3>
+                                <span class="tooltip">Direito Criminal: defesa em processos criminais, consultas jurídicas.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-building"></i>
+                                <h3>Imobiliário</h3>
+                                <span class="tooltip">Direito Imobiliário: contratos de compra e venda, locação, regularização de imóveis.</span>
+                            </div>
+                            <div class="service-card">
+                                <i class="fas fa-university"></i>
+                                <h3>Bancário</h3>
+                                <span class="tooltip">Direito Bancário: combate a cobranças abusivas, revisão de contratos bancários.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-us" id="sobre">
+            <div class="container">
+                <div class="about-split">
+                    <div class="about-visual">
+                        <div class="lawyer-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=1000&fit=crop&crop=face" alt="Isabella Siqueira" class="lawyer-image">
+                            <div class="lawyer-accent"></div>
+                            <div class="lawyer-badge floating-card">
+                                <i class="fas fa-balance-scale"></i>
+                                <span>OAB/GO 50.839</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-info">
+                        <span class="section-tag" id="sobre-tag">Sobre</span>
+                        <h2 class="section-title" id="sobre-titulo">Isabella Siqueira</h2>
+                        <p class="lawyer-subtitle">Advocacia Previdenciária</p>
+                        
+                        <div class="lawyer-text" id="sobre-text">
+                            <p>Advogada graduada pela <strong>PUC Goiás (2016)</strong>, com atuação exclusiva em direito previdenciário — um caminho que representa não só sua formação, mas também uma <strong>missão de vida</strong>: proteger direitos e garantir dignidade a quem lutou a vida inteira.</p>
+                            <p>Desde a adolescência, estuvo envolvida com causas sociais. Hoje, leva essa essência para cada atendimento, buscando muito mais que um resultado: buscando justiça.</p>
+                        </div>
+                        
+                        <div class="lawyer-credentials">
+                            <div class="credential-item">
+                                <i class="fas fa-graduation-cap"></i>
+                                <div>
+                                    <strong>Pós-graduada em</strong>
+                                    <span>Direito Civil e Processo Civil (2018)</span>
+                                </div>
+                            </div>
+                            <div class="credential-item">
+                                <i class="fas fa-graduation-cap"></i>
+                                <div>
+                                    <strong>Pós-graduada em</strong>
+                                    <span>Direito e Processo Previdenciário (2021)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="lawyer-cta">
+                            <p class="mission-text"><strong>Compromisso:</strong> Advocacia humanizada e de excelência, com coragem para enfrentar os desafios e foco total em garantir o <strong>MELHOR</strong> benefício a cada cliente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about" id="restituicao">
+            <div class="container about-container">
+                <div class="about-visual" data-aos="fade-right">
+                    <div class="about-video-container" id="aboutVideoWrapper">
+                        <video id="aboutVideo" preload="metadata" controlsList="nodownload noplaybackrate" oncontextmenu="return false;">
+                            <source src="https://raw.githubusercontent.com/alexandrexgoulart/isabella-siqueira-advocacia/refs/heads/main/video_restituicao.mp4" type="video/mp4">
+                            Seu navegador não suporta o vídeo.
+                        </video>
+                        <div class="video-overlay" id="videoOverlay">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-controls-bottom">
+                            <button class="control-btn" id="fullscreenBtn" title="Tela Cheia">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="about-pattern"></div>
+                </div>
+                
+                <div class="about-content" data-aos="fade-left">
+                    <span class="section-tag" id="restituicao-tag">Entenda a Restituição</span>
+                    
+                    <div class="about-text" id="restituicao-text">
+                        <p class="video-desc"><strong>Assista e entenda como funciona a ação de restituição:</strong></p>
+                        <p>A restituição é para você que...</p>
+                        <p>• Tem ou teve mais de um vínculo de trabalho (CLT ou autônomo)</p>
+                        <p>• Atua ou atuou como médico, professor, servidor público ou outro profissional com múltiplas fontes de renda</p>
+                        <p>• Recebia acima do teto do INSS e continuava contribuição em mais de uma fonte</p>
+                        <p>• Nunca analisou se contribuiu além do limite</p>
+                        <p class="highlight-text"><strong>Se você se identifica com um ou mais desses pontos, pode ter direito à devolução de valores.</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq" id="duvidas">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <span class="section-tag">Perguntas Frequentes</span>
+                    <h2 class="section-title">Dúvidas comuns</h2>
+                </div>
+                <div class="faq-grid">
+                    <div class="faq-item" data-aos="fade-up">
+                        <h3><i class="fas fa-file-alt"></i> Quais documentos preciso?</h3>
+                        <p>Contracheques, holerites, notas fiscais, guias de pagamento de contribuinte individual, login e senha do app Meu INSS.</p>
+                    </div>
+                    <div class="faq-item" data-aos="fade-up" data-delay="100">
+                        <h3><i class="fas fa-clock"></i> Quanto tempo dura o processo?</h3>
+                        <p>São pelo menos 2 anos até o recebimento da restituição ou benefício.</p>
+                    </div>
+                    <div class="faq-item" data-aos="fade-up" data-delay="200">
+                        <h3><i class="fas fa-shield-alt"></i> Corro algum risco?</h3>
+                        <p>Nenhum. O processo tramita no juizado, sem custo inicial. Não há risco de condenação caso não seja procedente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" id="contato">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <span class="logo-icon"><i class="fas fa-balance-scale"></i></span>
+                        <span class="logo-text">Isabella Siqueira</span>
+                    </a>
+                    <p>Especialista em direito previdenciário, lutando pelos seus direitos com transparência e dedicação.</p>
+                    <div class="footer-social">
+                        <a href="https://wa.me/message/KTXG35WKL24JI1"><i class="fab fa-whatsapp"></i></a>
+                        <a href="mailto:advisabellasiqueira@gmail.com"><i class="fas fa-envelope"></i></a>
+                        <a href="https://www.instagram.com/advisabella/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/advisabella/"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.linkedin.com/in/advisabella/"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><button type="button" class="footer-link-btn" onclick="scrollToSection('home')">Início</button></li>
+                        <li><button type="button" class="footer-link-btn" onclick="scrollToSection('servicos')">Serviços</button></li>
+                        <li><button type="button" class="footer-link-btn" onclick="scrollToSection('sobre')">Sobre</button></li>
+                        <li><button type="button" class="footer-link-btn" onclick="scrollToSection('restituicao')">Restituição</button></li>
+                        <li><button type="button" class="footer-link-btn" onclick="scrollToSection('duvidas')">Dúvidas</button></li>
+                        <li><button type="button" class="footer-link-btn" onclick="scrollToSection('contato')">Contato</button></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i><a href="https://wa.me/message/KTXG35WKL24JI1">(62) 9 8300-0708</a></li>
+                        <li><i class="fas fa-envelope"></i><a href="mailto:advisabellasiqueira@gmail.com">advisabellasiqueira@gmail.com</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i><a href="https://maps.google.com/?q=Isabella+Siqueira+Advocacia+Goi%C3%A2nia" target="_blank">Goiás, Brasil</a></li>
+                    </ul>
+                    <a href="https://wa.me/message/KTXG35WKL24JI1" class="btn-footer">
+                        <i class="fab fa-whatsapp"></i> Agendar Consulta
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="footer-year">2024</span> Isabella Siqueira Advocacia. Todos os direitos reservados.</p>
+                <p class="oab">OAB/GO 50.839</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
