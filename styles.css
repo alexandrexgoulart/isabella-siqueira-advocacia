@@ -35,11 +35,6 @@
     .desktop-only {
         display: none !important;
     }
-    .about-content .section-tag {
-        display: block;
-        text-align: center;
-        width: 100%;
-    }
 }
 
 * {
@@ -1983,6 +1978,12 @@ body:hover .cursor-outline {
     .about-visual .section-tag {
         display: block;
         text-align: center;
+    }
+
+    .about-content .section-tag {
+        display: block;
+        text-align: center;
+        width: 100%;
     }
 
     .about-visual .video-desc {
