@@ -389,27 +389,7 @@ body:hover .cursor-outline {
 }
 
 .hero-title {
-    color: var(--primary) !important;
-}
-
-.hero-title span {
-    color: inherit !important;
-}
-
-.hero-title span[style*="color: rgb"] {
-    color: var(--primary) !important;
-}
-
-.hero-title span[style*="color: #"] {
-    color: var(--primary) !important;
-}
-
-.hero-title span[style*="color: r"] {
-    color: var(--primary) !important;
-}
-
-.hero-title span[style*="color"] {
-    color: var(--primary) !important;
+    color: var(--primary);
 }
 
 .hero-desc {
