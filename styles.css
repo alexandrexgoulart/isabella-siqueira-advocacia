@@ -859,10 +859,16 @@ body:hover .cursor-outline {
     overflow: visible !important;
 }
 
-.about-visual .section-tag {
-    display: block;
-    text-align: center;
-    width: 100%;
+@media (min-width: 769px) {
+    .about-visual {
+        position: relative;
+    }
+    
+    .about-visual .section-tag {
+        display: block;
+        text-align: center;
+        width: 100%;
+    }
 }
 
 .about-video-container {
@@ -1141,11 +1147,18 @@ body:hover .cursor-outline {
     margin-bottom: 24px;
 }
 
-.about-content .section-tag {
-    display: block;
-    text-align: center;
-    width: 100%;
-    margin-bottom: 16px;
+@media (min-width: 769px) {
+    .about-info {
+        position: relative;
+    }
+    
+    .about-info .section-tag {
+        position: absolute;
+        top: -30px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+    }
 }
 
 .about-text {
@@ -2320,6 +2333,7 @@ body:hover .cursor-outline {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    position: relative;
 }
 
 .lawyer-info,
@@ -2646,11 +2660,31 @@ body:hover .cursor-outline {
 }
 
 .about-info .section-tag {
-    display: block;
-    text-align: center;
-    width: 100%;
+    display: inline-block;
     margin-bottom: 8px;
     font-size: 12px;
+}
+
+@media (min-width: 769px) {
+    .about-info {
+        position: relative;
+    }
+    
+    .about-info .section-tag {
+        position: absolute;
+        top: -30px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    #restituicao-tag {
+        position: absolute;
+        top: -30px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+    }
 }
 
 .about-info .section-title {
