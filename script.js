@@ -1402,6 +1402,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 { id: 'parc-8-tooltip', label: 'Parcerias: tooltip Bancário', type: 'textarea', selector: '#parcerias .service-card:nth-child(8) .tooltip' }
             ],
             restituicao: [
+                { id: 'restituicao-video', label: 'URL do Vídeo', type: 'video', selector: '#restituicao-video-source' },
                 { id: 'restituicao-tag', label: 'Tag da Seção', type: 'textarea', selector: '#restituicao-tag' },
                 { id: 'restituicao-p1', label: 'Parágrafo 1 (Vídeo)', type: 'textarea', selector: '#restituicao-text p:nth-child(1)' },
                 { id: 'restituicao-p2', label: 'Parágrafo 2 (A restituição é...)', type: 'textarea', selector: '#restituicao-text p:nth-child(2)' },
