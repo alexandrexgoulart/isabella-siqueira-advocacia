@@ -1941,7 +1941,11 @@ body:hover .cursor-outline {
     }
 
     .about-visual {
-        order: -1;
+        order: 1;
+    }
+
+    .about-content {
+        order: 0;
     }
 
     .about-image-wrapper img {
@@ -2701,6 +2705,10 @@ body:hover .cursor-outline {
         grid-template-columns: 1fr;
         gap: 20px;
     }
+
+    .about-visual {
+        order: 1;
+    }
     
     .lawyer-image-wrapper {
         max-width: 300px;
@@ -2712,6 +2720,7 @@ body:hover .cursor-outline {
     }
     
     .about-info {
+        order: 0;
         text-align: center;
     }
 }
