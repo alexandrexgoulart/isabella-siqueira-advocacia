@@ -1014,6 +1014,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 font-size: 14px;
                 line-height: 1.6;
             }
+            .rich-text-editor .gradient-text {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 600;
+            }
             .rich-text-editor span[style] {
                 color: inherit !important;
             }
@@ -1556,6 +1563,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <button type="button" onclick="formatText('${field.id}', 'insertOrderedList')" title="Lista Numerada"><i class="fas fa-list-ol"></i></button>
                             <button type="button" onclick="formatTextSize('${field.id}')" title="Tamanho do Texto"><i class="fas fa-text-height"></i></button>
                             <input type="color" id="color-picker-${field.id}" onchange="formatTextColor('${field.id}', this.value)" title="Cor do Texto" style="width:28px;height:28px;padding:0;border:none;cursor:pointer;background:none;">
+                            <button type="button" onclick="formatTextGradient('${field.id}')" title="Texto Gradiente Roxo" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;background-clip: text;padding: 4px 8px;border:none;border-radius: 4px;cursor:pointer;"><i class="fas fa-palette"></i></button>
                         </div>
                         <div class="rich-text-editor" contenteditable="true" data-field="${field.id}" id="editor-${field.id}">${currentValue}</div>
                     </div>
@@ -1868,6 +1876,27 @@ document.addEventListener('DOMContentLoaded', function() {
             spans.forEach(span => {
                 span.style.setProperty('color', color, 'important');
             });
+            editor.focus();
+        }
+    };
+
+    window.formatTextGradient = function(fieldId) {
+        const editor = document.getElementById('editor-' + fieldId);
+        if (editor) {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0 && !selection.isCollapsed) {
+                const range = selection.getRangeAt(0);
+                const span = document.createElement('span');
+                span.className = 'gradient-text';
+                span.innerHTML = range.toString();
+                range.deleteContents();
+                range.insertNode(span);
+            } else {
+                const span = document.createElement('span');
+                span.className = 'gradient-text';
+                span.textContent = 'texto';
+                editor.appendChild(span);
+            }
             editor.focus();
         }
     };

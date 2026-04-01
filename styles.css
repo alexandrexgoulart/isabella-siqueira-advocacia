@@ -381,9 +381,35 @@ body:hover .cursor-outline {
     background-clip: text;
 }
 
-.hero-title span[style] {
-    -webkit-text-fill-color: initial !important;
+.hero-title .gradient-text {
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-title {
+    color: var(--primary) !important;
+}
+
+.hero-title span {
     color: inherit !important;
+}
+
+.hero-title span[style*="color: rgb"] {
+    color: var(--primary) !important;
+}
+
+.hero-title span[style*="color: #"] {
+    color: var(--primary) !important;
+}
+
+.hero-title span[style*="color: r"] {
+    color: var(--primary) !important;
+}
+
+.hero-title span[style*="color"] {
+    color: var(--primary) !important;
 }
 
 .hero-desc {
