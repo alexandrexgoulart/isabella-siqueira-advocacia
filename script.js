@@ -1563,7 +1563,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <button type="button" onclick="formatText('${field.id}', 'insertOrderedList')" title="Lista Numerada"><i class="fas fa-list-ol"></i></button>
                             <button type="button" onclick="formatTextSize('${field.id}')" title="Tamanho do Texto"><i class="fas fa-text-height"></i></button>
                             <input type="color" id="color-picker-${field.id}" onchange="formatTextColor('${field.id}', this.value)" title="Cor do Texto" style="width:28px;height:28px;padding:0;border:none;cursor:pointer;background:none;">
-                            <button type="button" onclick="formatTextGradient('${field.id}')" title="Texto Gradiente Roxo" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;background-clip: text;padding: 4px 8px;border:none;border-radius: 4px;cursor:pointer;"><i class="fas fa-palette"></i></button>
+                            <button type="button" onclick="formatTextGradient('${field.id}')" title="Texto Gradiente Roxo" style="background:#667eea;color:white;padding:4px 8px;border:none;border-radius:4px;cursor:pointer;font-size:12px;">🎨</button>
                         </div>
                         <div class="rich-text-editor" contenteditable="true" data-field="${field.id}" id="editor-${field.id}">${currentValue}</div>
                     </div>
