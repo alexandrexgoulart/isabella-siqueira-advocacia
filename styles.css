@@ -618,6 +618,26 @@ body:hover .cursor-outline {
     margin-bottom: 16px;
 }
 
+.tag-desktop {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .tag-desktop {
+        display: block;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .about-info .tag-desktop {
+        margin-bottom: 16px;
+    }
+    
+    #restituicao-tag, #sobre-tag {
+        display: none;
+    }
+}
+
 .desktop-only-tag {
     display: none;
 }
