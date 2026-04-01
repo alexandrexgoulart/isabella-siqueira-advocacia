@@ -35,6 +35,11 @@
     .desktop-only {
         display: none !important;
     }
+    #restituicao-tag {
+        display: block;
+        text-align: center;
+        width: 100%;
+    }
 }
 
 * {
