@@ -381,6 +381,11 @@ body:hover .cursor-outline {
     background-clip: text;
 }
 
+.hero-title span[style] {
+    -webkit-text-fill-color: initial !important;
+    color: inherit !important;
+}
+
 .hero-desc {
     font-size: 18px;
     color: var(--text-light);

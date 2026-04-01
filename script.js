@@ -1014,6 +1014,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 font-size: 14px;
                 line-height: 1.6;
             }
+            .rich-text-editor span[style] {
+                color: inherit !important;
+            }
             .rich-text-editor:focus {
                 outline: none;
                 border-color: #6366f1;
@@ -1861,6 +1864,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const editor = document.getElementById('editor-' + fieldId);
         if (editor) {
             document.execCommand('foreColor', false, color);
+            const spans = editor.querySelectorAll('span[style*="color"]');
+            spans.forEach(span => {
+                span.style.setProperty('color', color, 'important');
+            });
             editor.focus();
         }
     };
