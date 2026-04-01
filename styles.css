@@ -1145,6 +1145,14 @@ body:hover .cursor-outline {
     margin-bottom: 24px;
 }
 
+.about-visual .video-desc {
+    font-size: 16px;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
 .about-text .highlight-text {
     font-size: 18px;
     color: var(--accent);
