@@ -35,7 +35,7 @@
     .desktop-only {
         display: none !important;
     }
-    #restituicao-tag {
+    .about-content .section-tag {
         display: block;
         text-align: center;
         width: 100%;
