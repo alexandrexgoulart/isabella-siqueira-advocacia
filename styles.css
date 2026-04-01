@@ -859,6 +859,12 @@ body:hover .cursor-outline {
     overflow: visible !important;
 }
 
+.about-visual .section-tag {
+    display: block;
+    text-align: center;
+    width: 100%;
+}
+
 .about-video-container {
     position: relative;
     width: calc(100% - 30px);
@@ -2633,7 +2639,9 @@ body:hover .cursor-outline {
 }
 
 .about-info .section-tag {
-    display: inline-block;
+    display: block;
+    text-align: center;
+    width: 100%;
     margin-bottom: 8px;
     font-size: 12px;
 }
