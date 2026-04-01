@@ -1964,6 +1964,15 @@ body:hover .cursor-outline {
         order: 0;
     }
 
+    .about-visual .section-tag {
+        display: block;
+        text-align: center;
+    }
+
+    .about-visual .video-desc {
+        text-align: center;
+    }
+
     .about-content {
         order: 1;
     }
@@ -2728,6 +2737,11 @@ body:hover .cursor-outline {
 
     .about-visual {
         order: 0;
+    }
+
+    .about-visual .section-tag {
+        display: block;
+        text-align: center;
     }
     
     .lawyer-image-wrapper {
