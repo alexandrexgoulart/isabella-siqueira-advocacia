@@ -988,6 +988,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 background: #6366f1;
                 color: white;
             }
+            .rich-text-toolbar input[type="color"] {
+                width: 28px;
+                height: 28px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                padding: 0;
+                background: transparent;
+            }
+            .rich-text-toolbar input[type="color"]::-webkit-color-swatch-wrapper {
+                padding: 2px;
+            }
+            .rich-text-toolbar input[type="color"]::-webkit-color-swatch {
+                border-radius: 4px;
+                border: 1px solid #4a5568;
+            }
             .rich-text-editor {
                 min-height: 100px;
                 padding: 12px;
@@ -1536,6 +1552,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <button type="button" onclick="formatText('${field.id}', 'insertUnorderedList')" title="Lista com Marcadores"><i class="fas fa-list-ul"></i></button>
                             <button type="button" onclick="formatText('${field.id}', 'insertOrderedList')" title="Lista Numerada"><i class="fas fa-list-ol"></i></button>
                             <button type="button" onclick="formatTextSize('${field.id}')" title="Tamanho do Texto"><i class="fas fa-text-height"></i></button>
+                            <input type="color" id="color-picker-${field.id}" onchange="formatTextColor('${field.id}', this.value)" title="Cor do Texto" style="width:28px;height:28px;padding:0;border:none;cursor:pointer;background:none;">
                         </div>
                         <div class="rich-text-editor" contenteditable="true" data-field="${field.id}" id="editor-${field.id}">${currentValue}</div>
                     </div>
@@ -1836,6 +1853,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     fonts[fonts.length - 1].style.fontSize = size + 'px';
                 }
             }
+            editor.focus();
+        }
+    };
+
+    window.formatTextColor = function(fieldId, color) {
+        const editor = document.getElementById('editor-' + fieldId);
+        if (editor) {
+            document.execCommand('foreColor', false, color);
             editor.focus();
         }
     };
