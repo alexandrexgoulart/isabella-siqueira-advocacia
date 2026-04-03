@@ -104,34 +104,43 @@ img {
     padding: 0 24px;
 }
 
-/* Custom Cursor */
-.cursor-dot,
-.cursor-outline {
+/* Premium Luxury Cursor */
+.premium-cursor {
     position: fixed;
     top: 0;
     left: 0;
-    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background-color: var(--accent);
     border-radius: 50%;
     pointer-events: none;
-    z-index: 9999;
-    transition: opacity 0.3s;
+    z-index: 99999;
+    mix-blend-mode: difference;
+    transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
+    transform: translate(-50%, -50%);
+    opacity: 0;
 }
 
-.cursor-dot {
-    width: 8px;
-    height: 8px;
-    background: var(--accent);
+.premium-cursor.active {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(197, 164, 126, 0.3);
+    border: 1px solid var(--accent);
+    mix-blend-mode: normal;
 }
 
-.cursor-outline {
-    width: 40px;
-    height: 40px;
-    border: 2px solid var(--accent);
-    transition: transform 0.15s, opacity 0.3s;
-}
-
-body:hover .cursor-outline {
+.premium-cursor.visible {
     opacity: 1;
+}
+
+/* Hide default cursor on desktop */
+@media (min-width: 1025px) {
+    html, body {
+        cursor: none;
+    }
+    a, button, .service-card, .tab-btn {
+        cursor: none !important;
+    }
 }
 
 /* Header */
