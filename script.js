@@ -210,17 +210,23 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('load', () => {
         document.body.classList.add('loaded');
         
-        const heroElements = document.querySelectorAll('.hero-content > *');
-        heroElements.forEach((el, index) => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            
-            setTimeout(() => {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-            }, 100 + (index * 100));
-        });
+        // Staggered Reveal Animation
+        const revealElements = (selector, delay = 100) => {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 100 + (index * delay));
+            });
+        };
+
+        revealElements('.hero-content > *');
+        revealElements('.service-card', 150);
     });
 
     const statNumbers = document.querySelectorAll('.stat-number');
@@ -369,150 +375,62 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ========== SISTEMA DE ADMIN INVISÍVEL ==========
-    // Segurança - Criptografia e proteção
-    const SECURITY_KEY = 'isabella_siqueira_2024_secure_' + window.location.hostname;
-    const SESSION_TOKEN_KEY = 'isabella_session_token';
-    const LOGIN_ATTEMPTS_KEY = 'isabella_login_attempts';
-    const LOCKOUT_KEY = 'isabella_lockout';
-    
-    function simpleHash(str) {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            const char = str.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
-        }
-        return Math.abs(hash).toString(16);
-    }
-    
-    function encryptData(data) {
-        try {
-            const jsonStr = JSON.stringify(data);
-            const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
-            const hash = simpleHash(SECURITY_KEY + encoded);
-            return encoded + '.' + hash;
-        } catch (e) {
-            return null;
-        }
-    }
-    
-    function decryptData(encryptedStr) {
-        try {
-            const parts = encryptedStr.split('.');
-            if (parts.length !== 2) return null;
-            const data = parts[0];
-            const hash = parts[1];
-            const expectedHash = simpleHash(SECURITY_KEY + data);
-            if (hash !== expectedHash) return null;
-            return JSON.parse(decodeURIComponent(escape(atob(data))));
-        } catch (e) {
-            return null;
-        }
-    }
-    
-    function hashPassword(password) {
-        const salt = 'isabella_oab_50839_2024';
-        const combined = salt + password + salt;
-        let hash = simpleHash(combined);
-        for (let i = 0; i < 1000; i++) {
-            hash = simpleHash(hash + combined);
-        }
-        return hash;
-    }
-    
-    function generateSessionToken() {
-        const timestamp = Date.now();
-        const random = Math.random().toString(36).substring(2);
-        return hashPassword(timestamp + random + SECURITY_KEY);
-    }
-    
-    function checkLoginAttempts() {
-        const attempts = parseInt(localStorage.getItem(LOGIN_ATTEMPTS_KEY) || '0');
-        const lockoutTime = parseInt(localStorage.getItem(LOCKOUT_KEY) || '0');
-        const now = Date.now();
-        
-        if (lockoutTime > now) {
-            const remaining = Math.ceil((lockoutTime - now) / 1000);
-            return { locked: true, remaining: remaining };
-        }
-        
-        if (attempts >= 5) {
-            localStorage.setItem(LOCKOUT_KEY, (now + 5 * 60 * 1000).toString());
-            return { locked: true, remaining: 300 };
-        }
-        
-        return { locked: false, attempts: attempts };
-    }
-    
-    function recordFailedLogin() {
-        const attempts = parseInt(localStorage.getItem(LOGIN_ATTEMPTS_KEY) || '0');
-        localStorage.setItem(LOGIN_ATTEMPTS_KEY, (attempts + 1).toString());
-    }
-    
-    function resetLoginAttempts() {
-        localStorage.setItem(LOGIN_ATTEMPTS_KEY, '0');
-        localStorage.setItem(LOCKOUT_KEY, '0');
-    }
-    
-    function saveSecureSession() {
-        const token = generateSessionToken();
-        const sessionData = {
-            token: token,
-            timestamp: Date.now(),
-            expires: Date.now() + (24 * 60 * 60 * 1000)
-        };
-        localStorage.setItem(SESSION_TOKEN_KEY, encryptData(sessionData));
-        return token;
-    }
-    
-    function validateSession() {
-        const encrypted = localStorage.getItem(SESSION_TOKEN_KEY);
-        if (!encrypted) return false;
-        
-        const session = decryptData(encrypted);
-        if (!session || !session.token || !session.expires) return false;
-        
-        if (Date.now() > session.expires) {
-            localStorage.removeItem(SESSION_TOKEN_KEY);
-            return false;
-        }
-        
-        return true;
-    }
-    
-    function clearAllSecurityData() {
-        localStorage.removeItem(LOGIN_ATTEMPTS_KEY);
-        localStorage.removeItem(LOCKOUT_KEY);
-        localStorage.removeItem(SESSION_TOKEN_KEY);
-    }
-    
-    const DEFAULT_ADMIN_PASSWORD = 'adv2024isabella';
-    let adminPasswordHash = null;
-    
-    function getAdminPassword() {
-        if (!adminPasswordHash) {
-            const encrypted = localStorage.getItem('isabellaAdminPasswordHash');
-            if (encrypted) {
-                const decrypted = decryptData(encrypted);
-                adminPasswordHash = decrypted;
+    // ========== SISTEMA DE ADMIN INVISÍVEL PRO MAX ==========
+    const AdminControl = {
+        SECURITY_KEY: 'isabella_siqueira_2024_secure_' + window.location.hostname,
+        SESSION_TOKEN_KEY: 'isabella_session_token',
+        LOGIN_ATTEMPTS_KEY: 'isabella_login_attempts',
+        LOCKOUT_KEY: 'isabella_lockout',
+        DEFAULT_PASSWORD: 'adv2024isabella',
+
+        hash: (str) => {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash |= 0;
             }
-            if (!adminPasswordHash) {
-                adminPasswordHash = hashPassword(DEFAULT_ADMIN_PASSWORD);
+            return Math.abs(hash).toString(16);
+        },
+
+        encrypt: function(data) {
+            try {
+                const encoded = btoa(encodeURIComponent(JSON.stringify(data)));
+                return `${encoded}.${this.hash(this.SECURITY_KEY + encoded)}`;
+            } catch (e) { return null; }
+        },
+
+        decrypt: function(encryptedStr) {
+            try {
+                const [data, hash] = encryptedStr.split('.');
+                if (hash !== this.hash(this.SECURITY_KEY + data)) return null;
+                return JSON.parse(decodeURIComponent(atob(data)));
+            } catch (e) { return null; }
+        },
+
+        validateSession: function() {
+            const encrypted = localStorage.getItem(this.SESSION_TOKEN_KEY);
+            if (!encrypted) return false;
+            const session = this.decrypt(encrypted);
+            return session && session.token && Date.now() < session.expires;
+        },
+
+        saveSession: function() {
+            const sessionData = {
+                token: this.hash(Date.now() + Math.random().toString()),
+                expires: Date.now() + (24 * 60 * 60 * 1000)
+            };
+            localStorage.setItem(this.SESSION_TOKEN_KEY, this.encrypt(sessionData));
+        },
+
+        init: function() {
+            console.log("Admin System Ready.");
+            if (this.validateSession()) {
+                document.body.classList.add('admin-active');
             }
         }
-        return adminPasswordHash;
-    }
-    
-    function setAdminPasswordHash(newPassword) {
-        adminPasswordHash = hashPassword(newPassword);
-        const encrypted = encryptData(adminPasswordHash);
-        localStorage.setItem('isabellaAdminPasswordHash', encrypted);
-        clearAllSecurityData();
-    }
-    
-    let adminMode = false;
-    let adminPanelOpen = false;
+    };
+
+    AdminControl.init();
 
     function createCustomVideoPlayer(videoElement, wrapper) {
         videoElement.controls = false;
