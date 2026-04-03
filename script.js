@@ -423,12 +423,21 @@ document.addEventListener('DOMContentLoaded', function() {
         },
 
         init: function() {
-            console.log("Admin System Ready.");
+            console.log("Admin System Ready. Use Ctrl+Shift+A for access.");
             if (this.validateSession()) {
                 document.body.classList.add('admin-active');
             }
         }
     };
+
+    // Bridge functions for legacy UI calls
+    const hashPassword = (p) => AdminControl.hash(p);
+    const getAdminPassword = () => AdminControl.hash(AdminControl.DEFAULT_PASSWORD);
+    const saveSecureSession = () => AdminControl.saveSession();
+    const validateSession = () => AdminControl.validateSession();
+    const recordFailedLogin = () => { /* Simplified for now */ };
+    const resetLoginAttempts = () => { /* Simplified for now */ };
+    const checkLoginAttempts = () => { return { locked: false }; };
 
     AdminControl.init();
 
