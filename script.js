@@ -15,45 +15,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    const cursorDot = document.querySelector('.cursor-dot');
-    const cursorOutline = document.querySelector('.cursor-outline');
-
-    if (cursorDot && cursorOutline) {
+    const cursor = document.querySelector('.premium-cursor');
+    if (cursor) {
         let mouseX = 0, mouseY = 0;
-        let outlineX = 0, outlineY = 0;
+        let cursorX = 0, cursorY = 0;
+        let isVisible = false;
 
-        document.addEventListener('mousemove', function(e) {
+        document.addEventListener('mousemove', (e) => {
+            if (!isVisible) {
+                isVisible = true;
+                cursor.classList.add('visible');
+            }
             mouseX = e.clientX;
             mouseY = e.clientY;
-            
-            cursorDot.style.left = mouseX + 'px';
-            cursorDot.style.top = mouseY + 'px';
         });
 
-        function animateCursor() {
-            outlineX += (mouseX - outlineX) * 0.15;
-            outlineY += (mouseY - outlineY) * 0.15;
+        document.addEventListener('mouseenter', () => {
+            cursor.classList.add('visible');
+        });
 
-            cursorOutline.style.left = outlineX + 'px';
-            cursorOutline.style.top = outlineY + 'px';
+        document.addEventListener('mouseleave', () => {
+            cursor.classList.remove('visible');
+        });
 
+        const animateCursor = () => {
+            const lerp = (a, b, n) => (1 - n) * a + n * b;
+            cursorX = lerp(cursorX, mouseX, 0.15);
+            cursorY = lerp(cursorY, mouseY, 0.15);
+            cursor.style.left = `${cursorX}px`;
+            cursor.style.top = `${cursorY}px`;
             requestAnimationFrame(animateCursor);
-        }
-
+        };
         animateCursor();
 
-        const interactiveElements = document.querySelectorAll('a, button, .service-card, .testimonial-card, .feature-box');
-        
+        const interactiveElements = document.querySelectorAll('a, button, .service-card, .tab-btn, .logo, .nav-links li button');
         interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                cursorOutline.style.background = 'rgba(99, 102, 241, 0.1)';
-            });
-            
-            el.addEventListener('mouseleave', () => {
-                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
-                cursorOutline.style.background = 'transparent';
-            });
+            el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
         });
     }
 
@@ -1526,13 +1524,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function setupAdminEventListeners() {
-        // Abrir login com Ctrl+Shift+A
+        // Abrir login com Ctrl+Shift+A (Robusto)
         document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+            if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
+                console.log('Admin shortcut detected (Ctrl+Shift+A)');
                 e.preventDefault();
                 if (!adminMode) {
-                    document.getElementById('adminLoginModal').classList.add('show');
-                    document.getElementById('adminPassword').focus();
+                    const modal = document.getElementById('adminLoginModal');
+                    if (modal) {
+                        modal.classList.add('show');
+                        const passInput = document.getElementById('adminPassword');
+                        if (passInput) passInput.focus();
+                    } else {
+                        console.error('Admin modal not found in DOM.');
+                    }
                 }
             }
         });
