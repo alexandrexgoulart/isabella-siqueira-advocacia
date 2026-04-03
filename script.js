@@ -1531,7 +1531,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Teclas detectadas: Ctrl+Shift + ', e.code);
             }
 
-            if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'a' || e.key === 'A')) {
                 console.log('Shortcut ACIONADO (Ctrl+Shift+A)');
                 e.preventDefault();
                 showAdminLogin();
