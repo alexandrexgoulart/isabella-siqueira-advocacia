@@ -1550,9 +1550,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 logoClicks++;
                 lastLogoClick = now;
 
-                console.log(`Cliques no logo: ${logoClicks}/5`);
+                console.log(`Cliques no logo: ${logoClicks}/4`);
                 
-                if (logoClicks >= 5) {
+                if (logoClicks >= 4) {
                     logoClicks = 0;
                     showAdminLogin();
                 }
@@ -2199,6 +2199,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Inicializar
     initAdminSystem();
+    setupAdminEventListeners();
     loadSavedEdits();
     checkAdminSession();
 
