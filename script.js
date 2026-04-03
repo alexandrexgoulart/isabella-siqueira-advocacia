@@ -2197,11 +2197,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Inicializar
+    // Inicialização do Admin desativada pelo usuário
+    /*
     initAdminSystem();
     setupAdminEventListeners();
     loadSavedEdits();
     checkAdminSession();
+    */
 
     console.log('Site carregado com sucesso!');
 });
