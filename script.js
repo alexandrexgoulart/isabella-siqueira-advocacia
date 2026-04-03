@@ -1525,22 +1525,58 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function setupAdminEventListeners() {
         // Abrir login com Ctrl+Shift+A (Robusto)
-        document.addEventListener('keydown', (e) => {
+        window.addEventListener('keydown', (e) => {
+            // Log de depuração (aparecerá no F12)
+            if (e.ctrlKey && e.shiftKey) {
+                console.log('Teclas detectadas: Ctrl+Shift + ', e.code);
+            }
+
             if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
-                console.log('Admin shortcut detected (Ctrl+Shift+A)');
+                console.log('Shortcut ACIONADO (Ctrl+Shift+A)');
                 e.preventDefault();
-                if (!adminMode) {
-                    const modal = document.getElementById('adminLoginModal');
-                    if (modal) {
-                        modal.classList.add('show');
-                        const passInput = document.getElementById('adminPassword');
-                        if (passInput) passInput.focus();
-                    } else {
-                        console.error('Admin modal not found in DOM.');
-                    }
-                }
+                showAdminLogin();
             }
         });
+
+        // Abrir login clicando 5 vezes no Logo (Segurança redundante)
+        const logo = document.querySelector('.logo-icon');
+        let logoClicks = 0;
+        let lastLogoClick = 0;
+
+        if (logo) {
+            logo.addEventListener('click', (e) => {
+                const now = Date.now();
+                if (now - lastLogoClick > 2000) logoClicks = 0;
+                logoClicks++;
+                lastLogoClick = now;
+
+                console.log(`Cliques no logo: ${logoClicks}/5`);
+                
+                if (logoClicks >= 5) {
+                    logoClicks = 0;
+                    showAdminLogin();
+                }
+            });
+        }
+
+        // Função auxiliar para abrir o modal
+        function showAdminLogin() {
+            if (!adminMode) {
+                const modal = document.getElementById('adminLoginModal');
+                if (modal) {
+                    modal.classList.add('show');
+                    const passInput = document.getElementById('adminPassword');
+                    if (passInput) passInput.focus();
+                } else {
+                    console.error('Modal adminLoginModal não encontrado!');
+                }
+            }
+        }
+
+        // Verificar parâmetro na URL (?admin=true)
+        if (window.location.search.includes('admin=true')) {
+            showAdminLogin();
+        }
 
         // Login
         document.getElementById('btnAdminLogin').addEventListener('click', checkAdminPassword);
