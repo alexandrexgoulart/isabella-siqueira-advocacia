@@ -5,11 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Isabella Siqueira | Advocacia Previdenciária</title>
     <meta name="description" content="Especialista em Direito Previdenciário. Aposentadorias, Auxílio Doença, Pensão por Morte, BPC/LOAS e mais. Atuação em todo o Brasil.">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#0F172A">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Isabella Siqueira | Advocacia Previdenciária">
+    <meta property="og:description" content="Especialista em Direito Previdenciário. Aposentadorias, Auxílio Doença, Pensão por Morte, BPC/LOAS e mais. Atuação em todo o Brasil.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LegalService",
+      "name": "Isabella Siqueira Advocacia",
+      "description": "Especialista em Direito Previdenciário em todo o Brasil.",
+      "url": "https://isabella-siqueira-advocacia.github.io/",
+      "logo": "https://isabella-siqueira-advocacia.github.io/foto_sobre.avif",
+      "telephone": "+5562983000708",
+      "email": "advisabellasiqueira@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "BR"
+      },
+      "areaServed": "BR",
+      "founder": "Isabella Siqueira"
+    }
+    </script>
 </head>
 <body>
     <div class="premium-cursor"></div>
@@ -24,19 +48,19 @@
                         <span class="subtitle">Advocacia</span>
                     </div>
                 </a>
-                <ul class="nav-links">
-                    <li><button type="button" onclick="scrollToSection('home')">Início</button></li>
-                    <li><button type="button" onclick="scrollToSection('servicos')">Serviços</button></li>
-                    <li><button type="button" onclick="scrollToSection('sobre')">Sobre</button></li>
-                    <li><button type="button" onclick="scrollToSection('restituicao')">Restituição</button></li>
-                    <li><button type="button" onclick="scrollToSection('duvidas')">Dúvidas</button></li>
-                    <li><button type="button" onclick="scrollToSection('contato')">Contato</button></li>
+                <ul class="nav-links" role="menu" aria-label="Menu principal">
+                    <li><a href="#home" role="menuitem">Início</a></li>
+                    <li><a href="#servicos" role="menuitem">Serviços</a></li>
+                    <li><a href="#sobre" role="menuitem">Sobre</a></li>
+                    <li><a href="#restituicao" role="menuitem">Restituição</a></li>
+                    <li><a href="#duvidas" role="menuitem">Dúvidas</a></li>
+                    <li><a href="#contato" role="menuitem">Contato</a></li>
                 </ul>
-                <a href="https://wa.me/message/KTXG35WKL24JI1" id="header-whatsapp-a" class="btn-whatsapp">
+                <a href="https://wa.me/message/KTXG35WKL24JI1" id="header-whatsapp-a" class="btn-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp">
                     <i class="fab fa-whatsapp"></i>
                     <span id="header-whatsapp-text">(62) 9 8300-0708</span>
                 </a>
-                <button class="mobile-toggle" id="mobileToggle">
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menu de navegação">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -393,9 +417,60 @@
                 </div>
             </div>
         </section>
+
+        <section class="contact" id="contato">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <span class="section-tag">Contato</span>
+                    <h2 class="section-title">Fale conosco</h2>
+                </div>
+                <div class="contact-grid">
+                    <div class="contact-card" data-aos="fade-up">
+                        <h3>Atendimento direto</h3>
+                        <p>Envie uma mensagem pelo WhatsApp em poucos segundos. Nosso escritório também responde por email e redes sociais.</p>
+                        <ul>
+                            <li><strong>WhatsApp:</strong> <a href="https://wa.me/message/KTXG35WKL24JI1" target="_blank" rel="noopener noreferrer">(62) 9 8300-0708</a></li>
+                            <li><strong>Email:</strong> <a href="mailto:advisabellasiqueira@gmail.com">advisabellasiqueira@gmail.com</a></li>
+                            <li><strong>Local:</strong> Goiás, Brasil</li>
+                        </ul>
+                        <p class="contact-card-note">Seus dados de contato são usados apenas para a resposta ao seu atendimento.</p>
+                    </div>
+                    <form id="contactForm" class="contact-form" data-aos="fade-up" data-delay="100" aria-label="Formulário de contato">
+                        <div class="form-group">
+                            <label for="contactName">Nome completo</label>
+                            <input type="text" id="contactName" name="name" placeholder="Seu nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email</label>
+                            <input type="email" id="contactEmail" name="email" placeholder="seu@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPhone">Telefone ou WhatsApp</label>
+                            <input type="tel" id="contactPhone" name="phone" placeholder="(62) 9 0000-0000" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Mensagem</label>
+                            <textarea id="contactMessage" name="message" rows="5" placeholder="Conte brevemente seu caso ou dúvida" required></textarea>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="contactPrivacy" required>
+                            <div class="checkbox-label-wrapper">
+                                <label for="contactPrivacy">Li e concordo com a</label>
+                                <button type="button" class="link-button" id="privacyPolicyOpen">Política de Privacidade</button>.
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <button type="submit" class="btn-primary"><i class="fab fa-whatsapp"></i> Enviar pelo WhatsApp</button>
+                            <p class="contact-small">Não há cobrança para analisar sua mensagem. O formulário abre o WhatsApp com seus dados prontos para envio.</p>
+                            <p id="contactSubmitMessage" class="contact-submit-message" aria-live="polite"></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer class="footer" id="contato">
+    <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
@@ -405,22 +480,22 @@
                     </a>
                     <p>Especialista em direito previdenciário, lutando pelos seus direitos com transparência e dedicação.</p>
                     <div class="footer-social">
-                        <a href="https://wa.me/message/KTXG35WKL24JI1"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://wa.me/message/KTXG35WKL24JI1" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
                         <a href="mailto:advisabellasiqueira@gmail.com"><i class="fas fa-envelope"></i></a>
-                        <a href="https://www.instagram.com/advisabella/"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.facebook.com/advisabella/"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.linkedin.com/in/advisabella/"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/advisabella/" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/advisabella/" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.linkedin.com/in/advisabella/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="footer-links">
                     <h3>Links Rápidos</h3>
                     <ul>
-                        <li><button type="button" class="footer-link-btn" onclick="scrollToSection('home')">Início</button></li>
-                        <li><button type="button" class="footer-link-btn" onclick="scrollToSection('servicos')">Serviços</button></li>
-                        <li><button type="button" class="footer-link-btn" onclick="scrollToSection('sobre')">Sobre</button></li>
-                        <li><button type="button" class="footer-link-btn" onclick="scrollToSection('restituicao')">Restituição</button></li>
-                        <li><button type="button" class="footer-link-btn" onclick="scrollToSection('duvidas')">Dúvidas</button></li>
-                        <li><button type="button" class="footer-link-btn" onclick="scrollToSection('contato')">Contato</button></li>
+                        <li><a href="#home" class="footer-link-btn">Início</a></li>
+                        <li><a href="#servicos" class="footer-link-btn">Serviços</a></li>
+                        <li><a href="#sobre" class="footer-link-btn">Sobre</a></li>
+                        <li><a href="#restituicao" class="footer-link-btn">Restituição</a></li>
+                        <li><a href="#duvidas" class="footer-link-btn">Dúvidas</a></li>
+                        <li><a href="#contato" class="footer-link-btn">Contato</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
@@ -428,7 +503,7 @@
                     <ul>
                         <li><i class="fas fa-phone"></i><a href="https://wa.me/message/KTXG35WKL24JI1">(62) 9 8300-0708</a></li>
                         <li><i class="fas fa-envelope"></i><a href="mailto:advisabellasiqueira@gmail.com">advisabellasiqueira@gmail.com</a></li>
-                        <li><i class="fas fa-map-marker-alt"></i><a href="https://maps.google.com/?q=Isabella+Siqueira+Advocacia+Goi%C3%A2nia" target="_blank">Goiás, Brasil</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i><a href="https://maps.google.com/?q=Isabella+Siqueira+Advocacia+Goi%C3%A2nia" target="_blank" rel="noopener noreferrer">Goiás, Brasil</a></li>
                     </ul>
                     <a href="https://wa.me/message/KTXG35WKL24JI1" class="btn-footer">
                         <i class="fab fa-whatsapp"></i> Agendar Consulta
@@ -441,6 +516,21 @@
             </div>
         </div>
     </footer>
+
+    <div class="privacy-modal" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle" tabindex="-1">
+        <div class="privacy-modal-content" role="document">
+            <button type="button" class="modal-close" id="privacyModalClose" aria-label="Fechar política de privacidade">×</button>
+            <h2 id="privacyModalTitle">Política de Privacidade</h2>
+            <p>Este site usa apenas os dados de contato informados para responder à sua mensagem e agendar atendimento. Não compartilhamos seu nome, telefone ou email com terceiros.</p>
+            <p>O formulário envia sua informação para atendimento via WhatsApp. Sua privacidade é tratada com cuidado e respeito, conforme boas práticas de proteção de dados.</p>
+            <button type="button" class="btn-secondary" id="privacyModalAccept">Entendi</button>
+        </div>
+    </div>
+
+    <div class="privacy-banner" id="privacyBanner" role="status" aria-live="polite">
+        <p>Este site usa contato por WhatsApp e email para atendimento. <button type="button" class="link-button" id="privacyBannerOpen">Leia nossa Política de Privacidade</button>.</p>
+        <button type="button" id="privacyBannerAccept">Entendi</button>
+    </div>
 
     <script src="script.js"></script>
 </body>

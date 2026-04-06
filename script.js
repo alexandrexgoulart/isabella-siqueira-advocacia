@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    let adminMode = false;
     const header = document.getElementById('header');
     
     window.addEventListener('scroll', function() {
@@ -69,9 +70,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelector('.nav-links');
 
     if (mobileToggle) {
+        mobileToggle.setAttribute('aria-expanded', 'false');
         mobileToggle.addEventListener('click', function() {
-            this.classList.toggle('active');
+            const isActive = this.classList.toggle('active');
             navLinks.classList.toggle('active');
+            this.setAttribute('aria-expanded', String(isActive));
         });
     }
 
@@ -318,6 +321,95 @@ document.addEventListener('DOMContentLoaded', function() {
         footerYear.textContent = new Date().getFullYear();
     }
 
+    const contactForm = document.getElementById('contactForm');
+    const privacyModal = document.getElementById('privacyModal');
+    const privacyModalOpen = document.getElementById('privacyPolicyOpen');
+    const privacyModalClose = document.getElementById('privacyModalClose');
+    const privacyModalAccept = document.getElementById('privacyModalAccept');
+    const privacyBanner = document.getElementById('privacyBanner');
+    const privacyBannerOpen = document.getElementById('privacyBannerOpen');
+    const privacyBannerAccept = document.getElementById('privacyBannerAccept');
+
+    const showPrivacyModal = () => {
+        if (privacyModal) {
+            privacyModal.classList.add('open');
+            privacyModal.focus();
+        }
+    };
+
+    const hidePrivacyModal = () => {
+        if (privacyModal) {
+            privacyModal.classList.remove('open');
+        }
+    };
+
+    const hidePrivacyBanner = () => {
+        if (privacyBanner) {
+            privacyBanner.style.display = 'none';
+            localStorage.setItem('privacyAccepted', 'true');
+        }
+    };
+
+    if (privacyModalOpen) {
+        privacyModalOpen.addEventListener('click', showPrivacyModal);
+    }
+
+    if (privacyModalClose) {
+        privacyModalClose.addEventListener('click', hidePrivacyModal);
+    }
+
+    if (privacyModalAccept) {
+        privacyModalAccept.addEventListener('click', hidePrivacyModal);
+    }
+
+    if (privacyBannerOpen) {
+        privacyBannerOpen.addEventListener('click', showPrivacyModal);
+    }
+
+    if (privacyBannerAccept) {
+        privacyBannerAccept.addEventListener('click', hidePrivacyBanner);
+    }
+
+    if (privacyBanner && localStorage.getItem('privacyAccepted') === 'true') {
+        privacyBanner.style.display = 'none';
+    }
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const phone = document.getElementById('contactPhone').value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+            const privacyChecked = document.getElementById('contactPrivacy').checked;
+
+            if (!privacyChecked) {
+                alert('Por favor, aceite a Política de Privacidade para enviar sua mensagem.');
+                return;
+            }
+
+            const whatsappText = encodeURIComponent(
+                `Olá, sou ${name}.
+Email: ${email}
+Telefone/WhatsApp: ${phone}
+Mensagem: ${message}`
+            );
+            const whatsappUrl = `https://wa.me/5562983000708?text=${whatsappText}`;
+            window.open(whatsappUrl, '_blank', 'noopener');
+            contactForm.reset();
+            showToast('Dados limpos. WhatsApp aberto para envio.');
+
+            const contactMessage = document.getElementById('contactSubmitMessage');
+            if (contactMessage) {
+                contactMessage.textContent = 'Pronto! Seus dados foram apagados e o WhatsApp foi aberto.';
+                contactMessage.style.opacity = '1';
+                setTimeout(() => {
+                    if (contactMessage) contactMessage.style.opacity = '0';
+                }, 5000);
+            }
+        });
+    }
+
     // ========== VIDEO PLAYER CUSTOMIZADO ==========
     const aboutVideo = document.getElementById('aboutVideo');
     const aboutVideoWrapper = document.getElementById('aboutVideoWrapper');
@@ -373,71 +465,49 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ========== SISTEMA DE ADMIN INVISÍVEL PRO MAX ==========
-    const AdminControl = {
-        SECURITY_KEY: 'isabella_siqueira_2024_secure_' + window.location.hostname,
-        SESSION_TOKEN_KEY: 'isabella_session_token',
-        LOGIN_ATTEMPTS_KEY: 'isabella_login_attempts',
-        LOCKOUT_KEY: 'isabella_lockout',
-        DEFAULT_PASSWORD: 'adv2024isabella',
+    // ========== ADMINISTRATIVO SIMPLES ==========
+    const ADMIN_DEFAULT_PASSWORD = 'adv2024isabella';
+    const ADMIN_SESSION_KEY = 'isabellaAdminSession';
+    const ADMIN_EDITS_KEY = 'isabellaSiteEdits';
+    const ADMIN_PASSWORD_HASH_KEY = 'isabellaAdminPasswordHash';
 
-        hash: (str) => {
-            let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                hash = ((hash << 5) - hash) + str.charCodeAt(i);
-                hash |= 0;
-            }
-            return Math.abs(hash).toString(16);
-        },
-
-        encrypt: function(data) {
-            try {
-                const encoded = btoa(encodeURIComponent(JSON.stringify(data)));
-                return `${encoded}.${this.hash(this.SECURITY_KEY + encoded)}`;
-            } catch (e) { return null; }
-        },
-
-        decrypt: function(encryptedStr) {
-            try {
-                const [data, hash] = encryptedStr.split('.');
-                if (hash !== this.hash(this.SECURITY_KEY + data)) return null;
-                return JSON.parse(decodeURIComponent(atob(data)));
-            } catch (e) { return null; }
-        },
-
-        validateSession: function() {
-            const encrypted = localStorage.getItem(this.SESSION_TOKEN_KEY);
-            if (!encrypted) return false;
-            const session = this.decrypt(encrypted);
-            return session && session.token && Date.now() < session.expires;
-        },
-
-        saveSession: function() {
-            const sessionData = {
-                token: this.hash(Date.now() + Math.random().toString()),
-                expires: Date.now() + (24 * 60 * 60 * 1000)
-            };
-            localStorage.setItem(this.SESSION_TOKEN_KEY, this.encrypt(sessionData));
-        },
-
-        init: function() {
-            console.log("Admin System Ready. Use Ctrl+Shift+A for access.");
-            if (this.validateSession()) {
-                document.body.classList.add('admin-active');
-            }
+    function hashPassword(str) {
+        let hash = 0;
+        if (!str) return '';
+        for (let i = 0; i < str.length; i++) {
+            hash = ((hash << 5) - hash) + str.charCodeAt(i);
+            hash |= 0;
         }
-    };
+        return Math.abs(hash).toString(16);
+    }
 
-    // Bridge functions for legacy UI calls
-    const hashPassword = (p) => AdminControl.hash(p);
-    const getAdminPassword = () => AdminControl.hash(AdminControl.DEFAULT_PASSWORD);
-    const saveSecureSession = () => AdminControl.saveSession();
-    const validateSession = () => AdminControl.validateSession();
-    const recordFailedLogin = () => { /* Simplified for now */ };
-    const resetLoginAttempts = () => { /* Simplified for now */ };
-    const checkLoginAttempts = () => { return { locked: false }; };
+    function getAdminPassword() {
+        return localStorage.getItem(ADMIN_PASSWORD_HASH_KEY) || hashPassword(ADMIN_DEFAULT_PASSWORD);
+    }
 
-    AdminControl.init();
+    function setAdminPasswordHash(password) {
+        localStorage.setItem(ADMIN_PASSWORD_HASH_KEY, hashPassword(password));
+    }
+
+    function isAdminAuthenticated() {
+        return localStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+    }
+
+    function saveAdminSession() {
+        localStorage.setItem(ADMIN_SESSION_KEY, 'true');
+    }
+
+    function clearAdminSession() {
+        localStorage.removeItem(ADMIN_SESSION_KEY);
+    }
+
+    function getSavedAdminEdits() {
+        return JSON.parse(localStorage.getItem(ADMIN_EDITS_KEY) || '{}');
+    }
+
+    function saveAdminEditsToStorage(edits) {
+        localStorage.setItem(ADMIN_EDITS_KEY, JSON.stringify(edits));
+    }
 
     function createCustomVideoPlayer(videoElement, wrapper) {
         videoElement.controls = false;
@@ -818,7 +888,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 transform: rotate(90deg);
             }
             .admin-panel-content {
-                padding: 20px;
+                padding: 24px 24px 40px;
+                max-width: 980px;
+                margin: 0 auto;
+            }
+            .admin-panel-header p {
+                margin: 6px 0 0;
+                color: rgba(255,255,255,0.85);
+                font-size: 13px;
+                line-height: 1.4;
             }
             .admin-section-edit {
                 background: #16213e;
@@ -837,35 +915,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 gap: 8px;
             }
             .admin-field {
-                margin-bottom: 15px;
+                margin-bottom: 18px;
             }
             .admin-field label {
                 display: block;
-                color: #94a3b8;
-                font-size: 12px;
-                margin-bottom: 6px;
-                font-weight: 500;
+                color: #cbd5e1;
+                font-size: 13px;
+                margin-bottom: 8px;
+                font-weight: 600;
             }
             .admin-field input,
             .admin-field textarea {
                 width: 100%;
-                padding: 12px;
-                background: #0f0f23;
-                border: 2px solid #2d3748;
-                border-radius: 8px;
-                color: white;
+                padding: 14px 14px;
+                background: #0f1227;
+                border: 1px solid #334155;
+                border-radius: 12px;
+                color: #e2e8f0;
                 font-size: 14px;
-                transition: all 0.3s;
+                transition: all 0.25s ease;
                 font-family: inherit;
             }
             .admin-field input:focus,
             .admin-field textarea:focus {
                 outline: none;
-                border-color: #6366f1;
-                box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+                border-color: #818cf8;
+                box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
             }
             .admin-field textarea {
-                min-height: 80px;
+                min-height: 100px;
                 resize: vertical;
             }
             .admin-field-img {
@@ -1150,11 +1228,12 @@ document.addEventListener('DOMContentLoaded', function() {
         panel.className = 'admin-full-panel';
         panel.id = 'adminPanel';
         
-        const allFields = getAllEditableFields();
-        
         panel.innerHTML = `
             <div class="admin-panel-header">
-                <h2><i class="fas fa-cog"></i> Painel Administrativo</h2>
+                <div>
+                    <h2><i class="fas fa-cog"></i> Painel Administrativo</h2>
+                    <p>Use Ctrl+Shift+A para abrir a edição rápida. Salve para aplicar alterações ao site.</p>
+                </div>
                 <button class="admin-close-panel" id="closeAdminPanel"><i class="fas fa-times"></i></button>
             </div>
             <div class="admin-panel-content">
@@ -1194,6 +1273,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     ${generateFieldsForSection('footer')}
                 </div>
                 <button class="admin-btn-save" id="saveAllChanges"><i class="fas fa-save"></i> Salvar Todas as Alterações</button>
+                <button class="admin-btn-save" id="previewChanges" style="background: #22c55e; margin-top: 12px;"><i class="fas fa-eye"></i> Visualizar Alterações</button>
                 
                 <div class="admin-section-edit" style="margin-top: 20px;">
                     <h3><i class="fas fa-key"></i> Alterar Senha</h3>
@@ -1243,7 +1323,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <h3><i class="fas fa-lock"></i> Acesso Restrito</h3>
             <p>Digite a senha para acessar o painel administrativo</p>
             <input type="password" id="adminPassword" placeholder="Senha de acesso">
-            <button id="btnAdminLogin">Entrar</button>
+            <div style="display:flex; gap:12px; justify-content:center; margin-top:18px;">
+                <button id="btnAdminLogin">Entrar</button>
+                <button type="button" id="btnAdminCancel" style="background:#d1d5db; color:#0f172a;">Cancelar</button>
+            </div>
             <p class="admin-login-error" id="loginError">Senha incorreta. Tente novamente.</p>
         `;
         document.body.appendChild(loginModal);
@@ -1266,165 +1349,74 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
 
         setupAdminEventListeners();
+        attachRichTextToolbarActions();
     }
 
     function getAllEditableFields() {
         return {
             header: [
-                { id: 'header-name', label: 'Nome do Escritório', type: 'textarea', selector: '.logo .name' },
-                { id: 'header-subtitle', label: 'Subtítulo (Ex: Advocacia)', type: 'textarea', selector: '.logo .subtitle' },
-                { id: 'header-whatsapp-link', label: 'Link WhatsApp', type: 'text', selector: '#header-whatsapp-a', isLink: true },
-                { id: 'header-whatsapp-text', label: 'Texto WhatsApp (telefone)', type: 'textarea', selector: '#header-whatsapp-text' },
-                { id: 'header-menu-servicos', label: 'Link Menu: Serviços', type: 'text', selector: '.nav-links li:nth-child(2) button', isHref: true },
-                { id: 'header-menu-sobre', label: 'Link Menu: Sobre', type: 'text', selector: '.nav-links li:nth-child(3) button', isHref: true },
-                { id: 'header-menu-contato', label: 'Link Menu: Contato', type: 'text', selector: '.nav-links li:nth-child(6) button', isHref: true }
+                { id: 'header-name', label: 'Nome do Escritório', type: 'text', selector: '.logo .name' },
+                { id: 'header-subtitle', label: 'Subtítulo do Escritório', type: 'text', selector: '.logo .subtitle' },
+                { id: 'header-whatsapp-link', label: 'Link WhatsApp do topo', type: 'text', selector: '#header-whatsapp-a', isLink: true },
+                { id: 'header-whatsapp-text', label: 'Telefone exibido no topo', type: 'text', selector: '#header-whatsapp-text' }
             ],
             inicio: [
-                { id: 'hero-badge', label: 'Badge (texto pequeno acima do título)', type: 'textarea', selector: '#hero-badge' },
-                { id: 'hero-title', label: 'Título Principal', type: 'textarea', selector: '#hero-title' },
-                { id: 'hero-desc', label: 'Descrição', type: 'textarea', selector: '#hero-desc' },
-                { id: 'hero-btn-whatsapp', label: 'Link Botão WhatsApp', type: 'text', selector: '#hero-btn-whatsapp', isLink: true },
-                { id: 'hero-btn-text', label: 'Texto do Botão WhatsApp', type: 'textarea', selector: '#hero-btn-text' },
-                { id: 'hero-btn-services', label: 'Link Botão Serviços', type: 'text', selector: '#hero-btn-services', isLink: true },
-                { id: 'hero-services-text', label: 'Texto do Botão Serviços', type: 'textarea', selector: '#hero-services-text' },
-                { id: 'hero-image', label: 'URL da Imagem Principal', type: 'image', selector: '#hero-image' },
-                { id: 'float-card-1', label: 'Cartão Flutuante 1 (texto)', type: 'textarea', selector: '#float-card-1 span' },
-                { id: 'float-card-2', label: 'Cartão Flutuante 2 (texto)', type: 'textarea', selector: '#float-card-2 span' }
+                { id: 'hero-badge', label: 'Texto do badge', type: 'text', selector: '#hero-badge' },
+                { id: 'hero-title', label: 'Título principal', type: 'textarea', selector: '#hero-title' },
+                { id: 'hero-desc', label: 'Descrição do hero', type: 'textarea', selector: '#hero-desc' },
+                { id: 'hero-btn-text', label: 'Texto do botão WhatsApp', type: 'text', selector: '#hero-btn-text' },
+                { id: 'hero-btn-whatsapp', label: 'Link do botão WhatsApp', type: 'text', selector: '#hero-btn-whatsapp', isLink: true },
+                { id: 'hero-services-text', label: 'Texto do botão Serviços', type: 'text', selector: '#hero-services-text' }
             ],
             servicos: [
-                { id: 'section-servicos-tag', label: 'Tag da Seção (ex: O que fazemos)', type: 'textarea', selector: '.services .section-tag' },
-                { id: 'section-servicos-title', label: 'Título da Seção', type: 'textarea', selector: '#section-servicos-title' },
-                { id: 'tab-previdenciario', label: 'Aba: Previdenciário', type: 'text', selector: '.tab-btn[data-tab="previdenciario"]' },
-                { id: 'tab-consultoria', label: 'Aba: Consultoria', type: 'text', selector: '.tab-btn[data-tab="consultoria"]' },
-                { id: 'tab-calculos', label: 'Aba: Cálculos', type: 'text', selector: '.tab-btn[data-tab="calculos"]' },
-                { id: 'tab-parcerias', label: 'Aba: Parcerias', type: 'text', selector: '.tab-btn[data-tab="parcerias"]' },
-                // Previdenciário - títulos dos cartões
-                { id: 'previd-1-titulo', label: 'Previdenciário: INSS Negado', type: 'textarea', selector: '#previdenciario .service-card:nth-child(1) h3' },
-                { id: 'previd-1-tooltip', label: 'Previdenciário: tooltip INSS Negado', type: 'textarea', selector: '#previdenciario .service-card:nth-child(1) .tooltip' },
-                { id: 'previd-2-titulo', label: 'Previdenciário: Aposentadorias', type: 'textarea', selector: '#previdenciario .service-card:nth-child(2) h3' },
-                { id: 'previd-2-tooltip', label: 'Previdenciário: tooltip Aposentadorias', type: 'textarea', selector: '#previdenciario .service-card:nth-child(2) .tooltip' },
-                { id: 'previd-3-titulo', label: 'Previdenciário: BPC/LOAS', type: 'textarea', selector: '#previdenciario .service-card:nth-child(3) h3' },
-                { id: 'previd-3-tooltip', label: 'Previdenciário: tooltip BPC/LOAS', type: 'textarea', selector: '#previdenciario .service-card:nth-child(3) .tooltip' },
-                { id: 'previd-4-titulo', label: 'Previdenciário: Auxílio Doença', type: 'textarea', selector: '#previdenciario .service-card:nth-child(4) h3' },
-                { id: 'previd-4-tooltip', label: 'Previdenciário: tooltip Auxílio Doença', type: 'textarea', selector: '#previdenciario .service-card:nth-child(4) .tooltip' },
-                { id: 'previd-5-titulo', label: 'Previdenciário: Apos. Invalidez', type: 'textarea', selector: '#previdenciario .service-card:nth-child(5) h3' },
-                { id: 'previd-5-tooltip', label: 'Previdenciário: tooltip Apos. Invalidez', type: 'textarea', selector: '#previdenciario .service-card:nth-child(5) .tooltip' },
-                { id: 'previd-6-titulo', label: 'Previdenciário: Auxílio Acidente', type: 'textarea', selector: '#previdenciario .service-card:nth-child(6) h3' },
-                { id: 'previd-6-tooltip', label: 'Previdenciário: tooltip Auxílio Acidente', type: 'textarea', selector: '#previdenciario .service-card:nth-child(6) .tooltip' },
-                { id: 'previd-7-titulo', label: 'Previdenciário: Pensão Morte', type: 'textarea', selector: '#previdenciario .service-card:nth-child(7) h3' },
-                { id: 'previd-7-tooltip', label: 'Previdenciário: tooltip Pensão Morte', type: 'textarea', selector: '#previdenciario .service-card:nth-child(7) .tooltip' },
-                { id: 'previd-8-titulo', label: 'Previdenciário: Auxílio Reclusão', type: 'textarea', selector: '#previdenciario .service-card:nth-child(8) h3' },
-                { id: 'previd-8-tooltip', label: 'Previdenciário: tooltip Auxílio Reclusão', type: 'textarea', selector: '#previdenciario .service-card:nth-child(8) .tooltip' },
-                { id: 'previd-9-titulo', label: 'Previdenciário: Salário Maternidade', type: 'textarea', selector: '#previdenciario .service-card:nth-child(9) h3' },
-                { id: 'previd-9-tooltip', label: 'Previdenciário: tooltip Salário Maternidade', type: 'textarea', selector: '#previdenciario .service-card:nth-child(9) .tooltip' },
-                { id: 'previd-10-titulo', label: 'Previdenciário: Benefícios Rurais', type: 'textarea', selector: '#previdenciario .service-card:nth-child(10) h3' },
-                { id: 'previd-10-tooltip', label: 'Previdenciário: tooltip Benefícios Rurais', type: 'textarea', selector: '#previdenciario .service-card:nth-child(10) .tooltip' },
-                // Consultoria - títulos dos cartões
-                { id: 'cons-1-titulo', label: 'Consultoria: CNIS', type: 'textarea', selector: '#consultoria .service-card:nth-child(1) h3' },
-                { id: 'cons-1-tooltip', label: 'Consultoria: tooltip CNIS', type: 'textarea', selector: '#consultoria .service-card:nth-child(1) .tooltip' },
-                { id: 'cons-2-titulo', label: 'Consultoria: Averbação', type: 'textarea', selector: '#consultoria .service-card:nth-child(2) h3' },
-                { id: 'cons-2-tooltip', label: 'Consultoria: tooltip Averbação', type: 'textarea', selector: '#consultoria .service-card:nth-child(2) .tooltip' },
-                { id: 'cons-3-titulo', label: 'Consultoria: Tempo sem Contribuição', type: 'textarea', selector: '#consultoria .service-card:nth-child(3) h3' },
-                { id: 'cons-3-tooltip', label: 'Consultoria: tooltip Tempo sem Contribuição', type: 'textarea', selector: '#consultoria .service-card:nth-child(3) .tooltip' },
-                { id: 'cons-4-titulo', label: 'Consultoria: Tempo Exterior', type: 'textarea', selector: '#consultoria .service-card:nth-child(4) h3' },
-                { id: 'cons-4-tooltip', label: 'Consultoria: tooltip Tempo Exterior', type: 'textarea', selector: '#consultoria .service-card:nth-child(4) .tooltip' },
-                { id: 'cons-5-titulo', label: 'Consultoria: CTC', type: 'textarea', selector: '#consultoria .service-card:nth-child(5) h3' },
-                { id: 'cons-5-tooltip', label: 'Consultoria: tooltip CTC', type: 'textarea', selector: '#consultoria .service-card:nth-child(5) .tooltip' },
-                { id: 'cons-6-titulo', label: 'Consultoria: Consultoria', type: 'textarea', selector: '#consultoria .service-card:nth-child(6) h3' },
-                { id: 'cons-6-tooltip', label: 'Consultoria: tooltip Consultoria', type: 'textarea', selector: '#consultoria .service-card:nth-child(6) .tooltip' },
-                // Cálculos - títulos dos cartões
-                { id: 'calc-1-titulo', label: 'Cálculos: Revisão', type: 'textarea', selector: '#calculos .service-card:nth-child(1) h3' },
-                { id: 'calc-1-tooltip', label: 'Cálculos: tooltip Revisão', type: 'textarea', selector: '#calculos .service-card:nth-child(1) .tooltip' },
-                { id: 'calc-2-titulo', label: 'Cálculos: Planejamento', type: 'textarea', selector: '#calculos .service-card:nth-child(2) h3' },
-                { id: 'calc-2-tooltip', label: 'Cálculos: tooltip Planejamento', type: 'textarea', selector: '#calculos .service-card:nth-child(2) .tooltip' },
-                { id: 'calc-3-titulo', label: 'Cálculos: Servidor Público', type: 'textarea', selector: '#calculos .service-card:nth-child(3) h3' },
-                { id: 'calc-3-tooltip', label: 'Cálculos: tooltip Servidor Público', type: 'textarea', selector: '#calculos .service-card:nth-child(3) .tooltip' },
-                { id: 'calc-4-titulo', label: 'Cálculos: Cálculos', type: 'textarea', selector: '#calculos .service-card:nth-child(4) h3' },
-                { id: 'calc-4-tooltip', label: 'Cálculos: tooltip Cálculos', type: 'textarea', selector: '#calculos .service-card:nth-child(4) .tooltip' },
-                { id: 'calc-5-titulo', label: 'Cálculos: Contagem Tempo', type: 'textarea', selector: '#calculos .service-card:nth-child(5) h3' },
-                { id: 'calc-5-tooltip', label: 'Cálculos: tooltip Contagem Tempo', type: 'textarea', selector: '#calculos .service-card:nth-child(5) .tooltip' },
-                { id: 'calc-6-titulo', label: 'Cálculos: Renda Mensal', type: 'textarea', selector: '#calculos .service-card:nth-child(6) h3' },
-                { id: 'calc-6-tooltip', label: 'Cálculos: tooltip Renda Mensal', type: 'textarea', selector: '#calculos .service-card:nth-child(6) .tooltip' },
-                // Parcerias - títulos dos cartões
-                { id: 'parc-1-titulo', label: 'Parcerias: Trabalho', type: 'textarea', selector: '#parcerias .service-card:nth-child(1) h3' },
-                { id: 'parc-1-tooltip', label: 'Parcerias: tooltip Trabalho', type: 'textarea', selector: '#parcerias .service-card:nth-child(1) .tooltip' },
-                { id: 'parc-2-titulo', label: 'Parcerias: Civil', type: 'textarea', selector: '#parcerias .service-card:nth-child(2) h3' },
-                { id: 'parc-2-tooltip', label: 'Parcerias: tooltip Civil', type: 'textarea', selector: '#parcerias .service-card:nth-child(2) .tooltip' },
-                { id: 'parc-3-titulo', label: 'Parcerias: Família', type: 'textarea', selector: '#parcerias .service-card:nth-child(3) h3' },
-                { id: 'parc-3-tooltip', label: 'Parcerias: tooltip Família', type: 'textarea', selector: '#parcerias .service-card:nth-child(3) .tooltip' },
-                { id: 'parc-4-titulo', label: 'Parcerias: Servidores', type: 'textarea', selector: '#parcerias .service-card:nth-child(4) h3' },
-                { id: 'parc-4-tooltip', label: 'Parcerias: tooltip Servidores', type: 'textarea', selector: '#parcerias .service-card:nth-child(4) .tooltip' },
-                { id: 'parc-5-titulo', label: 'Parcerias: Consumidor', type: 'textarea', selector: '#parcerias .service-card:nth-child(5) h3' },
-                { id: 'parc-5-tooltip', label: 'Parcerias: tooltip Consumidor', type: 'textarea', selector: '#parcerias .service-card:nth-child(5) .tooltip' },
-                { id: 'parc-6-titulo', label: 'Parcerias: Criminal', type: 'textarea', selector: '#parcerias .service-card:nth-child(6) h3' },
-                { id: 'parc-6-tooltip', label: 'Parcerias: tooltip Criminal', type: 'textarea', selector: '#parcerias .service-card:nth-child(6) .tooltip' },
-                { id: 'parc-7-titulo', label: 'Parcerias: Imobiliário', type: 'textarea', selector: '#parcerias .service-card:nth-child(7) h3' },
-                { id: 'parc-7-tooltip', label: 'Parcerias: tooltip Imobiliário', type: 'textarea', selector: '#parcerias .service-card:nth-child(7) .tooltip' },
-                { id: 'parc-8-titulo', label: 'Parcerias: Bancário', type: 'textarea', selector: '#parcerias .service-card:nth-child(8) h3' },
-                { id: 'parc-8-tooltip', label: 'Parcerias: tooltip Bancário', type: 'textarea', selector: '#parcerias .service-card:nth-child(8) .tooltip' }
+                { id: 'section-servicos-title', label: 'Título da seção Serviços', type: 'text', selector: '#section-servicos-title' },
+                { id: 'tab-previdenciario', label: 'Nome aba Previdenciário', type: 'text', selector: '.tab-btn[data-tab="previdenciario"]' },
+                { id: 'tab-consultoria', label: 'Nome aba Consultoria', type: 'text', selector: '.tab-btn[data-tab="consultoria"]' },
+                { id: 'tab-calculos', label: 'Nome aba Cálculos', type: 'text', selector: '.tab-btn[data-tab="calculos"]' },
+                { id: 'tab-parcerias', label: 'Nome aba Parcerias', type: 'text', selector: '.tab-btn[data-tab="parcerias"]' }
             ],
             restituicao: [
-                { id: 'restituicao-video', label: 'URL do Vídeo', type: 'video', selector: '#restituicao-video-source' },
-                { id: 'restituicao-tag', label: 'Tag da Seção', type: 'textarea', selector: '#restituicao-tag' },
-                { id: 'restituicao-p1', label: 'Parágrafo 1 (Vídeo)', type: 'textarea', selector: '#restituicao-text p:nth-child(1)' },
-                { id: 'restituicao-p2', label: 'Parágrafo 2 (A restituição é...)', type: 'textarea', selector: '#restituicao-text p:nth-child(2)' },
-                { id: 'restituicao-p3', label: 'Ponto 1 (múltiplos vínculos)', type: 'textarea', selector: '#restituicao-text p:nth-child(3)' },
-                { id: 'restituicao-p4', label: 'Ponto 2 (múltiplas fontes)', type: 'textarea', selector: '#restituicao-text p:nth-child(4)' },
-                { id: 'restituicao-p5', label: 'Ponto 3 (acima do teto)', type: 'textarea', selector: '#restituicao-text p:nth-child(5)' },
-                { id: 'restituicao-p6', label: 'Ponto 4 (contribuiu além)', type: 'textarea', selector: '#restituicao-text p:nth-child(6)' },
-                { id: 'restituicao-p7', label: 'Parágrafo Final (destaque)', type: 'textarea', selector: '#restituicao-text p:nth-child(7)' }
+                { id: 'restituicao-tag', label: 'Título da seção Restituição', type: 'text', selector: '#restituicao-tag' },
+                { id: 'restituicao-p1', label: 'Texto introdutório', type: 'textarea', selector: '#restituicao-text p:nth-child(1)' },
+                { id: 'restituicao-p2', label: 'Parágrafo 2', type: 'textarea', selector: '#restituicao-text p:nth-child(2)' },
+                { id: 'restituicao-highlight', label: 'Texto de destaque', type: 'textarea', selector: '#restituicao-text p.highlight-text' }
             ],
             sobre: [
-                { id: 'sobre-imagem', label: 'Foto da Advogada', type: 'image', selector: '.lawyer-image' },
-                { id: 'sobre-tag', label: 'Tag da Seção', type: 'textarea', selector: '#sobre-tag' },
-                { id: 'sobre-titulo', label: 'Título (Nome)', type: 'textarea', selector: '#sobre-titulo' },
-                { id: 'sobre-subtitle', label: 'Subtítulo', type: 'text', selector: '.lawyer-subtitle' },
-                { id: 'sobre-p1', label: 'Parágrafo 1 (Formação)', type: 'textarea', selector: '#sobre-text p:nth-child(1)' },
-                { id: 'sobre-p2', label: 'Parágrafo 2 (Missão)', type: 'textarea', selector: '#sobre-text p:nth-child(2)' },
-                { id: 'sobre-cred-1', label: 'Pós-graduação 1', type: 'text', selector: '.credential-item:nth-child(1) span' },
-                { id: 'sobre-cred-2', label: 'Pós-graduação 2', type: 'text', selector: '.credential-item:nth-child(2) span' },
-                { id: 'sobre-missao', label: 'Texto Compromisso', type: 'textarea', selector: '.mission-text' }
+                { id: 'sobre-tag', label: 'Tag da seção Sobre', type: 'text', selector: '#sobre-tag' },
+                { id: 'sobre-titulo', label: 'Título sobre', type: 'text', selector: '#sobre-titulo' },
+                { id: 'sobre-subtitle', label: 'Subtítulo sobre', type: 'text', selector: '.lawyer-subtitle' },
+                { id: 'sobre-p1', label: 'Parágrafo 1', type: 'textarea', selector: '#sobre-text p:nth-child(1)' },
+                { id: 'sobre-p2', label: 'Parágrafo 2', type: 'textarea', selector: '#sobre-text p:nth-child(2)' },
+                { id: 'sobre-missao', label: 'Texto de compromisso', type: 'textarea', selector: '.mission-text' }
             ],
             duvidas: [
-                { id: 'faq-tag', label: 'Tag da Seção', type: 'textarea', selector: '.faq .section-tag' },
-                { id: 'faq-title', label: 'Título da Seção', type: 'textarea', selector: '.faq .section-title' },
-                { id: 'faq-perg-1', label: 'Pergunta 1', type: 'textarea', selector: '.faq-item:nth-child(1) h3' },
+                { id: 'faq-title', label: 'Título da seção Dúvidas', type: 'text', selector: '.faq .section-title' },
+                { id: 'faq-perg-1', label: 'Pergunta 1', type: 'text', selector: '.faq-item:nth-child(1) h3' },
                 { id: 'faq-resp-1', label: 'Resposta 1', type: 'textarea', selector: '.faq-item:nth-child(1) p' },
-                { id: 'faq-perg-2', label: 'Pergunta 2', type: 'textarea', selector: '.faq-item:nth-child(2) h3' },
+                { id: 'faq-perg-2', label: 'Pergunta 2', type: 'text', selector: '.faq-item:nth-child(2) h3' },
                 { id: 'faq-resp-2', label: 'Resposta 2', type: 'textarea', selector: '.faq-item:nth-child(2) p' },
-                { id: 'faq-perg-3', label: 'Pergunta 3', type: 'textarea', selector: '.faq-item:nth-child(3) h3' },
+                { id: 'faq-perg-3', label: 'Pergunta 3', type: 'text', selector: '.faq-item:nth-child(3) h3' },
                 { id: 'faq-resp-3', label: 'Resposta 3', type: 'textarea', selector: '.faq-item:nth-child(3) p' }
             ],
             contato: [
-                { id: 'cta-titulo', label: 'Título CTA', type: 'textarea', selector: '#cta-titulo' },
-                { id: 'cta-desc', label: 'Descrição CTA', type: 'textarea', selector: '#cta-desc' },
-                { id: 'cta-whatsapp-link', label: 'Link Botão WhatsApp', type: 'text', selector: '#cta-whatsapp', isLink: true },
-                { id: 'cta-whatsapp-text', label: 'Texto Botão WhatsApp', type: 'textarea', selector: '#cta-whatsapp-text' }
+                { id: 'contato-section-title', label: 'Título da seção Contato', type: 'text', selector: '#contato .section-title' },
+                { id: 'contato-card-title', label: 'Título do cartão de contato', type: 'text', selector: '.contact-card h3' },
+                { id: 'contato-card-desc', label: 'Descrição do cartão de contato', type: 'textarea', selector: '.contact-card p' },
+                { id: 'contato-whatsapp', label: 'Link WhatsApp contato', type: 'text', selector: '.contact-card a[href*="wa.me"]', isLink: true },
+                { id: 'contato-email', label: 'Email de contato', type: 'text', selector: '.contact-card a[href^="mailto:"]', isLink: true },
+                { id: 'contato-note', label: 'Nota de privacidade no formulário', type: 'textarea', selector: '.contact-card-note' }
             ],
             footer: [
-                { id: 'footer-brand-text', label: 'Texto Sobre no Rodapé', type: 'textarea', selector: '.footer-brand p' },
-                { id: 'footer-whatsapp', label: 'Link WhatsApp', type: 'text', selector: '.footer-social a:nth-child(1)', isLink: true },
-                { id: 'footer-email-social', label: 'Link Email Social', type: 'text', selector: '.footer-social a:nth-child(2)', isLink: true },
-                { id: 'footer-instagram', label: 'Link Instagram', type: 'text', selector: '.footer-social a:nth-child(3)', isLink: true },
-                { id: 'footer-facebook', label: 'Link Facebook', type: 'text', selector: '.footer-social a:nth-child(4)', isLink: true },
-                { id: 'footer-linkedin', label: 'Link LinkedIn', type: 'text', selector: '.footer-social a:nth-child(5)', isLink: true },
-                { id: 'footer-link-inicio', label: 'Link Menu Início', type: 'text', selector: '#footer-link-1', isHref: true },
-                { id: 'footer-link-inicio-text', label: 'Texto Menu Início', type: 'text', selector: '#footer-link-1' },
-                { id: 'footer-link-sobre', label: 'Link Menu Sobre', type: 'text', selector: '#footer-link-2', isHref: true },
-                { id: 'footer-link-sobre-text', label: 'Texto Menu Sobre', type: 'text', selector: '#footer-link-2' },
-                { id: 'footer-link-restituicao', label: 'Link Menu Restituição', type: 'text', selector: '#footer-link-3', isHref: true },
-                { id: 'footer-link-restituicao-text', label: 'Texto Menu Restituição', type: 'text', selector: '#footer-link-3' },
-                { id: 'footer-link-servicos', label: 'Link Menu Serviços', type: 'text', selector: '#footer-link-4', isHref: true },
-                { id: 'footer-link-servicos-text', label: 'Texto Menu Serviços', type: 'text', selector: '#footer-link-4' },
-                { id: 'footer-link-duvidas', label: 'Link Menu Dúvidas', type: 'text', selector: '#footer-link-5', isHref: true },
-                { id: 'footer-link-duvidas-text', label: 'Texto Menu Dúvidas', type: 'text', selector: '#footer-link-5' },
-                { id: 'footer-link-contato', label: 'Link Menu Contato', type: 'text', selector: '#footer-link-6', isHref: true },
-                { id: 'footer-link-contato-text', label: 'Texto Menu Contato', type: 'text', selector: '#footer-link-6' },
-                { id: 'footer-phone', label: 'Link Telefone', type: 'text', selector: '.footer-contact ul li:nth-child(1) a', isLink: true },
-                { id: 'footer-contact-email', label: 'Link Email Contato', type: 'text', selector: '.footer-contact ul li:nth-child(2) a', isLink: true },
-                { id: 'footer-maps-link', label: 'Link Google Maps', type: 'text', selector: '.footer-contact ul li:nth-child(3) a', isLink: true },
-                { id: 'footer-btn-whatsapp', label: 'Link Botão WhatsApp Rodapé', type: 'text', selector: '.footer-contact .btn-footer', isLink: true },
-                { id: 'footer-copyright', label: 'Texto Copyright', type: 'textarea', selector: '.footer-bottom p' },
+                { id: 'footer-brand-text', label: 'Texto sobre no rodapé', type: 'textarea', selector: '.footer-brand p' },
+                { id: 'footer-whatsapp', label: 'Link WhatsApp do rodapé', type: 'text', selector: '.footer-social a[href*="wa.me"]', isLink: true },
+                { id: 'footer-email-social', label: 'Link Email do rodapé', type: 'text', selector: '.footer-social a[href^="mailto:"]', isLink: true },
+                { id: 'footer-instagram', label: 'Link Instagram', type: 'text', selector: '.footer-social a[href*="instagram.com"]', isLink: true },
+                { id: 'footer-facebook', label: 'Link Facebook', type: 'text', selector: '.footer-social a[href*="facebook.com"]', isLink: true },
+                { id: 'footer-linkedin', label: 'Link LinkedIn', type: 'text', selector: '.footer-social a[href*="linkedin.com"]', isLink: true },
+                { id: 'footer-map-link', label: 'Link Maps', type: 'text', selector: '.footer-contact a[href*="maps.google.com"]', isLink: true },
+                { id: 'footer-phone', label: 'Telefone no rodapé', type: 'text', selector: '.footer-contact ul li:nth-child(1) a', isLink: true },
+                { id: 'footer-email-link', label: 'Email no rodapé', type: 'text', selector: '.footer-contact ul li:nth-child(2) a', isLink: true },
+                { id: 'footer-copy', label: 'Texto copyright', type: 'textarea', selector: '.footer-bottom p' },
                 { id: 'footer-oab', label: 'Número OAB', type: 'text', selector: '.footer-bottom .oab' }
             ]
         };
@@ -1441,86 +1433,92 @@ document.addEventListener('DOMContentLoaded', function() {
         return null;
     }
 
+    function createRichTextToolbar(fieldId) {
+        return `
+            <div class="rich-text-toolbar" data-editor="editor-${fieldId}">
+                <button type="button" data-command="bold" title="Negrito"><i class="fas fa-bold"></i></button>
+                <button type="button" data-command="italic" title="Itálico"><i class="fas fa-italic"></i></button>
+                <button type="button" data-command="underline" title="Sublinhado"><i class="fas fa-underline"></i></button>
+                <button type="button" data-command="strikeThrough" title="Tachado"><i class="fas fa-strikethrough"></i></button>
+                <button type="button" data-command="insertUnorderedList" title="Lista com marcadores"><i class="fas fa-list-ul"></i></button>
+                <button type="button" data-command="insertOrderedList" title="Lista numerada"><i class="fas fa-list-ol"></i></button>
+                <button type="button" data-command="justifyLeft" title="Alinhar à esquerda"><i class="fas fa-align-left"></i></button>
+                <button type="button" data-command="justifyCenter" title="Centralizar"><i class="fas fa-align-center"></i></button>
+                <button type="button" data-command="justifyRight" title="Alinhar à direita"><i class="fas fa-align-right"></i></button>
+                <button type="button" data-command="createLink" title="Inserir link"><i class="fas fa-link"></i></button>
+                <button type="button" data-command="unlink" title="Remover link"><i class="fas fa-unlink"></i></button>
+                <input type="color" data-command="foreColor" title="Cor do texto" />
+            </div>
+        `;
+    }
+
     function generateFieldsForSection(section) {
         const fields = getAllEditableFields()[section];
         if (!fields) return '';
-        
+
         let html = '';
-        
+
         fields.forEach(field => {
             let currentValue = getSavedValue(field);
-            
             if (currentValue === null) {
+                const element = document.querySelector(field.selector);
                 currentValue = field.isLink || field.isHref
-                    ? (document.querySelector(field.selector)?.getAttribute('href') || '')
-                    : (document.querySelector(field.selector)?.innerHTML || '');
+                    ? (element?.getAttribute('href') || '')
+                    : (element?.innerHTML || '');
             }
-            
-            if (field.type === 'videoembed') {
-                html += `
-                    <div class="admin-field">
-                        <label>${field.label}</label>
-                        <input type="text" data-field="${field.id}" value="${currentValue}" placeholder="Cole URL do YouTube ou Google Drive">
-                        <small style="color:#f59e0b;display:block;margin-top:5px;background:#78350f;padding:8px;border-radius:6px;">
-                            <i class="fas fa-info-circle"></i> <strong>Formatos aceitos:</strong> URL de imagem, vídeo YouTube, ou link do Google Drive (com "Anyone with link")
-                        </small>
-                    </div>
-                `;
-            } else if (field.type === 'image' || field.type === 'video' || field.type === 'media') {
-                const acceptType = field.type === 'image' ? 'image/*' : 'video/*';
-                const fileType = field.type === 'media' ? 'video' : field.type;
-                const iconType = field.type === 'image' ? 'fa-image' : 'fa-video';
-                const uploadLabel = field.type === 'image' ? 'Enviar Imagem' : 'Enviar Vídeo';
-                html += `
-                    <div class="admin-field admin-field-img">
-                        <label>${field.label}</label>
-                        <input type="text" data-field="${field.id}" value="${currentValue}" placeholder="Cole a URL ou faça upload">
-                        <input type="file" id="file-${field.id}" accept="${acceptType}" style="display:none" onchange="handleFileUpload(this, '${field.id}', '${fileType}')">
-                        <div class="img-buttons">
-                            <button type="button" class="img-upload-btn" onclick="document.getElementById('file-${field.id}').click()"><i class="fas fa-upload"></i> ${uploadLabel}</button>
-                            ${currentValue ? `<button class="img-preview-btn" onclick="window.open('${currentValue}', '_blank')"><i class="fas fa-eye"></i> Ver</button>` : ''}
-                        </div>
-                    </div>
-                `;
-            } else if (field.type === 'textarea') {
-                html += `
-                    <div class="admin-field">
-                        <label>${field.label}</label>
-                        <div class="rich-text-toolbar">
-                            <button type="button" onclick="formatText('${field.id}', 'bold')" title="Negrito"><i class="fas fa-bold"></i></button>
-                            <button type="button" onclick="formatText('${field.id}', 'italic')" title="Itálico"><i class="fas fa-italic"></i></button>
-                            <button type="button" onclick="formatText('${field.id}', 'underline')" title="Sublinhado"><i class="fas fa-underline"></i></button>
-                            <button type="button" onclick="formatText('${field.id}', 'strikeThrough')" title="Tachado"><i class="fas fa-strikethrough"></i></button>
-                            <button type="button" onclick="formatText('${field.id}', 'justifyLeft')" title="Alinhar à Esquerda"><i class="fas fa-align-left"></i></button>
-                            <button type="button" onclick="formatText('${field.id}', 'justifyCenter')" title="Centralizar"><i class="fas fa-align-center"></i></button>
-                            <button type="button" onclick="formatText('${field.id}', 'justifyRight')" title="Alinhar à Direita"><i class="fas fa-align-right"></i></button>
-                            <button type="button" onclick="formatText('${field.id}', 'justifyFull')" title="Justificar"><i class="fas fa-align-justify"></i></button>
-                            <button type="button" onclick="formatText('${field.id}', 'insertUnorderedList')" title="Lista com Marcadores"><i class="fas fa-list-ul"></i></button>
-                            <button type="button" onclick="formatText('${field.id}', 'insertOrderedList')" title="Lista Numerada"><i class="fas fa-list-ol"></i></button>
-                            <button type="button" onclick="formatTextSize('${field.id}')" title="Tamanho do Texto"><i class="fas fa-text-height"></i></button>
-                            <input type="color" id="color-picker-${field.id}" onchange="formatTextColor('${field.id}', this.value)" title="Cor do Texto" style="width:28px;height:28px;padding:0;border:none;cursor:pointer;background:none;">
-                            <button type="button" onclick="formatTextGradient('${field.id}')" title="Texto Gradiente Roxo" style="background:#667eea;color:white;padding:4px 8px;border:none;border-radius:4px;cursor:pointer;font-size:12px;">🎨</button>
-                        </div>
-                        <div class="rich-text-editor" contenteditable="true" data-field="${field.id}" id="editor-${field.id}">${currentValue}</div>
-                    </div>
-                `;
-            } else if (field.isLink || field.isHref) {
-                html += `
-                    <div class="admin-field">
-                        <label>${field.label}</label>
-                        <input type="text" data-field="${field.id}" value="${currentValue}" placeholder="https://...">
-                    </div>
-                `;
-            } else {
-                html += `
-                    <div class="admin-field">
-                        <label>${field.label}</label>
-                        <input type="text" data-field="${field.id}" value="${currentValue}" placeholder="${field.label}">
-                    </div>
-                `;
-            }
+
+            const fieldValue = currentValue.replace(/"/g, '&quot;');
+
+            html += `
+                <div class="admin-field">
+                    <label for="field-${field.id}">${field.label}</label>
+                    ${field.type === 'textarea' ?
+                        `
+                        ${createRichTextToolbar(field.id)}
+                        <div id="editor-${field.id}" class="rich-text-editor" contenteditable="true" data-field="${field.id}" role="textbox" aria-multiline="true">${currentValue}</div>
+                        ` :
+                        `<input id="field-${field.id}" type="text" data-field="${field.id}" value="${fieldValue}" placeholder="${field.label}" />`
+                    }
+                </div>
+            `;
         });
+
         return html;
+    }
+
+    function attachRichTextToolbarActions() {
+        document.querySelectorAll('.rich-text-toolbar button').forEach(button => {
+            button.addEventListener('click', () => {
+                const editorId = button.closest('.rich-text-toolbar')?.dataset.editor;
+                const command = button.dataset.command;
+                const editor = document.getElementById(editorId);
+                if (!editor) return;
+
+                editor.focus();
+
+                if (command === 'createLink') {
+                    let url = prompt('Digite o link completo (http:// ou https://):');
+                    if (url) {
+                        if (!/^https?:\/\//i.test(url)) {
+                            url = 'https://' + url;
+                        }
+                        document.execCommand('createLink', false, url);
+                    }
+                } else {
+                    document.execCommand(command, false, null);
+                }
+            });
+        });
+
+        document.querySelectorAll('.rich-text-toolbar input[type="color"]').forEach(input => {
+            input.addEventListener('change', () => {
+                const editorId = input.closest('.rich-text-toolbar')?.dataset.editor;
+                const editor = document.getElementById(editorId);
+                if (!editor) return;
+                editor.focus();
+                document.execCommand('foreColor', false, input.value);
+            });
+        });
     }
 
     function setupAdminEventListeners() {
@@ -1583,6 +1581,23 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('adminPassword').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') checkAdminPassword();
         });
+        document.getElementById('btnAdminCancel').addEventListener('click', () => {
+            const modal = document.getElementById('adminLoginModal');
+            if (modal) modal.classList.remove('show');
+            const passInput = document.getElementById('adminPassword');
+            if (passInput) passInput.value = '';
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('adminLoginModal');
+                if (modal && modal.classList.contains('show')) {
+                    modal.classList.remove('show');
+                    const passInput = document.getElementById('adminPassword');
+                    if (passInput) passInput.value = '';
+                }
+            }
+        });
 
         // Fechar painel
         document.getElementById('closeAdminPanel').addEventListener('click', () => {
@@ -1607,6 +1622,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Salvar
         document.getElementById('saveAllChanges').addEventListener('click', saveAllEdits);
+        document.getElementById('previewChanges').addEventListener('click', previewAdminEdits);
 
         // Change password
         document.getElementById('config-change-password-btn').addEventListener('click', changeAdminPassword);
@@ -1729,59 +1745,34 @@ document.addEventListener('DOMContentLoaded', function() {
     function checkAdminPassword() {
         const input = document.getElementById('adminPassword');
         const error = document.getElementById('loginError');
-        
-        const loginCheck = checkLoginAttempts();
-        if (loginCheck.locked) {
-            error.textContent = `Muitas tentativas falhas. Tente novamente em ${loginCheck.remaining} segundos.`;
+        const password = input?.value || '';
+
+        if (!password) {
+            error.textContent = 'Digite a senha para continuar.';
             error.classList.add('show');
             return;
         }
-        
-        const inputHash = hashPassword(input.value);
+
+        const inputHash = hashPassword(password);
         const expectedHash = getAdminPassword();
-        
-        console.log('DEBUG LOGIN - Senha digitada (hash):', inputHash);
-        console.log('DEBUG LOGIN - Senha esperada (hash):', expectedHash);
-        
+
         if (inputHash === expectedHash) {
             adminMode = true;
-            resetLoginAttempts();
-            saveSecureSession();
-            localStorage.setItem('isabellaAdminSession', 'true');
+            saveAdminSession();
             document.getElementById('adminLoginModal').classList.remove('show');
             input.value = '';
             error.classList.remove('show');
-            
+
             setTimeout(() => {
                 document.getElementById('adminPanel').classList.add('open');
                 document.getElementById('adminOverlay').classList.add('active');
                 showToast('Bem-vindo ao painel administrativo!');
             }, 100);
         } else {
-            recordFailedLogin();
+            error.textContent = 'Senha incorreta. Tente novamente.';
             error.classList.add('show');
         }
     }
-
-    window.handleFileUpload = function(input, fieldId, fileType) {
-        const file = input.files[0];
-        if (file) {
-            if (file.size > 4 * 1024 * 1024) {
-                showToast('Arquivo muito grande! Máximo 4MB para localStorage.');
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const urlInput = document.querySelector(`[data-field="${fieldId}"]`);
-                if (urlInput) {
-                    urlInput.value = e.target.result;
-                    const msg = fileType === 'video' ? 'Vídeo carregado com sucesso!' : 'Imagem carregada com sucesso!';
-                    showToast(msg);
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-    };
 
     window.changeAdminPassword = function() {
         const currentPass = document.getElementById('config-current-password').value;
@@ -1823,236 +1814,187 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('config-confirm-password').value = '';
     };
 
-    window.formatText = function(fieldId, command) {
-        const editor = document.getElementById('editor-' + fieldId);
-        if (editor) {
-            document.execCommand(command, false, null);
-            editor.focus();
-        }
-    };
 
-    window.formatTextSize = function(fieldId) {
-        const editor = document.getElementById('editor-' + fieldId);
-        if (editor) {
-            const size = prompt('Digite o tamanho da fonte em px (ex: 18, 24, 32):', '16');
-            if (size) {
-                document.execCommand('fontSize', false, '4');
-                const fonts = editor.querySelectorAll('font');
-                if (fonts.length > 0) {
-                    fonts[fonts.length - 1].removeAttribute('face');
-                    fonts[fonts.length - 1].style.fontSize = size + 'px';
-                }
-            }
-            editor.focus();
-        }
-    };
-
-    window.formatTextColor = function(fieldId, color) {
-        const editor = document.getElementById('editor-' + fieldId);
-        if (editor) {
-            document.execCommand('foreColor', false, color);
-            const spans = editor.querySelectorAll('span[style*="color"]');
-            spans.forEach(span => {
-                span.style.setProperty('color', color, 'important');
-            });
-            editor.focus();
-        }
-    };
-
-    window.formatTextGradient = function(fieldId) {
-        const editor = document.getElementById('editor-' + fieldId);
-        if (editor) {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0 && !selection.isCollapsed) {
-                const range = selection.getRangeAt(0);
-                const span = document.createElement('span');
-                span.className = 'gradient-text';
-                span.innerHTML = range.toString();
-                range.deleteContents();
-                range.insertNode(span);
-            } else {
-                const span = document.createElement('span');
-                span.className = 'gradient-text';
-                span.textContent = 'texto';
-                editor.appendChild(span);
-            }
-            editor.focus();
-        }
-    };
-
-    function saveAllEdits() {
-        console.log('Iniciando saveAllEdits...');
+    function collectAdminEdits() {
         const fields = getAllEditableFields();
-        const allSections = Object.keys(fields);
         const edits = {};
-        console.log('Seções encontradas:', allSections);
 
-        allSections.forEach(section => {
-            console.log('Processando seção:', section);
-            fields[section].forEach(field => {
-                console.log('Campo:', field.id, 'Tipo:', field.type);
-                let input = document.querySelector(`[data-field="${field.id}"]`);
-                console.log('Input encontrado:', input);
-                let value;
-                
-                if (field.type === 'textarea') {
-                    const editor = document.getElementById('editor-' + field.id);
-                    value = editor ? editor.innerHTML : '';
+        Object.values(fields).forEach(sectionFields => {
+            sectionFields.forEach(field => {
+                const editor = document.getElementById('editor-' + field.id);
+                const input = document.querySelector(`[data-field="${field.id}"]`);
+                let value = '';
+
+                if (editor) {
+                    value = editor.innerHTML;
                 } else if (input) {
                     value = input.value;
                 }
-                
-                console.log('Valor do campo:', value);
-                
-                if (value && value !== undefined) {
-                    if (field.isLink || field.isHref) {
-                        edits[field.selector] = { type: 'link', value: value };
-                    } else if (field.type === 'videoembed') {
-                        edits[field.selector] = { type: 'videoembed', value: value };
-                    } else if (field.type === 'image' || field.type === 'video' || field.type === 'media') {
-                        edits[field.selector] = { type: 'video', value: value };
-                    } else {
-                        edits[field.selector] = { type: 'text', value: value };
-                    }
+
+                if (value === null || value === undefined) return;
+                value = value.trim();
+                if (value === '') return;
+
+                if (field.isLink || field.isHref) {
+                    edits[field.selector] = { type: 'link', value };
+                } else if (field.type === 'videoembed') {
+                    edits[field.selector] = { type: 'videoembed', value };
+                } else if (field.type === 'image' || field.type === 'video' || field.type === 'media') {
+                    edits[field.selector] = { type: 'video', value };
+                } else {
+                    edits[field.selector] = { type: 'text', value };
                 }
             });
         });
 
-        // Aplicar alterações
-        Object.entries(edits).forEach(([selector, data]) => {
-            let el = document.querySelector(selector);
-            if (el) {
-                if (data.type === 'link') {
-                    el.setAttribute('href', data.value);
-                } else if (data.type === 'videoembed') {
-                    const url = data.value;
-                    const wrapper = el.parentElement;
-                    
-                    if (url.includes('drive.google.com')) {
-                        let videoId = '';
-                        if (url.includes('/d/')) {
-                            videoId = url.split('/d/')[1].split('/')[0].split('?')[0];
-                        }
-                        const videoUrl = 'https://drive.google.com/uc?id=' + videoId + '&export=download';
-                        const video = document.createElement('video');
-                        video.src = videoUrl;
-                        video.style.cssText = 'width:100%;height:600px;border-radius:20px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);object-fit:cover;';
-                        video.preload = 'metadata';
-                        if (el.tagName === 'IMG') {
-                            wrapper.innerHTML = '';
-                            wrapper.appendChild(video);
-                            createCustomVideoPlayer(video, wrapper);
-                        } else if (el.tagName === 'IFRAME') {
-                            el.parentElement.replaceWith(video);
-                            createCustomVideoPlayer(video, video.parentElement);
-                        } else if (el.tagName === 'VIDEO') {
-                            el.src = videoUrl;
-                        }
-                    } else if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                        let embedUrl = url;
-                        if (embedUrl.includes('watch?v=')) {
-                            const videoId = embedUrl.split('watch?v=')[1].split('&')[0];
-                            embedUrl = 'https://www.youtube.com/embed/' + videoId;
-                        } else if (embedUrl.includes('youtu.be/embed/')) {
-                            const videoId = embedUrl.split('youtu.be/embed/')[1].split('&')[0];
-                            embedUrl = 'https://www.youtube.com/embed/' + videoId;
-                        } else if (embedUrl.includes('youtu.be/') && !embedUrl.includes('/embed/')) {
-                            const videoId = embedUrl.split('youtu.be/')[1].split('&')[0];
-                            embedUrl = 'https://www.youtube.com/embed/' + videoId;
-                        }
-                        embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'modestbranding=1&rel=0';
-                        const iframe = document.createElement('iframe');
-                        iframe.src = embedUrl;
-                        iframe.style.cssText = 'width:100%;height:600px;border:0;border-radius:inherit;object-fit:cover;';
-                        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-                        iframe.allowFullscreen = true;
-                        if (el.tagName === 'IMG') {
-                            wrapper.innerHTML = '';
-                            wrapper.appendChild(iframe);
-                        } else if (el.tagName === 'IFRAME') {
-                            el.src = embedUrl;
-                        }
-                    } else if (url.match(/\.(mp4|webm|ogg)$/i) || url.includes('raw.githubusercontent.com') || url.startsWith('data:video/')) {
-                        const video = document.createElement('video');
-                        video.src = url;
-                        video.style.cssText = 'width:100%;height:600px;border-radius:20px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);object-fit:cover;';
-                        video.preload = 'metadata';
-                        if (el.tagName === 'IMG') {
-                            wrapper.innerHTML = '';
-                            wrapper.appendChild(video);
-                            createCustomVideoPlayer(video, wrapper);
-                        } else if (el.tagName === 'IFRAME') {
-                            el.parentElement.replaceWith(video);
-                            createCustomVideoPlayer(video, video.parentElement);
-                        } else if (el.tagName === 'VIDEO') {
-                            el.src = url;
-                            createCustomVideoPlayer(el, el.parentElement);
-                        }
-                    } else {
-                        if (el.tagName === 'IMG') {
-                            el.src = url;
-                        } else if (el.tagName === 'IFRAME' || el.tagName === 'VIDEO') {
-                            el.src = url;
-                        }
-                    }
-                } else if (data.type === 'video') {
-                    const isVideo = data.value.startsWith('data:video/') || data.value.match(/\.(mp4|webm|ogg)$/i);
-                    if (isVideo && el.tagName === 'IMG') {
-                        const video = document.createElement('video');
-                        video.id = el.id;
-                        video.src = data.value;
-                        video.controls = true;
-                        video.autoplay = true;
-                        video.muted = true;
-                        video.loop = true;
-                        video.style.cssText = el.style.cssText;
-                        el.parentNode.replaceChild(video, el);
-                    } else if (el.tagName === 'VIDEO') {
-                        el.src = data.value;
-                    } else {
-                        el.src = data.value;
-                    }
-                } else if (data.type === 'image') {
-                    if (el.tagName === 'VIDEO') {
-                        const img = document.createElement('img');
-                        img.id = el.id;
-                        img.src = data.value;
+        return edits;
+    }
 
-                        img.style.cssText = el.style.cssText;
-                        el.parentNode.replaceChild(img, el);
-                    } else {
-                        el.src = data.value;
+    function applyAdminEdits(edits) {
+        Object.entries(edits).forEach(([selector, data]) => {
+            const el = document.querySelector(selector);
+            if (!el) return;
+
+            if (data.type === 'link') {
+                el.setAttribute('href', data.value);
+                return;
+            }
+
+            if (data.type === 'videoembed') {
+                const url = data.value;
+                const wrapper = el.parentElement;
+
+                if (url.includes('drive.google.com')) {
+                    let videoId = '';
+                    if (url.includes('/d/')) {
+                        videoId = url.split('/d/')[1].split('/')[0].split('?')[0];
+                    }
+                    const videoUrl = 'https://drive.google.com/uc?id=' + videoId + '&export=download';
+                    const video = document.createElement('video');
+                    video.src = videoUrl;
+                    video.style.cssText = 'width:100%;height:600px;border-radius:20px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);object-fit:cover;';
+                    video.preload = 'metadata';
+                    if (el.tagName === 'IMG') {
+                        wrapper.innerHTML = '';
+                        wrapper.appendChild(video);
+                        createCustomVideoPlayer(video, wrapper);
+                    } else if (el.tagName === 'IFRAME') {
+                        el.parentElement.replaceWith(video);
+                        createCustomVideoPlayer(video, video.parentElement);
+                    } else if (el.tagName === 'VIDEO') {
+                        el.src = videoUrl;
+                    }
+                } else if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                    let embedUrl = url;
+                    if (embedUrl.includes('watch?v=')) {
+                        const videoId = embedUrl.split('watch?v=')[1].split('&')[0];
+                        embedUrl = 'https://www.youtube.com/embed/' + videoId;
+                    } else if (embedUrl.includes('youtu.be/embed/')) {
+                        const videoId = embedUrl.split('youtu.be/embed/')[1].split('&')[0];
+                        embedUrl = 'https://www.youtube.com/embed/' + videoId;
+                    } else if (embedUrl.includes('youtu.be/') && !embedUrl.includes('/embed/')) {
+                        const videoId = embedUrl.split('youtu.be/')[1].split('&')[0];
+                        embedUrl = 'https://www.youtube.com/embed/' + videoId;
+                    }
+                    embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'modestbranding=1&rel=0';
+                    const iframe = document.createElement('iframe');
+                    iframe.src = embedUrl;
+                    iframe.style.cssText = 'width:100%;height:600px;border:0;border-radius:inherit;object-fit:cover;';
+                    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                    iframe.allowFullscreen = true;
+                    if (el.tagName === 'IMG') {
+                        wrapper.innerHTML = '';
+                        wrapper.appendChild(iframe);
+                    } else if (el.tagName === 'IFRAME') {
+                        el.src = embedUrl;
+                    }
+                } else if (url.match(/\.(mp4|webm|ogg)$/i) || url.includes('raw.githubusercontent.com') || url.startsWith('data:video/')) {
+                    const video = document.createElement('video');
+                    video.src = url;
+                    video.style.cssText = 'width:100%;height:600px;border-radius:20px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);object-fit:cover;';
+                    video.preload = 'metadata';
+                    if (el.tagName === 'IMG') {
+                        wrapper.innerHTML = '';
+                        wrapper.appendChild(video);
+                        createCustomVideoPlayer(video, wrapper);
+                    } else if (el.tagName === 'IFRAME') {
+                        el.parentElement.replaceWith(video);
+                        createCustomVideoPlayer(video, video.parentElement);
+                    } else if (el.tagName === 'VIDEO') {
+                        el.src = url;
+                        createCustomVideoPlayer(el, el.parentElement);
                     }
                 } else {
-                    el.innerHTML = data.value;
+                    if (el.tagName === 'IMG') {
+                        el.src = url;
+                    } else if (el.tagName === 'IFRAME' || el.tagName === 'VIDEO') {
+                        el.src = url;
+                    }
                 }
+                return;
             }
-        });
 
-        // Salvar no localStorage
-        console.log('Salvando no localStorage:', edits);
+            if (data.type === 'video') {
+                const isVideo = data.value.startsWith('data:video/') || data.value.match(/\.(mp4|webm|ogg)$/i);
+                if (isVideo && el.tagName === 'IMG') {
+                    const video = document.createElement('video');
+                    video.id = el.id;
+                    video.src = data.value;
+                    video.controls = true;
+                    video.autoplay = true;
+                    video.muted = true;
+                    video.loop = true;
+                    video.style.cssText = el.style.cssText;
+                    el.parentNode.replaceChild(video, el);
+                } else if (el.tagName === 'VIDEO') {
+                    el.src = data.value;
+                } else {
+                    el.src = data.value;
+                }
+                return;
+            }
+
+            if (data.type === 'image') {
+                if (el.tagName === 'VIDEO') {
+                    const img = document.createElement('img');
+                    img.id = el.id;
+                    img.src = data.value;
+                    img.style.cssText = el.style.cssText;
+                    el.parentNode.replaceChild(img, el);
+                } else {
+                    el.src = data.value;
+                }
+                return;
+            }
+
+            el.innerHTML = data.value;
+        });
+    }
+
+    function saveAllEdits() {
+        const edits = collectAdminEdits();
+        applyAdminEdits(edits);
         localStorage.setItem('isabellaSiteEdits', JSON.stringify(edits));
-        
-        // Backup automático - salvar no histórico
+
         const autoBackup = {
             date: new Date().toISOString(),
             edits: JSON.parse(JSON.stringify(edits))
         };
-        
-        // Buscar históricos existentes
+
         let backupHistory = JSON.parse(localStorage.getItem('isabellaBackupHistory') || '[]');
         backupHistory.unshift(autoBackup);
-        
-        // Manter apenas os últimos 20 backups
         if (backupHistory.length > 20) {
             backupHistory = backupHistory.slice(0, 20);
         }
-        
         localStorage.setItem('isabellaBackupHistory', JSON.stringify(backupHistory));
-        console.log('Backup automático criado. Total de backups:', backupHistory.length);
-        
-        // Mostrar toast
+
         showToast('Alterações salvas com sucesso!');
+    }
+
+    function previewAdminEdits() {
+        const edits = collectAdminEdits();
+        applyAdminEdits(edits);
+        showToast('Pré-visualização aplicada. Salve para manter as alterações.');
     }
 
     function showToast(message) {
@@ -2197,13 +2139,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Inicialização do Admin desativada pelo usuário
-    /*
+    // Inicialização do Admin reativada para MVP
     initAdminSystem();
-    setupAdminEventListeners();
     loadSavedEdits();
     checkAdminSession();
-    */
 
     console.log('Site carregado com sucesso!');
 });
