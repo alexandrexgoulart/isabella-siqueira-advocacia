@@ -2015,7 +2015,10 @@ img {
     }
 
     .hero-visual {
-        display: none;
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 420px;
     }
 
     .services-grid {
@@ -2087,6 +2090,39 @@ img {
         flex-direction: column;
         gap: 24px;
         align-items: center;
+    }
+
+    .hero-visual {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 360px;
+    }
+
+    .hero-image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .floating-card {
+        position: relative;
+        width: auto;
+        margin: 16px auto 0;
+        animation: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-1,
+    .card-2 {
+        top: auto;
+        right: auto;
+        left: auto;
+        bottom: auto;
+        transform: none;
+    }
+
+    .card-1 {
+        margin-bottom: 12px;
     }
 
     .services-grid {
