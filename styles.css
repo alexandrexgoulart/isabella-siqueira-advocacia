@@ -2327,8 +2327,6 @@ img {
         padding: 10px 14px;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
         animation: none;
-        left: auto;
-        right: auto;
     }
 
     .floating-card span {
@@ -2346,13 +2344,13 @@ img {
     }
 
     .card-1 {
-        top: 8%;
-        right: 12px;
+        top: 10%;
+        right: 16px;
     }
 
     .card-2 {
-        bottom: 10%;
-        left: 12px;
+        bottom: 14%;
+        left: 14px;
     }
 
     .tab-btn {
