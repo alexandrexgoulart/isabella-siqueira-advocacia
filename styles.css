@@ -2345,12 +2345,14 @@ img {
 
     .card-1 {
         top: 10%;
-        right: -20px;
+        right: -30px;
+        animation: float-card-1 3s ease-in-out infinite;
     }
 
     .card-2 {
         bottom: 14%;
         left: 14px;
+        animation: float-card-2 3.5s ease-in-out infinite;
     }
 
     .tab-btn {
