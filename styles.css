@@ -2320,14 +2320,14 @@ img {
     }
 
     .floating-card {
-        position: absolute;
+        position: relative;
         display: inline-flex;
         width: auto;
-        max-width: 220px;
+        max-width: 260px;
         padding: 10px 14px;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
         animation: none;
-        margin: 0;
+        margin: 12px auto 0;
         left: auto;
         right: auto;
     }
@@ -2340,14 +2340,23 @@ img {
         font-size: 16px;
     }
 
+    .card-1,
+    .card-2 {
+        top: auto;
+        right: auto;
+        left: auto;
+        bottom: auto;
+        transform: none;
+        position: relative;
+        margin: 12px auto 0;
+    }
+
     .card-1 {
-        top: 12%;
-        right: 8px;
+        margin-top: 12px;
     }
 
     .card-2 {
-        bottom: 10%;
-        left: 8px;
+        margin-top: 12px;
     }
 
     .tab-btn {
