@@ -2345,7 +2345,7 @@ img {
 
     .card-1 {
         top: 10%;
-        right: 0;
+        right: -10px;
     }
 
     .card-2 {
