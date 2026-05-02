@@ -26,7 +26,6 @@ Este é um website profissional para o escritório de advocacia de Isabella Siqu
 Foi identificada uma credencial hardcoded no sistema:
 ```
 // 🔑 COLE SUA CHAVE AQUI
-GROQ_API_KEY = "***REMOVED***"
 ```
 
 ### 3.2 Otimização de Performance
