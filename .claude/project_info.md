@@ -9,8 +9,8 @@ Website profissional para o escritório de advocacia de Isabella Siqueira, espec
 - `script.js` - Funcionalidades JavaScript
 - `foto_sobre.avif` - Imagem da advogada
 - `isabella_sobre.avif` - Imagem principal da advogada
-- `video_restituicao.mp4` - Vídeo explicativo sobre restituição
 - `optimized_video/video_restituicao_optimized.mp4` - Vídeo otimizado
+- `README.md` - Documentação do projeto
 
 ## Descrição
 
