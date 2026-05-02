@@ -23,10 +23,14 @@ Este é um website profissional para o escritório de advocacia de Isabella Siqu
 ## 3. IDENTIFICAÇÃO DE MELHORIAS
 
 ### 3.1 Segurança
+<<<<<<< HEAD
 Foi identificada uma credencial hardcoded no sistema:
 ```
 // 🔑 COLE SUA CHAVE AQUI
 ```
+=======
+Foi identificada uma credencial hardcoded no sistema.
+>>>>>>> 7fb5051 (Remove chave hardcoded do arquivo de análise)
 
 ### 3.2 Otimização de Performance
 - Arquivo JavaScript monolítico de 2.100+ linhas
