@@ -1,14 +1,14 @@
 ---
-name: Nome do Seu Novo Projeto
-description: Descrição do projeto atual
+name: Isabella Siqueira Advocacia
+description: Website profissional para escritório de advocacia
 type: project
 ---
 
-# Project Context: Nome do Seu Novo Projeto
+# Project Context: Isabella Siqueira Advocacia
 
 ## Current Project
-- Name: Nome do Projeto
-- Type: Tipo do projeto (web, mobile, API, etc.)
-- Technologies: Tecnologias usadas
-- Development Stage: Fase atual (início, implementação, testes, etc.)
-- Focus Areas: Áreas de foco específicas para este projeto
+- Name: Isabella Siqueira Advocacia
+- Type: Website profissional
+- Technologies: HTML, CSS, JavaScript
+- Development Stage: Projeto ativo
+- Focus Areas: Desenvolvimento web
