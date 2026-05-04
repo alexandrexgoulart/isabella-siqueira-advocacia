@@ -1,40 +1,52 @@
 :root {
-    /* Midnight Prestige Palette */
-    --primary: #0F172A;
-    --primary-light: #1E293B;
-    --primary-dark: #020617;
-    --accent: #C5A47E;
-    --accent-hover: #B38F64;
-    --accent-glow: rgba(197, 164, 126, 0.2);
-    --secondary: #F1F5F9;
-    --secondary-dark: #E2E8F0;
-    --success: #10B981;
-    --white: #ffffff;
-    --text: #0F172A;
-    --text-light: #475569;
-    --text-muted: #64748b;
-    --text-dark: #020617;
-    --bg-light: #F8FAFC;
-    --bg-card: rgba(255, 255, 255, 0.98);
+    /* === MODERN LIGHT PALETTE === */
+    /* Primary - Deep Slate (professional, trustworthy) */
+    --primary: #1E293B;
+    --primary-light: #334155;
+    --primary-dark: #0F172A;
     
-    /* Advanced Gradients */
-    --gradient-main: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-    --gradient-accent: linear-gradient(135deg, #C5A47E 0%, #B38F64 100%);
-    --gradient-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+    /* Accent - Warm Gold (premium, experience) */
+    --accent: #D97706;
+    --accent-hover: #B45309;
+    --accent-glow: rgba(217, 119, 6, 0.15);
     
-    /* Elite Shadows & Blur */
-    --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.05);
-    --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
-    --shadow-lg: 0 20px 50px -12px rgba(15, 23, 42, 0.15);
-    --shadow-glow: 0 0 30px var(--accent-glow);
-    --shadow-inset: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    /* Secondary */
+    --secondary: #F3F4F6;
+    --secondary-dark: #E5E7EB;
     
-    /* Precision Spacing & Radius */
+    /* Semantic */
+    --success: #059669;
+    --white: #FFFFFF;
+    
+    /* Text - High Contrast for Accessibility */
+    --text: #111827;
+    --text-light: #4B5563;
+    --text-muted: #9CA3AF;
+    --text-dark: #000000;
+    
+    /* Background - Pure White */
+    --bg-light: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-subtle: #F9FAFB;
+    
+    /* Clean Gradients */
+    --gradient-main: linear-gradient(135deg, #1E293B 0%, #334155 100%);
+    --gradient-accent: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+    --gradient-surface: linear-gradient(180deg, #F9FAFB 0%, #FFFFFF 100%);
+    
+    /* Refined Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-glow: 0 0 20px var(--accent-glow);
+    --shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+    
+    /* Radius */
     --radius-sm: 6px;
     --radius-md: 12px;
-    --radius-lg: 24px;
+    --radius-lg: 16px;
     --radius-full: 9999px;
-    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mobile-only {
