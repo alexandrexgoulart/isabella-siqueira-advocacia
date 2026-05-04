@@ -1,4 +1,6 @@
 :root {
+    color-scheme: light only;
+
     /* === PALETA JURÍDICA PREMIUM — Navy & Gold === */
     /* Primary - Deep Navy (autoridade, confiança, jurídico) */
     --primary: #1A2B4A;
@@ -77,6 +79,9 @@ html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
     overflow-x: auto;
+    color-scheme: light only;
+    forced-color-adjust: none;
+    background: var(--bg-light);
 }
 
 body,
