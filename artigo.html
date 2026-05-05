@@ -163,6 +163,8 @@
             color: var(--text);
             text-align: justify;
             padding: 0 0.5rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .article-content p {
@@ -466,6 +468,12 @@
             const container = document.getElementById('articleContainer');
             
             document.title = `${post.titulo} - Isabella Siqueira Advocacia`;
+            
+            console.log('Conteúdo do post (原始):', post.conteudo);
+            console.log('Conteúdo com quebras:', post.conteudo ? post.conteudo.includes('\n') : 'sem quebra');
+            
+            const formatted = formatContent(post.conteudo);
+            console.log('Conteúdo formatado:', formatted);
 
             container.innerHTML = `
                 <a href="blog.html" class="back-btn">
@@ -487,7 +495,7 @@
                      class="article-image">
 
                 <div class="article-content">
-                    ${formatContent(post.conteudo)}
+                    ${formatted}
                 </div>
 
                 <div class="article-cta">
