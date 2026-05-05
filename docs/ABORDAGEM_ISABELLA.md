@@ -195,6 +195,103 @@ WhatsApp: (62) 98300-0708
 
 ---
 
+## Objeções e Como Responder
+
+### 1. "Está caro / muito caro"
+
+**Resposta:**
+> "Entendo seu ponto de vista. Mas você paga cerca de R$ 100/mês no Wix, não é? Com este site, não tem mensalidade de hospedagem. Você só paga manutenção se quiser atualizações. Parece muito, mas em 1 ano você economia R$ 1.200. É um investimento que se paga ao longo do tempo."
+
+**Técnica:** Transforme o "caro" em economia de longo prazo.
+
+---
+
+### 2. "Já tenho site (Wix/WordPress)"
+
+**Resposta:**
+> "Que bom que você já tem presença digital! Posso te mostrar as diferenças? Meu site é 100% personalizado, não usa those modelos prontos do Wix. Além disso, é muito mais rápido, tem blog integrado e foi otimizado para aparecer no Google. Quer fazer um teste comparativo? A gente可见 o que aparece primeiro no Google."
+
+**Técnica:** Reconheça o que ela já tem e mostre os diferenciais.
+
+---
+
+### 3. "Não tenho tempo para manter / atualizar"
+
+**Resposta:**
+> "Você não precisa mexer em nada se não quiser! Posso fazer a manutenção mensal pra você - é só me mandar o conteúdo do artigo ou qualquer alteração que eu faço. Assim vocêfocus no seu trabalho e o site fica sempre atualizado."
+
+**Técnica:** Ofereça a manutenção como solução, não como problema.
+
+---
+
+### 4. "Vou pensar / Depois a gente conversa"
+
+**Resposta:**
+> "Sem problema! Deixei tudo pronto para você ver com calma. Quando quiser conversar, é só me chamar no WhatsApp. Enquanto isso, posso te enviar alguns exemplos de artigos que você poderia publicar no blog? Assim você já vê o tipo de conteúdo que atrai clientes."
+
+**Técnica:** Não pressione, mas deixe a porta aberta com próximo passo.
+
+---
+
+### 5. "Não preciso de blog"
+
+**Resposta:**
+> "Entendo! Mas você sabia que o blog ajuda o Google a encontrar seu site? Quando alguém busca 'advogada previdenciária [sua cidade]' ou 'como pedir aposentadoria', artigos seus aparecem no Google e levam diretamente ao seu escritório. É cliente que chega até você sem precisar de indicações."
+
+**Técnica:** Mostre o benefício oculto que ela não conhece.
+
+---
+
+### 6. "Quem vai ler meus artigos?"
+
+**Resposta:**
+> "Exatamente pessoas como seus clientes! Quem está procurando informações sobre benefícios, aposentadoria, auxílio-doença - esses artigos atraem quem precisa dos seus serviços. É conteúdo que mostra autoridade e confiança. Muitos advogados给我 indican que seus melhores clientes chegam pelo blog."
+
+**Técnica:** Prove o valor com exemplo concreto.
+
+---
+
+### 7. "Não tenho dinheiro agora"
+
+**Resposta:**
+> "Sem problema! Posso parcelar em até 3x no cartão, ou fazer um acordo de pagamento. O importante é você ter um site profissional. Depois que começar a trazer clientes, o investimento se paga sozinho."
+
+**Técnica:** Ofereça opções de pagamento flexíveis.
+
+---
+
+### 8. "Meu site atual está bom"
+
+**Resposta:**
+> "Fico feliz que você esteja satisfeita! Posso fazer uma análise rápida do seu site atual e te mostrar onde可能有 melhorias? É de graça, não te comprometo a nada. Só queria te mostrar o que eu faria de diferente."
+
+**Técnica:** Ofereça valor sem compromisso (análise gratuita).
+
+---
+
+## Técnica do "Sim, E"
+
+Quando a pessoa objectionar, você aceita o ponto dela E adiciona algo:
+
+- **"Sim, o preço parece alto, E você economiza R$ 100/mês em hospedagem"**
+- **"Sim, você está ocupada, E eu posso fazer toda a manutenção pra você"**
+- **"Sim, você já tem site, E este é muito mais rápido e aparece no Google"**
+
+---
+
+## Fluxo de Conversa
+
+```
+1. Enviar mensagem inicial (versão curta)
+2. Se responder → enviar link e diferenciais
+3. Se objectionar → usar uma das respostas acima
+4. Se demonstrar interesse → enviar proposta completa
+5. Se pedir prazo → agendar retorno em 3-5 dias
+6. Se não responder → enviar email após 48h
+```
+
+---
+
 ## Próximos Passos
 
 1. [ ] Personalizar scripts com seu nome
@@ -212,3 +309,4 @@ WhatsApp: (62) 98300-0708
 ---
 
 *Documento atualizado: 05/05/2026*
+*Atualizado em: 05/05/2026 - Seção de objeções adicionada*
