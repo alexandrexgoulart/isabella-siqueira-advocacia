@@ -369,6 +369,39 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Load More Button */
+        .load-more-container {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 1rem;
+        }
+
+        .load-more-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .load-more-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 43, 74, 0.3);
+        }
+
+        .load-more-btn i {
+            font-size: 0.9rem;
+        }
+
         /* Footer */
         .blog-footer {
             background: var(--primary);
@@ -477,6 +510,11 @@
                 <p>Carregando artigos...</p>
             </div>
         </div>
+        <div class="load-more-container" id="loadMoreContainer" style="display: none;">
+            <button class="load-more-btn" id="loadMoreBtn" onclick="loadMorePosts()">
+                <i class="fas fa-plus"></i> Ver Mais Artigos
+            </button>
+        </div>
     </main>
 
     <!-- Footer -->
@@ -543,6 +581,8 @@
 
         let currentCategory = 'all';
         let allPosts = [];
+        let displayedPosts = 0;
+        const POSTS_PER_PAGE = 6;
 
         async function loadPosts() {
             const grid = document.getElementById('postsGrid');
@@ -570,8 +610,13 @@
                     return;
                 }
 
-                renderPosts(allPosts);
-
+                displayedPosts = POSTS_PER_PAGE;
+                const initialPosts = allPosts.slice(0, displayedPosts);
+                renderPosts(initialPosts);
+                
+                if (allPosts.length > displayedPosts) {
+                    document.getElementById('loadMoreContainer').style.display = 'block';
+                }
             } catch (error) {
                 console.error('Erro:', error);
                 grid.innerHTML = `
@@ -582,6 +627,27 @@
                     </div>
                 `;
             }
+        }
+
+        function loadMorePosts() {
+            const filtered = currentCategory === 'all' 
+                ? allPosts 
+                : allPosts.filter(p => p.categoria === currentCategory);
+            
+            const btn = document.getElementById('loadMoreBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...';
+            
+            setTimeout(() => {
+                displayedPosts += POSTS_PER_PAGE;
+                const toShow = filtered.slice(0, displayedPosts);
+                renderPosts(toShow);
+                
+                if (displayedPosts >= filtered.length) {
+                    document.getElementById('loadMoreContainer').style.display = 'none';
+                } else {
+                    btn.innerHTML = '<i class="fas fa-plus"></i> Ver Mais Artigos';
+                }
+            }, 500);
         }
 
         function renderPosts(posts) {
@@ -622,7 +688,15 @@
                 ? allPosts 
                 : allPosts.filter(p => p.categoria === category);
             
-            renderPosts(filtered);
+            const toShow = filtered.slice(0, POSTS_PER_PAGE);
+            renderPosts(toShow);
+            
+            if (filtered.length > POSTS_PER_PAGE) {
+                displayedPosts = POSTS_PER_PAGE;
+                document.getElementById('loadMoreContainer').style.display = 'block';
+            } else {
+                document.getElementById('loadMoreContainer').style.display = 'none';
+            }
         }
 
         function initSearch() {
@@ -634,7 +708,9 @@
                     (p.resumo && p.resumo.toLowerCase().includes(term)) ||
                     p.categoria.toLowerCase().includes(term)
                 );
-                renderPosts(filtered);
+                const toShow = filtered.slice(0, POSTS_PER_PAGE);
+                renderPosts(toShow);
+                document.getElementById('loadMoreContainer').style.display = 'none';
             });
         }
     </script>

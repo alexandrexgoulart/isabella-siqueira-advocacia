@@ -502,28 +502,52 @@
         function previewPost() {
             const titulo = document.getElementById('postTitulo').value || 'Sem título';
             const conteudo = document.getElementById('postConteudo').value || '';
+            const resumo = document.getElementById('postResumo').value || '';
+            
+            // Debug: mostrar qual valor está sendo usado
+            console.log('=== DEBUG PREVIEW ===');
+            console.log('selectedImageBase64:', selectedImageBase64 ? 'tem dados (' + selectedImageBase64.substring(0, 50) + '...)' : 'NULO');
+            console.log('postImagem.value:', document.getElementById('postImagem').value ? 'tem dados (' + document.getElementById('postImagem').value.substring(0, 50) + '...)' : 'VAZIO');
+            
+            // Primeiro verifica imagem nova selecionada, depois imagem já salva
+            const imagemUrl = selectedImageBase64 || document.getElementById('postImagem').value || '';
+            
+            console.log('imagemUrl final:', imagemUrl ? 'TEM' : 'VAZIA');
+            console.log('===================');
+            
             const categorias = [];
             document.querySelectorAll('.category-checkbox:checked').forEach(cb => categorias.push(cb.value));
             
             const previewWindow = window.open('', '_blank');
             previewWindow.document.write(`
-                <html>
+                <!DOCTYPE html>
+                <html lang="pt-BR">
                 <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>${titulo}</title>
                     <style>
-                        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.8; }
-                        h1 { color: #1A2B4A; }
-                        .cats { color: #C5964B; font-size: 14px; }
+                        body { font-family: 'DM Sans', sans-serif; background: #F8F6F1; color: #1A1A1A; line-height: 1.8; margin: 0; padding: 0; }
+                        .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+                        h1 { font-family: 'Playfair Display', serif; color: #1A2B4A; font-size: 2rem; margin-bottom: 1rem; }
+                        .cats { display: inline-block; background: rgba(197,150,75,0.1); color: #C5964B; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; margin-bottom: 1rem; }
+                        .resumo { color: #666; font-size: 1.1rem; margin-bottom: 1.5rem; }
+                        img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 16px; margin-bottom: 1.5rem; }
+                        .conteudo { font-size: 1.1rem; white-space: pre-wrap; }
                     </style>
                 </head>
                 <body>
-                    <h1>${titulo}</h1>
-                    <p class="cats">${categorias.join(', ')}</p>
-                    <hr>
-                    <div>${conteudo.replace(/\n/g, '<br>')}</div>
+                    <div class="container">
+                        <span class="cats">${categorias.join(', ') || 'Geral'}</span>
+                        <h1>${titulo}</h1>
+                        ${resumo ? `<p class="resumo">${resumo}</p>` : ''}
+                        ${imagemUrl ? `<img src="${imagemUrl}" alt="${titulo}">` : ''}
+                        <div class="conteudo">${conteudo}</div>
+                    </div>
                 </body>
                 </html>
             `);
+            previewWindow.document.close();
         }
     </script>
 </body>
