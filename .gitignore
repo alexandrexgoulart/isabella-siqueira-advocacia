@@ -1,9 +1,2 @@
-# Claude Code
-.claude/
-.ai/
-
-# Documentação local
-DOCUMENTACAO_CONSOLIDADA.md
-PORTFOLIO_PITCH.md
-docs/
-CLAUDE.md
+# Dependências node (se houver)
+node_modules/
