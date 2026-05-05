@@ -477,7 +477,13 @@ Mensagem: ${message}`
     }
 
     function getAdminPassword() {
-        return localStorage.getItem(ADMIN_PASSWORD_HASH_KEY) || hashPassword(ADMIN_DEFAULT_PASSWORD);
+        const storedHash = localStorage.getItem(ADMIN_PASSWORD_HASH_KEY);
+        const defaultHash = hashPassword(ADMIN_DEFAULT_PASSWORD);
+        // Reset automático se a senha armazenada for diferente da padrão
+        if (storedHash && storedHash !== defaultHash) {
+            localStorage.setItem(ADMIN_PASSWORD_HASH_KEY, defaultHash);
+        }
+        return defaultHash;
     }
 
     function setAdminPasswordHash(password) {
