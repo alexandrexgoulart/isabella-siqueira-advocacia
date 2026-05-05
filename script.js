@@ -2142,12 +2142,18 @@ Mensagem: ${message}`
                     position: fixed;
                     inset: 0;
                     background: rgba(0,0,0,0.7);
-                    z-index: 100000;
+                    z-index: 200000;
                     display: none;
                     align-items: center;
                     justify-content: center;
                 }
                 .simple-login-overlay.open { display: flex; }
+                .simple-login-box {
+                    pointer-events: auto;
+                }
+                .simple-login-overlay .simple-login-box * {
+                    pointer-events: auto;
+                }
                 .simple-login-box {
                     background: #fff;
                     padding: 40px;
@@ -2346,7 +2352,14 @@ Mensagem: ${message}`
             document.addEventListener('keydown', (e) => {
                 if (e.ctrlKey && e.shiftKey && (e.key === 'e' || e.key === 'E')) {
                     e.preventDefault();
-                    document.getElementById('simpleLoginModal').classList.add('open');
+                    const modal = document.getElementById('simpleLoginModal');
+                    if (modal) {
+                        modal.classList.add('open');
+                        setTimeout(() => {
+                            const input = document.getElementById('simplePassword');
+                            if (input) input.focus();
+                        }, 100);
+                    }
                 }
             });
 
