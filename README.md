@@ -77,6 +77,16 @@ Site profissional de advocacia especializada em **Direito Previdenciário**, des
 
 O site é publicado automaticamente via GitHub Pages a cada push na branch `main`.
 
+## Segurança
+
+### Aviso Importante
+A chave `service_role` do Supabase está exposta no código do admin-blog.html. Para segurança adicional, configure políticas RLS no Supabase (ver docs/SEGURANCA_SQL.md).
+
+### Medidas de Segurança Implementadas
+- Chave `anon` (apenas leitura) nos arquivos públicos
+- Senhas de admin armazenadas com hash SHA-256
+- Autenticação via banco de dados local
+
 ---
 
 Desenvolvido por **Alexandre Goulart** — Portfólio de desenvolvimento web.
