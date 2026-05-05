@@ -1,17 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Função global para scroll dos links do footer
     window.scrollToSection = function(sectionId) {
-        console.log('scrollToSection called:', sectionId);
         const target = document.getElementById(sectionId);
-        console.log('Target element:', target);
         if (target) {
             const header = document.getElementById('header');
             const headerHeight = header ? header.offsetHeight : 80;
             const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-            console.log('Scrolling to position:', targetPosition);
             window.scrollTo(0, targetPosition);
-        } else {
-            console.log('Target not found:', sectionId);
         }
     };
 
@@ -1341,10 +1336,7 @@ Mensagem: ${message}`
         setTimeout(() => {
             const passBtn = document.getElementById('config-change-password-btn');
             if (passBtn) {
-                console.log('Botão de senha encontrado!');
                 passBtn.addEventListener('click', changeAdminPassword);
-            } else {
-                console.log('Botão de senha NÃO encontrado!');
             }
         }, 500);
 
@@ -1524,13 +1516,7 @@ Mensagem: ${message}`
     function setupAdminEventListeners() {
         // Abrir login com Ctrl+Shift+A (Robusto)
         window.addEventListener('keydown', (e) => {
-            // Log de depuração (aparecerá no F12)
-            if (e.ctrlKey && e.shiftKey) {
-                console.log('Teclas detectadas: Ctrl+Shift + ', e.code);
-            }
-
             if (e.ctrlKey && e.shiftKey && (e.key === 'a' || e.key === 'A')) {
-                console.log('Shortcut ACIONADO (Ctrl+Shift+A)');
                 e.preventDefault();
                 showAdminLogin();
             }
@@ -1548,8 +1534,6 @@ Mensagem: ${message}`
                 logoClicks++;
                 lastLogoClick = now;
 
-                console.log(`Cliques no logo: ${logoClicks}/4`);
-                
                 if (logoClicks >= 4) {
                     logoClicks = 0;
                     showAdminLogin();
@@ -1786,10 +1770,7 @@ Mensagem: ${message}`
         
         const currentHash = hashPassword(currentPass);
         const expectedHash = getAdminPassword();
-        
-        console.log('DEBUG SENHA - Senha atual digitada (hash):', currentHash);
-        console.log('DEBUG SENHA - Senha salva (hash):', expectedHash);
-        
+
         if (currentHash !== expectedHash) {
             showToast('Senha atual incorreta!');
             return;
@@ -1806,7 +1787,6 @@ Mensagem: ${message}`
         }
         
         setAdminPasswordHash(newPass);
-        console.log('DEBUG SENHA - Nova senha hasheada e criptografada salva');
         showToast('Senha alterada com sucesso!');
         
         document.getElementById('config-current-password').value = '';
@@ -2007,125 +1987,11 @@ Mensagem: ${message}`
         }, 3000);
     }
 
-    // Carregar alterações salvas
+// Carregar alterações salvas - reutiliza applyAdminEdits
     function loadSavedEdits() {
         const savedEdits = localStorage.getItem('isabellaSiteEdits');
-        console.log('Carregando edits do localStorage:', savedEdits);
         if (!savedEdits) return;
-        
-        const edits = JSON.parse(savedEdits);
-        console.log('Edits parsed:', edits);
-        
-        Object.entries(edits).forEach(([selector, data]) => {
-            let el = document.querySelector(selector);
-            console.log('Procurando elemento:', selector, 'Encontrado:', el, 'Tag:', el?.tagName);
-            if (el) {
-                if (data.type === 'link') {
-                    el.setAttribute('href', data.value);
-                } else if (data.type === 'videoembed') {
-                    const url = data.value;
-                    const wrapper = el.parentElement;
-                    
-                    if (url.includes('drive.google.com')) {
-                        let videoId = '';
-                        if (url.includes('/d/')) {
-                            videoId = url.split('/d/')[1].split('/')[0].split('?')[0];
-                        }
-                        const videoUrl = 'https://drive.google.com/uc?id=' + videoId + '&export=download';
-                        const video = document.createElement('video');
-                        video.src = videoUrl;
-                        video.style.cssText = 'width:100%;height:600px;border-radius:20px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);object-fit:cover;';
-                        video.preload = 'metadata';
-                        if (el.tagName === 'IMG') {
-                            wrapper.innerHTML = '';
-                            wrapper.appendChild(video);
-                            createCustomVideoPlayer(video, wrapper);
-                        } else if (el.tagName === 'IFRAME') {
-                            el.parentElement.replaceWith(video);
-                            createCustomVideoPlayer(video, video.parentElement);
-                        } else if (el.tagName === 'VIDEO') {
-                            el.src = videoUrl;
-                        }
-                    } else if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                        let embedUrl = url;
-                        if (embedUrl.includes('watch?v=')) {
-                            const videoId = embedUrl.split('watch?v=')[1].split('&')[0];
-                            embedUrl = 'https://www.youtube.com/embed/' + videoId;
-                        } else if (embedUrl.includes('youtu.be/embed/')) {
-                            const videoId = embedUrl.split('youtu.be/embed/')[1].split('&')[0];
-                            embedUrl = 'https://www.youtube.com/embed/' + videoId;
-                        } else if (embedUrl.includes('youtu.be/') && !embedUrl.includes('/embed/')) {
-                            const videoId = embedUrl.split('youtu.be/')[1].split('&')[0];
-                            embedUrl = 'https://www.youtube.com/embed/' + videoId;
-                        }
-                        embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'modestbranding=1&rel=0';
-                        const iframe = document.createElement('iframe');
-                        iframe.src = embedUrl;
-                        iframe.style.cssText = 'width:100%;height:600px;border:0;border-radius:inherit;object-fit:cover;';
-                        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-                        iframe.allowFullscreen = true;
-                        if (el.tagName === 'IMG') {
-                            wrapper.innerHTML = '';
-                            wrapper.appendChild(iframe);
-                        } else if (el.tagName === 'IFRAME') {
-                            el.src = embedUrl;
-                        }
-                    } else if (url.match(/\.(mp4|webm|ogg)$/i) || url.includes('raw.githubusercontent.com') || url.startsWith('data:video/')) {
-                        const video = document.createElement('video');
-                        video.src = url;
-                        video.style.cssText = 'width:100%;height:600px;border-radius:20px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);object-fit:cover;';
-                        video.preload = 'metadata';
-                        if (el.tagName === 'IMG') {
-                            wrapper.innerHTML = '';
-                            wrapper.appendChild(video);
-                            createCustomVideoPlayer(video, wrapper);
-                        } else if (el.tagName === 'IFRAME') {
-                            el.parentElement.replaceWith(video);
-                            createCustomVideoPlayer(video, video.parentElement);
-                        } else if (el.tagName === 'VIDEO') {
-                            el.src = url;
-                            createCustomVideoPlayer(el, el.parentElement);
-                        }
-                    } else {
-                        if (el.tagName === 'IMG') {
-                            el.src = url;
-                        } else if (el.tagName === 'IFRAME' || el.tagName === 'VIDEO') {
-                            el.src = url;
-                        }
-                    }
-                } else if (data.type === 'video') {
-                    const isVideo = data.value.startsWith('data:video/') || data.value.match(/\.(mp4|webm|ogg)$/i);
-                    if (isVideo && el.tagName === 'IMG') {
-                        const video = document.createElement('video');
-                        video.id = el.id;
-                        video.src = data.value;
-                        video.controls = true;
-                        video.autoplay = true;
-                        video.muted = true;
-                        video.loop = true;
-                        video.style.cssText = el.style.cssText;
-                        el.parentNode.replaceChild(video, el);
-                    } else if (el.tagName === 'VIDEO') {
-                        el.src = data.value;
-                    } else {
-                        el.src = data.value;
-                    }
-                } else if (data.type === 'image') {
-                    if (el.tagName === 'VIDEO') {
-                        const img = document.createElement('img');
-                        img.id = el.id;
-                        img.src = data.value;
-
-                        img.style.cssText = el.style.cssText;
-                        el.parentNode.replaceChild(img, el);
-                    } else {
-                        el.src = data.value;
-                    }
-                } else {
-                    el.innerHTML = data.value;
-                }
-            }
-        });
+        applyAdminEdits(JSON.parse(savedEdits));
     }
 
     // Verificar sessão
@@ -2143,6 +2009,4 @@ Mensagem: ${message}`
     initAdminSystem();
     loadSavedEdits();
     checkAdminSession();
-
-    console.log('Site carregado com sucesso!');
 });
