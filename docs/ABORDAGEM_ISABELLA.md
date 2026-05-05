@@ -209,7 +209,7 @@ WhatsApp: (62) 98300-0708
 ### 2. "Já tenho site (Wix/WordPress)"
 
 **Resposta:**
-> "Que bom que você já tem presença digital! Posso te mostrar as diferenças? Meu site é 100% personalizado, não usa those modelos prontos do Wix. Além disso, é muito mais rápido, tem blog integrado e foi otimizado para aparecer no Google. Quer fazer um teste comparativo? A gente可见 o que aparece primeiro no Google."
+> "Que bom que você já tem presença digital! Posso te mostrar as diferenças? Meu site é 100% personalizado, não usa aqueles modelos prontos do Wix. Além disso, é muito mais rápido, tem blog integrado e foi otimizado para aparecer no Google. Quer fazer um teste comparativo? A gente vê o que aparece primeiro no Google."
 
 **Técnica:** Reconheça o que ela já tem e mostre os diferenciais.
 
@@ -218,7 +218,7 @@ WhatsApp: (62) 98300-0708
 ### 3. "Não tenho tempo para manter / atualizar"
 
 **Resposta:**
-> "Você não precisa mexer em nada se não quiser! Posso fazer a manutenção mensal pra você - é só me mandar o conteúdo do artigo ou qualquer alteração que eu faço. Assim vocêfocus no seu trabalho e o site fica sempre atualizado."
+> "Você não precisa mexer em nada se não quiser! Posso fazer a manutenção mensal pra você - é só me mandar o conteúdo do artigo ou qualquer alteração que eu faço. Assim você foca no seu trabalho e o site fica sempre atualizado."
 
 **Técnica:** Ofereça a manutenção como solução, não como problema.
 
@@ -245,7 +245,7 @@ WhatsApp: (62) 98300-0708
 ### 6. "Quem vai ler meus artigos?"
 
 **Resposta:**
-> "Exatamente pessoas como seus clientes! Quem está procurando informações sobre benefícios, aposentadoria, auxílio-doença - esses artigos atraem quem precisa dos seus serviços. É conteúdo que mostra autoridade e confiança. Muitos advogados给我 indican que seus melhores clientes chegam pelo blog."
+> "Exatamente pessoas como seus clientes! Quem está procurando informações sobre benefícios, aposentadoria, auxílio-doença - esses artigos atraem quem precisa dos seus serviços. É conteúdo que mostra autoridade e confiança. Muitos advogados indicam que seus melhores clientes chegam pelo blog."
 
 **Técnica:** Prove o valor com exemplo concreto.
 
@@ -263,7 +263,7 @@ WhatsApp: (62) 98300-0708
 ### 8. "Meu site atual está bom"
 
 **Resposta:**
-> "Fico feliz que você esteja satisfeita! Posso fazer uma análise rápida do seu site atual e te mostrar onde可能有 melhorias? É de graça, não te comprometo a nada. Só queria te mostrar o que eu faria de diferente."
+> "Fico feliz que você esteja satisfeita! Posso fazer uma análise rápida do seu site atual e te mostrar onde podem ter melhorias? É de graça, não te comprometo a nada. Só queria te mostrar o que eu faria de diferente."
 
 **Técnica:** Ofereça valor sem compromisso (análise gratuita).
 
