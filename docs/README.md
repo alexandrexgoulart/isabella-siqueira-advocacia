@@ -19,19 +19,21 @@ Site institucional single-page para escritório de advocacia especializado em Di
 
 ```
 isabella-siqueira-advocacia/
-├── index.html              # Página única completa
-├── styles.css              # Estilos (3.500+ linhas)
+├── index.html              # Página única completa (site principal)
+├── blog.html               # Blog - listagem de artigos
+├── artigo.html             # Blog - página individual do artigo
+├── admin-blog.html         # Blog - painel admin (CRUD de artigos)
+├── styles.css              # Estilos (~120KB)
 ├── script.js               # JavaScript principal (~92KB)
 ├── foto_sobre.avif         # Foto da advogada — seção About
 ├── isabella_sobre.avif     # Foto hero — seção Hero
 ├── optimized_video/
 │   └── video_restituicao_optimized.mp4   # 4.3MB (reduzido de 18MB)
 ├── docs/
-│   └── README.md           # Esta documentação
+│   ├── README.md           # Esta documentação
+│   └── ABORDAGEM_ISABELLA.md  # Script de abordagem comercial
 ├── CLAUDE.md               # Contexto para Claude Code
-├── README.md               # README público do repositório
-├── DOCUMENTACAO_CONSOLIDADA.md  # Histórico de implementações
-└── PORTFOLIO_PITCH.md      # Pitch comercial do projeto
+└── README.md               # README público do repositório
 ```
 
 ---
@@ -143,7 +145,37 @@ Ao atualizar o CSS, incremente o número da versão.
 
 ---
 
-## 9. Histórico de Versões
+## 9. Blog e Supabase
+
+### Banco de Dados
+- **URL:** https://gpvwgogcfgohxdstoocc.supabase.co
+- **Chave pública (anon):** eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwdndnb2djZmdvaHhkc3Rvb2NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwMDgzODYsImV4cCI6MjA5MzU4NDM4Nn0.VN4kBV9N-4K4N-1XbRkG1t3Y7HqL6x2sT9X8Y1Q2Y0E
+
+### Tabelas
+- **posts** — Artigos do blog (id, titulo, conteudo, categorias, imagem_url, resumo, publicado, autor, created_at)
+- **admin_users** — Usuários admin (id, email, password_hash, nome, created_at)
+
+### Credenciais de Acesso Admin
+- **URL:** https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/admin-blog.html
+- **Email:** admin@isabella.com
+- **Senha:** adminisabella2026
+
+### Funcionalidades do Blog
+- Listagem de artigos com busca e filtro por categoria
+- 30 categorias (todas as áreas de atuação)
+- Paginação com botão "Ver Mais"
+- Página individual com formatação de texto
+- Imagens proporcionais (object-fit: contain)
+- Painel admin com CRUD completo
+- Upload de imagem do computador (base64)
+- Preview de artigos antes de publicar
+- Toolbar de formatação (negrito, itálico, listas)
+- 30 emojis para usar no conteúdo
+- Autenticação segura com hash SHA-256
+
+---
+
+## 10. Histórico de Versões
 
 | Versão | Data | Mudança Principal |
 |--------|------|-------------------|
@@ -152,3 +184,4 @@ Ao atualizar o CSS, incremente o número da versão.
 | 1.2 | Mai 2026 | Paleta Slate+Amber → Navy+Gold+Ivory |
 | 1.3 | Mai 2026 | Fix modo escuro Chrome (`color-scheme: light only`) |
 | 2.0 | Mai 2026 | Limpeza de arquivos, docs atualizadas, deploy |
+| 2.1 | Mai 2026 | Blog completo com admin e Supabase |
