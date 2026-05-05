@@ -802,8 +802,9 @@
                             padding-left: 1rem;
                         }
                         img { 
-                            width: 100%; max-height: 400px; object-fit: cover; 
+                            width: 100%; max-height: 400px; object-fit: contain; 
                             border-radius: 12px; margin-bottom: 1.5rem; 
+                            background: #f0f0f0;
                         }
                         .conteudo { 
                             font-size: 1.1rem; white-space: pre-wrap; word-wrap: break-word; line-height: 1.9;
@@ -814,7 +815,8 @@
                         }
                         .article-image { 
                             width: 100%; max-width: 100%; max-height: 350px; height: auto; display: block;
-                            margin: 0 auto 1.5rem auto; border-radius: 12px; object-fit: cover;
+                            margin: 0 auto 1.5rem auto; border-radius: 12px; object-fit: contain;
+                            background: #f0f0f0;
                         }
                         /* Mobile - usa unidades vw */
                         @media (max-width: 768px) {
@@ -822,7 +824,7 @@
                             h1 { font-size: 6vw; margin-bottom: 3vw; }
                             .cats { padding: 2vw 4vw; border-radius: 5vw; font-size: 3.5vw; margin-bottom: 3vw; }
                             .resumo { font-size: 4vw; margin-bottom: 4vw; border-left-width: 1vw; padding-left: 3vw; }
-                            img { border-radius: 3vw; margin-bottom: 4vw; }
+                            img { border-radius: 3vw; margin-bottom: 4vw; object-fit: contain; background: #f0f0f0; }
                             .conteudo { font-size: 4.5vw; }
                             .conteudo p { margin-bottom: 4vw; }
                             .conteudo h2 { margin: 5vw 0 3vw; font-size: 5vw; }
