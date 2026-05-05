@@ -223,6 +223,7 @@
                 </div>
 
                 <div class="form-actions">
+                    <button type="button" class="preview-btn" onclick="previewPost()">Preview</button>
                     <button type="button" class="cancel-btn" onclick="closeEditor()">Cancelar</button>
                     <button type="submit" class="save-btn">Salvar Artigo</button>
                 </div>
@@ -496,6 +497,33 @@
             toast.textContent = message;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function previewPost() {
+            const titulo = document.getElementById('postTitulo').value || 'Sem título';
+            const conteudo = document.getElementById('postConteudo').value || '';
+            const categorias = [];
+            document.querySelectorAll('.category-checkbox:checked').forEach(cb => categorias.push(cb.value));
+            
+            const previewWindow = window.open('', '_blank');
+            previewWindow.document.write(`
+                <html>
+                <head>
+                    <title>${titulo}</title>
+                    <style>
+                        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.8; }
+                        h1 { color: #1A2B4A; }
+                        .cats { color: #C5964B; font-size: 14px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>${titulo}</h1>
+                    <p class="cats">${categorias.join(', ')}</p>
+                    <hr>
+                    <div>${conteudo.replace(/\n/g, '<br>')}</div>
+                </body>
+                </html>
+            `);
         }
     </script>
 </body>
