@@ -2005,8 +2005,8 @@ Mensagem: ${message}`
         }
     }
 
-    // Inicialização do Admin reativada para MVP
-    initAdminSystem();
-    loadSavedEdits();
-    checkAdminSession();
+    // Painel administrativo desabilitado
+    // initAdminSystem();
+    // loadSavedEdits();
+    // checkAdminSession();
 });
