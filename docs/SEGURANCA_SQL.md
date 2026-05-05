@@ -11,7 +11,38 @@ A chave `service_role` está exposta no código client-side (admin-blog.html). I
 
 ## Execute no SQL Editor do Supabase
 
-### 1. Recriar políticas para ADMIN_USERS (corrigidas)
+### 0. Primeiro, verificar se RLS está habilitado
+
+```sql
+-- Verificar se RLS está habilitado nas tabelas
+SELECT tablename, rowsecurity FROM pg_tables WHERE schemaname = 'public';
+```
+
+Se `rowsecurity = true` para `posts` e não houver políticas, é por isso que não carrega no celular!
+
+---
+
+### 1. Políticas para tabela POSTS (ESSENCIAL - Sem isso o blog não carrega!)
+
+```sql
+-- Habilitar RLS na tabela posts (se não estiver)
+ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
+
+-- Criar política para leitura pública de posts publicados
+-- Permite qualquer pessoa ler posts onde publicado = true
+CREATE POLICY "public_read_published_posts" ON posts
+FOR SELECT USING (publicado = true);
+
+-- Permitir service_role fazer inserts/updates/deletes (para admin)
+CREATE POLICY "service_role_crud_posts" ON posts
+FOR ALL USING (
+    current_setting('request.jwt.claims', true)::jsonb->>'role' = 'service_role'
+);
+```
+
+---
+
+### 2. Recriar políticas para ADMIN_USERS (corrigidas)
 
 ```sql
 -- Primeiro, remover políticas antigas se existirem
