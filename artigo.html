@@ -517,22 +517,36 @@
 
         function formatContent(content) {
             if (!content) return '';
-            // Converter markdown básico para HTML
+            
+            // Preservar quebras de linha primeiro
             let html = content
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+            
+            // Converter markdown básico para HTML
+            html = html
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/_(.*?)_/g, '<em>$1</em>')
                 .replace(/__(.*?)__/g, '<u>$1</u>')
-                .replace(/^## (.*)$/gm, '<h2>$1</h2>')
-                .replace(/^- (.*)$/gm, '<li>$1</li>');
+                .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
+                .replace(/^- (.*?)$/gm, '<li>$1</li>');
             
-            // Converter quebras de linha em parágrafos
+            // Converter quebras de linha em parágrafos - manter single newlines como <br>
             html = html
                 .split('\n\n')
-                .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
+                .map(p => {
+                    // Cada parágrafo: converter single newline em <br>
+                    return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
+                })
                 .join('');
             
             // Agrupar listas
             html = html.replace(/(<li>.*?<\/li>)/gs, '<ul>$1</ul>');
+            
+            // Remover parágrafos vazios
+            html = html.replace(/<p><br><\/p>/g, '');
+            
             return html;
         }
 
