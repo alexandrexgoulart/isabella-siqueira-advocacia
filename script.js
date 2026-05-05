@@ -2015,4 +2015,411 @@ Mensagem: ${message}`
     initAdminSystem();
     loadSavedEdits();
     checkAdminSession();
+
+    // ========== SISTEMA SIMPLIFICADO DE EDIÇÃO ==========
+    (function() {
+        const SIMPLE_EDIT_KEY = 'simpleEditData';
+        const SIMPLE_PASS_KEY = 'simpleEditPassword';
+        const DEFAULT_PASS = 'adminisabellaadv';
+
+        // Campos editáveis
+        const editFields = {
+            heroTitle: { selector: '#hero-title', type: 'text', label: 'Título Principal' },
+            heroDesc: { selector: '#hero-desc', type: 'textarea', label: 'Descrição' },
+            heroBtnText: { selector: '#hero-btn-text', type: 'text', label: 'Texto do Botão' },
+            heroBtnWhatsapp: { selector: '#hero-btn-whatsapp', type: 'text', label: 'Link WhatsApp' },
+            sobreText: { selector: '#sobre-text', type: 'textarea', label: 'Texto Sobre' },
+            contatoWhatsapp: { selector: '.contact-card a[href*="wa.me"]', type: 'href', label: 'WhatsApp' },
+            contatoEmail: { selector: '.contact-card a[href^="mailto:"]', type: 'href', label: 'Email' }
+        };
+
+        // Criar estilos do painel simplificado
+        function createSimpleStyles() {
+            const style = document.createElement('style');
+            style.textContent = `
+                .simple-edit-overlay {
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(0,0,0,0.5);
+                    z-index: 99999;
+                    display: none;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                }
+                .simple-edit-overlay.open { display: flex; }
+                .simple-edit-panel {
+                    background: #fff;
+                    border-radius: 16px;
+                    max-width: 500px;
+                    width: 100%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+                }
+                .simple-edit-header {
+                    background: linear-gradient(135deg, #1A2B4A, #243657);
+                    padding: 24px;
+                    color: #fff;
+                    border-radius: 16px 16px 0 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                .simple-edit-header h2 { margin: 0; font-size: 18px; }
+                .simple-edit-close {
+                    background: rgba(255,255,255,0.2);
+                    border: none;
+                    color: #fff;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    font-size: 18px;
+                }
+                .simple-edit-content { padding: 24px; }
+                .simple-field { margin-bottom: 20px; }
+                .simple-field label {
+                    display: block;
+                    font-weight: 600;
+                    margin-bottom: 8px;
+                    color: #1A2B4A;
+                    font-size: 14px;
+                }
+                .simple-field input,
+                .simple-field textarea {
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 8px;
+                    font-size: 15px;
+                    transition: border-color 0.3s;
+                    font-family: inherit;
+                }
+                .simple-field input:focus,
+                .simple-field textarea:focus {
+                    outline: none;
+                    border-color: #C5964B;
+                }
+                .simple-field textarea { min-height: 80px; resize: vertical; }
+                .simple-image-upload {
+                    border: 2px dashed #cbd5e1;
+                    border-radius: 12px;
+                    padding: 20px;
+                    text-align: center;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    position: relative;
+                    overflow: hidden;
+                }
+                .simple-image-upload:hover { border-color: #C5964B; }
+                .simple-image-upload img {
+                    max-width: 100%;
+                    max-height: 200px;
+                    border-radius: 8px;
+                }
+                .simple-image-upload .placeholder {
+                    color: #64748b;
+                    font-size: 14px;
+                }
+                .simple-image-upload input {
+                    display: none;
+                }
+                .simple-save-btn {
+                    width: 100%;
+                    padding: 16px;
+                    background: linear-gradient(135deg, #1A2B4A, #243657);
+                    color: #fff;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    margin-top: 10px;
+                }
+                .simple-save-btn:hover { transform: translateY(-2px); }
+                .simple-login-overlay {
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(0,0,0,0.7);
+                    z-index: 100000;
+                    display: none;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .simple-login-overlay.open { display: flex; }
+                .simple-login-box {
+                    background: #fff;
+                    padding: 40px;
+                    border-radius: 16px;
+                    max-width: 360px;
+                    width: 90%;
+                    text-align: center;
+                }
+                .simple-login-box h3 { color: #1A2B4A; margin: 0 0 8px; }
+                .simple-login-box p { color: #64748b; margin: 0 0 20px; font-size: 14px; }
+                .simple-login-box input {
+                    width: 100%;
+                    padding: 14px;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    margin-bottom: 12px;
+                }
+                .simple-login-box button {
+                    width: 100%;
+                    padding: 14px;
+                    background: #1A2B4A;
+                    color: #fff;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                }
+                .simple-toast {
+                    position: fixed;
+                    bottom: 30px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: #059669;
+                    color: #fff;
+                    padding: 14px 24px;
+                    border-radius: 10px;
+                    font-weight: 600;
+                    z-index: 100001;
+                    opacity: 0;
+                    transition: opacity 0.3s;
+                }
+                .simple-toast.show { opacity: 1; }
+                .simple-field-img-preview {
+                    width: 100%;
+                    max-height: 150px;
+                    object-fit: cover;
+                    border-radius: 8px;
+                    margin-bottom: 10px;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Criar elementos do DOM
+        function createSimplePanel() {
+            // Overlay do painel
+            const panel = document.createElement('div');
+            panel.className = 'simple-edit-overlay';
+            panel.id = 'simpleEditPanel';
+            panel.innerHTML = `
+                <div class="simple-edit-panel">
+                    <div class="simple-edit-header">
+                        <h2>Editar Meu Site</h2>
+                        <button class="simple-edit-close" id="simpleCloseBtn">&times;</button>
+                    </div>
+                    <div class="simple-edit-content">
+                        <div class="simple-field">
+                            <label>Título Principal</label>
+                            <input type="text" id="simple-hero-title" placeholder="Ex: Especialista em Direito Previdenciário">
+                        </div>
+                        <div class="simple-field">
+                            <label>Descrição</label>
+                            <textarea id="simple-hero-desc" placeholder="Ex: Ajudo idosos a garantir seus direitos..."></textarea>
+                        </div>
+                        <div class="simple-field">
+                            <label>Texto do Botão WhatsApp</label>
+                            <input type="text" id="simple-hero-btn" placeholder="Ex: Falar no WhatsApp">
+                        </div>
+                        <div class="simple-field">
+                            <label>Foto Principal (Sobre)</label>
+                            <div class="simple-field" id="simple-image-upload">
+                                <img id="simple-foto-preview" style="display:none" alt="Preview">
+                                <span class="placeholder" id="simple-foto-placeholder">Clique para trocar a foto</span>
+                                <input type="file" id="simple-foto-input" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="simple-field">
+                            <label>Texto Sobre</label>
+                            <textarea id="simple-sobre-text" placeholder="Fale sobre você..."></textarea>
+                        </div>
+                        <div class="simple-field">
+                            <label>WhatsApp (com código do país)</label>
+                            <input type="text" id="simple-whatsapp" placeholder="Ex: 5562983000708">
+                        </div>
+                        <div class="simple-field">
+                            <label>Email</label>
+                            <input type="email" id="simple-email" placeholder="Ex: isabella@email.com">
+                        </div>
+                        <button class="simple-save-btn" id="simpleSaveBtn">Salvar Alterações</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(panel);
+
+            // Modal de login
+            const login = document.createElement('div');
+            login.className = 'simple-login-overlay';
+            login.id = 'simpleLoginModal';
+            login.innerHTML = `
+                <div class="simple-login-box">
+                    <h3>Acesso Editar Site</h3>
+                    <p>Digite a senha para continuar</p>
+                    <input type="password" id="simplePassword" placeholder="Senha">
+                    <button id="simpleLoginBtn">Entrar</button>
+                </div>
+            `;
+            document.body.appendChild(login);
+
+            // Toast
+            const toast = document.createElement('div');
+            toast.className = 'simple-toast';
+            toast.id = 'simpleToast';
+            document.body.appendChild(toast);
+        }
+
+        // Mostrar toast
+        function showSimpleToast(msg) {
+            const toast = document.getElementById('simpleToast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Carregar dados salvos
+        function loadSimpleData() {
+            const data = JSON.parse(localStorage.getItem(SIMPLE_EDIT_KEY) || '{}');
+            if (data.heroTitle) document.getElementById('simple-hero-title').value = data.heroTitle;
+            if (data.heroDesc) document.getElementById('simple-hero-desc').value = data.heroDesc;
+            if (data.heroBtnText) document.getElementById('simple-hero-btn').value = data.heroBtnText;
+            if (data.sobreText) document.getElementById('simple-sobre-text').value = data.sobreText;
+            if (data.whatsapp) document.getElementById('simple-whatsapp').value = data.whatsapp;
+            if (data.email) document.getElementById('simple-email').value = data.email;
+            if (data.foto) {
+                const img = document.getElementById('simple-foto-preview');
+                const placeholder = document.getElementById('simple-foto-placeholder');
+                img.src = data.foto;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+            }
+        }
+
+        // Aplicar alterações ao site
+        function applySimpleData(data) {
+            if (data.heroTitle) {
+                const el = document.querySelector('#hero-title');
+                if (el) el.textContent = data.heroTitle;
+            }
+            if (data.heroDesc) {
+                const el = document.querySelector('#hero-desc');
+                if (el) el.textContent = data.heroDesc;
+            }
+            if (data.heroBtnText) {
+                const el = document.querySelector('#hero-btn-text');
+                if (el) el.textContent = data.heroBtnText;
+            }
+            if (data.whatsapp) {
+                const btnHref = document.querySelector('#hero-btn-whatsapp, .hero-buttons a[href*="wa.me"], .btn-whatsapp[href*="wa.me"]');
+                if (btnHref) btnHref.href = 'https://wa.me/' + data.whatsapp.replace(/\D/g, '');
+            }
+            if (data.email) {
+                const emailLink = document.querySelector('.contact-card a[href^="mailto:"]');
+                if (emailLink) emailLink.href = 'mailto:' + data.email;
+            }
+            if (data.foto) {
+                const fotoHero = document.querySelector('.hero-image, .about-image, .lawyer-image');
+                if (fotoHero) fotoHero.src = data.foto;
+            }
+            // Salvar no localStorage para carregar no futuro
+            localStorage.setItem(SIMPLE_EDIT_KEY, JSON.stringify(data));
+        }
+
+        // Inicializar
+        function initSimpleEdit() {
+            createSimpleStyles();
+            createSimplePanel();
+
+            // Carregar dados salvos ao iniciar
+            const savedData = JSON.parse(localStorage.getItem(SIMPLE_EDIT_KEY) || '{}');
+            if (Object.keys(savedData).length > 0) {
+                applySimpleData(savedData);
+            }
+
+            // Abrir com Ctrl+Shift+E
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.shiftKey && (e.key === 'e' || e.key === 'E')) {
+                    e.preventDefault();
+                    document.getElementById('simpleLoginModal').classList.add('open');
+                }
+            });
+
+            // Login
+            document.getElementById('simpleLoginBtn').addEventListener('click', () => {
+                const input = document.getElementById('simplePassword');
+                const hash = btoa(input.value);
+                const passHash = localStorage.getItem(SIMPLE_PASS_KEY) || btoa(DEFAULT_PASS);
+                if (hash === passHash) {
+                    document.getElementById('simpleLoginModal').classList.remove('open');
+                    document.getElementById('simpleEditPanel').classList.add('open');
+                    loadSimpleData();
+                    input.value = '';
+                } else {
+                    showSimpleToast('Senha incorreta');
+                }
+            });
+
+            // Fechar painel
+            document.getElementById('simpleCloseBtn').addEventListener('click', () => {
+                document.getElementById('simpleEditPanel').classList.remove('open');
+            });
+
+            document.getElementById('simpleEditPanel').addEventListener('click', (e) => {
+                if (e.target.id === 'simpleEditPanel') {
+                    document.getElementById('simpleEditPanel').classList.remove('open');
+                }
+            });
+
+            // Upload de imagem
+            const imageUpload = document.getElementById('simple-image-upload');
+            const imageInput = document.getElementById('simple-foto-input');
+            const imgPreview = document.getElementById('simple-foto-preview');
+            const placeholder = document.getElementById('simple-foto-placeholder');
+
+            imageUpload.addEventListener('click', () => imageInput.click());
+
+            imageInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        imgPreview.src = e.target.result;
+                        imgPreview.style.display = 'block';
+                        placeholder.style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Salvar
+            document.getElementById('simpleSaveBtn').addEventListener('click', () => {
+                const data = {
+                    heroTitle: document.getElementById('simple-hero-title').value,
+                    heroDesc: document.getElementById('simple-hero-desc').value,
+                    heroBtnText: document.getElementById('simple-hero-btn').value,
+                    sobreText: document.getElementById('simple-sobre-text').value,
+                    whatsapp: document.getElementById('simple-whatsapp').value.replace(/\D/g, ''),
+                    email: document.getElementById('simple-email').value,
+                    foto: imgPreview.src !== '' && imgPreview.style.display !== 'none' ? imgPreview.src : null
+                };
+
+                applySimpleData(data);
+                document.getElementById('simpleEditPanel').classList.remove('open');
+                showSimpleToast('Alterações salvas com sucesso!');
+            });
+        }
+
+        // Iniciar quando DOM estiver pronto
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSimpleEdit);
+        } else {
+            initSimpleEdit();
+        }
+    })();
 });
