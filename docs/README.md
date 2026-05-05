@@ -185,3 +185,37 @@ Ao atualizar o CSS, incremente o número da versão.
 | 1.3 | Mai 2026 | Fix modo escuro Chrome (`color-scheme: light only`) |
 | 2.0 | Mai 2026 | Limpeza de arquivos, docs atualizadas, deploy |
 | 2.1 | Mai 2026 | Blog completo com admin e Supabase |
+| 2.2 | Mai 2026 | Fix RLS + GRANT permissions (blog não carregava no mobile) |
+| 2.3 | Mai 2026 | Fix admin-blog.html mobile (categorias, backgrounds, preview) |
+
+---
+
+## 11. Problemas Conhecidos e Soluções
+
+### Blog não carrega no celular (401 Unauthorized)
+**Causa:** RLS habilitado mas sem políticas de leitura pública + roles sem GRANT.
+
+**Solução executada:**
+```sql
+-- Criar política de leitura
+CREATE POLICY "public_read_all_posts" ON posts FOR SELECT USING (true);
+
+-- Conceder permissões aos roles da API
+GRANT SELECT ON public.posts TO anon;
+GRANT SELECT ON public.posts TO authenticated;
+```
+
+### Admin no mobile - fundos transparentes
+**Causa:** Inputs sem background explícito definido.
+
+**Solução:** Adicionado `background: var(--bg-card)` em todos os campos.
+
+### Preview do artigo muito pequeno no mobile
+**Causa:** CSS não ocupava 100% da tela.
+
+**Solução:** Preview usa unidades vw (viewport) para desktop e mobile.
+
+### Imagem do artigo zoomada/cortada
+**Causa:** object-fit: cover cortava a imagem.
+
+**Solução:** Trocado para object-fit: contain.

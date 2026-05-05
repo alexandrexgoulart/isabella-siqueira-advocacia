@@ -62,6 +62,7 @@ A chave `service_role` está exposta no código client-side (admin-blog.html). I
 **Mitigação atual:**
 - Autenticação local com hash SHA-256
 - RLS (Row Level Security) configurado no Supabase
+- GRANT SELECT para roles anon e authenticated
 
 **Para máxima segurança (ver docs/SEGURANCA_SQL.md):**
 1. Configurar políticas RLS no Supabase
@@ -73,6 +74,7 @@ A chave `service_role` está exposta no código client-side (admin-blog.html). I
 - Autenticação via banco de dados local
 - RLS habilitado nas tabelas
 - Chave anon (only-read) nos arquivos públicos
+- GRANT SELECT para roles anon e authenticated (OBRIGATÓRIO para funcionar!)
 
 ## Acessibilidade
 - `color-scheme: light only` — força modo claro

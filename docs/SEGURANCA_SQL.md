@@ -2,7 +2,7 @@
 
 ## AVISO IMPORTANTE
 
-A chave `service_role` está exposta no código client-side (admin-blog.html). Isso é um **risco de segurança**. Para mitigar:
+A chave `service_role` está exposta no código client-side (admin-blog.html). Isso é um **risco de segurança real**. Para mitigar:
 
 1. Execute as políticas RLS abaixo
 2. Considere migrar para Supabase Edge Functions no futuro
@@ -28,13 +28,11 @@ Se `rowsecurity = true` para `posts` e não houver políticas, é por isso que n
 -- Habilitar RLS na tabela posts (se não estiver)
 ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
 
--- Criar política para leitura pública de posts publicados
--- Permite qualquer pessoa ler posts onde publicado = true
-CREATE POLICY "public_read_published_posts" ON posts
-FOR SELECT USING (publicado = true);
+-- Criar política para leitura pública (permite ler todos os posts)
+CREATE POLICY "public_read_all_posts" ON posts FOR SELECT USING (true);
 
--- OU para teste/debug - permite ler todos os posts:
--- CREATE POLICY "public_read_all_posts" ON posts FOR SELECT USING (true);
+-- Para restricting to only published posts:
+-- CREATE POLICY "public_read_published_posts" ON posts FOR SELECT USING (publicado = true);
 
 -- Permitir service_role fazer inserts/updates/deletes (para admin)
 CREATE POLICY "service_role_crud_posts" ON posts
@@ -42,10 +40,12 @@ FOR ALL USING (
     current_setting('request.jwt.claims', true)::jsonb->>'role' = 'service_role'
 );
 
--- IMPORTANTE: Conceder permissões aos roles da API
+-- IMPORTANTE: Conceder permissões aos roles da API (OBRIGATÓRIO!)
 GRANT SELECT ON public.posts TO anon;
 GRANT SELECT ON public.posts TO authenticated;
 ```
+
+⚠️ **ERRO COMUM:** Se não executar o GRANT, mesmo com políticas corretas, a API retorna 401 Unauthorized. O erro dizia: `"hint":"Grant the required privileges to the current role with: GRANT SELECT ON public.posts TO anon;"`
 
 ---
 
