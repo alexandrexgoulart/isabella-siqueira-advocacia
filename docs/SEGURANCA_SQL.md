@@ -33,11 +33,18 @@ ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "public_read_published_posts" ON posts
 FOR SELECT USING (publicado = true);
 
+-- OU para teste/debug - permite ler todos os posts:
+-- CREATE POLICY "public_read_all_posts" ON posts FOR SELECT USING (true);
+
 -- Permitir service_role fazer inserts/updates/deletes (para admin)
 CREATE POLICY "service_role_crud_posts" ON posts
 FOR ALL USING (
     current_setting('request.jwt.claims', true)::jsonb->>'role' = 'service_role'
 );
+
+-- IMPORTANTE: Conceder permissões aos roles da API
+GRANT SELECT ON public.posts TO anon;
+GRANT SELECT ON public.posts TO authenticated;
 ```
 
 ---
