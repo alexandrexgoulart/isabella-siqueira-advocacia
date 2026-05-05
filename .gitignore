@@ -1,0 +1,9 @@
+# Claude Code
+.claude/
+.ai/
+
+# Documentação local
+DOCUMENTACAO_CONSOLIDADA.md
+PORTFOLIO_PITCH.md
+docs/
+CLAUDE.md
