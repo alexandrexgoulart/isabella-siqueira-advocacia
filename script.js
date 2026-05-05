@@ -461,7 +461,7 @@ Mensagem: ${message}`
     }
 
     // ========== ADMINISTRATIVO SIMPLES ==========
-    const ADMIN_DEFAULT_PASSWORD = 'adv2024isabella';
+    const ADMIN_DEFAULT_PASSWORD = 'adminisabellaadv';
     const ADMIN_SESSION_KEY = 'isabellaAdminSession';
     const ADMIN_EDITS_KEY = 'isabellaSiteEdits';
     const ADMIN_PASSWORD_HASH_KEY = 'isabellaAdminPasswordHash';
