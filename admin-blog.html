@@ -84,11 +84,11 @@
         .modal-header h2 { color: var(--primary); font-family: 'Playfair Display', serif; }
         .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
         
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--primary); }
+        .form-group { margin-bottom: 1.5rem; background: var(--bg-card); padding: 1rem; border-radius: 8px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--primary); background: var(--bg-card); }
         .form-group input, .form-group textarea { width: 100%; padding: 0.8rem; border: 2px solid var(--border); border-radius: 8px; font-size: 1rem; font-family: 'DM Sans', sans-serif; background: var(--bg-card); }
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); }
-        .form-group textarea { min-height: 300px; resize: vertical; line-height: 1.8; background: var(--bg-card); }
+        .form-group textarea { min-height: 300px; resize: vertical; line-height: 1.8; background: var(--bg-card); margin-top: 0; }
         
         /* Editor Toolbar */
         .editor-toolbar {
@@ -135,7 +135,7 @@
         .category-checkbox:checked + label { background: var(--accent); color: var(--primary); border-color: var(--accent); border-radius: 15px; }
         
         /* Upload Imagem */
-        .upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s; background: var(--bg-light); }
+        .upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s; background: var(--bg-card); }
         .upload-area:hover { border-color: var(--accent); background: rgba(197,150,75,0.08); }
         .upload-area i { font-size: 2rem; color: var(--text-light); margin-bottom: 0.5rem; }
         .upload-area p { color: var(--text-light); }
@@ -143,13 +143,17 @@
         .upload-preview.active { display: block; }
         .remove-img { color: var(--danger); cursor: pointer; margin-left: 0.5rem; }
         
-        .form-group-check { display: flex; align-items: center; gap: 0.5rem; }
+        .form-group-check { display: flex; align-items: center; gap: 0.5rem; background: var(--bg-card); padding: 1rem; border-radius: 8px; }
         .form-group-check input { width: auto; }
+        .form-group-check label { background: var(--bg-card); color: var(--text); }
         
         .form-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
         .save-btn { background: var(--success); color: white; padding: 1rem 2rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
         .save-btn:hover { background: #048a5e; }
-        .cancel-btn { background: transparent; color: var(--text); padding: 1rem 2rem; border: 1px solid var(--border); border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .cancel-btn { background: var(--bg-card); color: var(--text); padding: 1rem 2rem; border: 1px solid var(--border); border-radius: 8px; font-weight: 600; cursor: pointer; }
+        
+        .preview-btn { background: var(--primary); color: var(--bg-light); padding: 1rem 2rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .preview-btn:hover { background: var(--primary-light); }
         
         .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .loading-overlay.active { display: flex; }
@@ -254,7 +258,6 @@
             .form-actions { flex-direction: column; gap: 0.75rem; }
             .form-actions button { width: 100%; }
             .preview-btn, .cancel-btn, .save-btn { justify-content: center; }
-            .preview-btn { background: var(--primary); color: var(--bg-light); }
         }
     </style>
 </head>
