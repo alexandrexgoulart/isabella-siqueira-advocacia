@@ -147,8 +147,9 @@
 
         .article-image {
             width: 100%;
-            height: 400px;
+            max-height: 400px;
             object-fit: cover;
+            object-position: center;
             border-radius: 16px;
             margin-bottom: 2rem;
             background: linear-gradient(135deg, var(--primary-light), var(--primary));
@@ -420,6 +421,7 @@
             console.log('Carregando artigo ID:', id);
 
             try {
+                // Tentar primeiro sem filtro de publicado (para testes)
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`, {
                     headers: {
                         'apikey': SUPABASE_KEY,
@@ -428,7 +430,13 @@
                 });
 
                 console.log('Response status:', response.status);
-                if (!response.ok) throw new Error('Erro ao carregar: ' + response.status);
+                console.log('URL chamada:', `${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Erro response:', errorText);
+                    throw new Error('Erro ao carregar: ' + response.status);
+                }
 
                 const posts = await response.json();
                 console.log('Posts encontrados:', posts.length, posts);

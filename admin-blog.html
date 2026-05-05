@@ -534,6 +534,14 @@
                         .resumo { color: #666; font-size: 1.1rem; margin-bottom: 1.5rem; }
                         img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 16px; margin-bottom: 1.5rem; }
                         .conteudo { font-size: 1.1rem; white-space: pre-wrap; }
+                        .article-image { 
+                            width: 100%; 
+                            max-height: 400px; 
+                            object-fit: cover; 
+                            object-position: center;
+                            border-radius: 16px; 
+                            margin-bottom: 1.5rem; 
+                        }
                     </style>
                 </head>
                 <body>
@@ -541,7 +549,7 @@
                         <span class="cats">${categorias.join(', ') || 'Geral'}</span>
                         <h1>${titulo}</h1>
                         ${resumo ? `<p class="resumo">${resumo}</p>` : ''}
-                        ${imagemUrl ? `<img src="${imagemUrl}" alt="${titulo}">` : ''}
+                        ${imagemUrl ? `<img class="article-image" src="${imagemUrl}" alt="${titulo}">` : ''}
                         <div class="conteudo">${conteudo}</div>
                     </div>
                 </body>
