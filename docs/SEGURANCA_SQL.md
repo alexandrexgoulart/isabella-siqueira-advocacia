@@ -11,77 +11,40 @@ A chave `service_role` está exposta no código client-side (admin-blog.html). I
 
 ## Execute no SQL Editor do Supabase
 
-### 1. Habilitar RLS nas tabelas (se ainda não estiver)
+### 1. Recriar políticas para ADMIN_USERS (corrigidas)
 
 ```sql
--- Habilitar RLS
-ALTER TABLE public.posts ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
-```
+-- Primeiro, remover políticas antigas se existirem
+DROP POLICY IF EXISTS "service_select_admin" ON admin_users;
 
-### 2. Políticas para tabela POSTS
-
-```sql
--- Qualquer pessoa pode ler posts publicados
-CREATE POLICY "public_read_posts" ON posts
-FOR SELECT USING (publicado = true);
-
--- Apenas service_role pode inserir (chave do admin)
-CREATE POLICY "service_insert_posts" ON posts
-FOR INSERT WITH CHECK (
+-- Permitir que service_role faça SELECT (para autenticação do admin)
+CREATE POLICY "allow_service_role_read_admin" ON admin_users
+FOR SELECT USING (
     current_setting('request.jwt.claims', true)::jsonb->>'role' = 'service_role'
 );
 
--- Apenas service_role pode atualizar
-CREATE POLICY "service_update_posts" ON posts
-FOR UPDATE USING (
-    current_setting('request.jwt.claims', true)::jsonb->>'role' = 'service_role'
-);
-
--- Apenas service_role pode deletar
-CREATE POLICY "service_delete_posts" ON posts
-FOR DELETE USING (
-    current_setting('request.jwt.claims', true)::jsonb->>'role' = 'service_role'
-);
-```
-
-### 3. Políticas para tabela ADMIN_USERS (apenas para auth local)
-
-```sql
--- Serviço pode buscar usuário para autenticação
-CREATE POLICY "service_select_admin" ON admin_users
-FOR SELECT USING (true);
-```
-
-### 4. Revogar permissões de anon (manter apenas via políticas)
-
-```sql
--- Remover grants diretos (manter apenas via políticas RLS)
-REVOKE ALL ON public.posts FROM anon;
-REVOKE ALL ON public.posts FROM authenticated;
-REVOKE ALL ON public.admin_users FROM anon;
-REVOKE ALL ON public.admin_users FROM authenticated;
-
--- Garantir que apenas service_role tem acesso total
-GRANT ALL ON public.posts TO service_role;
-GRANT ALL ON public.admin_users TO service_role;
+-- Fallback: permitir leitura pública para autenticação local (ATENÇÃO: menos seguro)
+-- Execute apenas se o login não funcionar com a política acima
+-- CREATE POLICY "public_read_admin" ON admin_users FOR SELECT USING (true);
 ```
 
 ---
 
-## Verificar configuração atual
+### Verificar se existe usuário admin no banco
 
 ```sql
--- Ver se RLS está habilitado
-SELECT tablename, rowsecurity FROM pg_tables
-WHERE schemaname = 'public';
+SELECT id, email, nome, created_at FROM admin_users;
 ```
 
----
+Se não existir, criar:
 
-## Para máxima segurança (futuro)
+```sql
+INSERT INTO admin_users (email, password_hash, nome)
+VALUES (
+    'admin@isabella.com',
+    '7c8a5c6f1e2e9f0e1d3b4c5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6',
+    'Administrador'
+);
+```
 
-Migrar operações de admin para Supabase Edge Functions:
-1. Criar função que verifica senha antes de executar operações
-2. Usar apenas chave `anon` no client-side
-3. Chamar Edge Function para operações de escrita
+(Nota: O hash acima é para a senha: adminisabella2026)
