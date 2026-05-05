@@ -363,22 +363,74 @@
             margin-bottom: 1rem;
         }
 
+        /* Tablet */
+        @media (max-width: 1024px) {
+            .article-container {
+                max-width: 90%;
+            }
+        }
+
         /* Mobile */
         @media (max-width: 768px) {
+            .article-header-content {
+                padding: 0 1rem;
+            }
+            
+            .article-logo {
+                font-size: 1.2rem;
+            }
+
             .article-title {
-                font-size: 1.8rem;
+                font-size: 1.4rem;
             }
 
             .article-image {
-                height: 250px;
+                height: auto;
+                max-height: 250px;
             }
 
             .article-container {
                 padding: 1rem;
+                max-width: 100%;
+            }
+            
+            .article-meta {
+                font-size: 0.75rem;
+                gap: 0.5rem;
+            }
+            
+            .article-content {
+                font-size: 0.9rem;
+                padding: 0;
+            }
+            
+            .article-content h2 {
+                font-size: 1.2rem;
+            }
+            
+            .article-content h3 {
+                font-size: 1rem;
             }
 
             .article-nav {
                 display: none;
+            }
+            
+            .back-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Mobile pequeno */
+        @media (max-width: 480px) {
+            .article-title {
+                font-size: 1.2rem;
+            }
+            
+            .article-meta {
+                flex-direction: column;
+                gap: 0.3rem;
             }
         }
     </style>
@@ -407,10 +459,9 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <script>
-        // Config Supabase
+        // Config Supabase (chave pública - apenas leitura)
         const SUPABASE_URL = 'https://gpvwgogcfgohxdstoocc.supabase.co';
-        // Usando service_key para garantir leitura
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwdndnb2djZmdvaHhkc3Rvb2NjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODAwODM4NiwiZXhwIjoyMDkzNTg0Mzg2fQ.zLS0IUOuhA21fPVnq316AswsE8YO6HzoG3n3IlAdygU';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwdndnb2djZmdvaHhkc3Rvb2NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwODM4NiwiZXhwIjoyMDkzNTg0Mzg2fQ.h7lXdFmdInuHhhBjsXKdn8t2ty_zl47-oU_MXtQUpNY';
 
         // Get post ID from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -427,10 +478,8 @@
 
         async function loadPost(id) {
             const container = document.getElementById('articleContainer');
-            console.log('Carregando artigo ID:', id);
 
             try {
-                // Tentar primeiro sem filtro de publicado (para testes)
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`, {
                     headers: {
                         'apikey': SUPABASE_KEY,
@@ -438,17 +487,11 @@
                     }
                 });
 
-                console.log('Response status:', response.status);
-                console.log('URL chamada:', `${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`);
-                
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('Erro response:', errorText);
                     throw new Error('Erro ao carregar: ' + response.status);
                 }
 
                 const posts = await response.json();
-                console.log('Posts encontrados:', posts.length, posts);
                 
                 if (posts.length === 0) {
                     showError('Artigo não encontrado');
@@ -469,11 +512,7 @@
             
             document.title = `${post.titulo} - Isabella Siqueira Advocacia`;
             
-            console.log('Conteúdo do post (原始):', post.conteudo);
-            console.log('Conteúdo com quebras:', post.conteudo ? post.conteudo.includes('\n') : 'sem quebra');
-            
             const formatted = formatContent(post.conteudo);
-            console.log('Conteúdo formatado:', formatted);
 
             container.innerHTML = `
                 <a href="blog.html" class="back-btn">
