@@ -364,9 +364,15 @@
         }
 
         .loading i {
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: var(--accent);
             animation: spin 1s linear infinite;
+        }
+
+        .loading p {
+            color: var(--text-light);
+            margin-top: 1rem;
+            font-size: 0.9rem;
         }
 
         @keyframes spin {
@@ -607,13 +613,20 @@
         async function loadPosts() {
             const grid = document.getElementById('postsGrid');
             
+            // Timeout de 10 segundos
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Tempo limite excedido')), 10000)
+            );
+            
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?publicado=eq.true&order=created_at.desc`, {
+                const fetchPromise = fetch(`${SUPABASE_URL}/rest/v1/posts?publicado=eq.true&order=created_at.desc&limit=20`, {
                     headers: {
                         'apikey': SUPABASE_KEY,
                         'Authorization': `Bearer ${SUPABASE_KEY}`
                     }
                 });
+                
+                const response = await Promise.race([fetchPromise, timeoutPromise]);
 
                 if (!response.ok) throw new Error('Erro ao carregar posts');
 
