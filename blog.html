@@ -592,7 +592,7 @@
                          alt="${post.titulo}" 
                          class="post-image">
                     <div class="post-content">
-                        <span class="post-category">${post.categoria}</span>
+                        <span class="post-category">${post.categorias || post.categoria || 'Geral'}</span>
                         <h2 class="post-title">${post.titulo}</h2>
                         <p class="post-resumo">${post.resumo || post.conteudo.substring(0, 150) + '...'}</p>
                         <div class="post-meta">
