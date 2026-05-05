@@ -518,7 +518,7 @@
         function formatContent(content) {
             if (!content) return '';
             
-            // Preservar quebras de linha primeiro
+            // Escapar HTML primeiro para segurança
             let html = content
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
@@ -529,23 +529,20 @@
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/_(.*?)_/g, '<em>$1</em>')
                 .replace(/__(.*?)__/g, '<u>$1</u>')
+                .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
                 .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
                 .replace(/^- (.*?)$/gm, '<li>$1</li>');
             
-            // Converter quebras de linha em parágrafos - manter single newlines como <br>
-            html = html
-                .split('\n\n')
-                .map(p => {
-                    // Cada parágrafo: converter single newline em <br>
-                    return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
-                })
-                .join('');
+            // Converter TODAS as quebras de linha (simples e duplas) em <br>
+            // Isso garante que qualquer Enter produza uma quebra de linha visual
+            html = html.replace(/\n/g, '<br>');
             
             // Agrupar listas
             html = html.replace(/(<li>.*?<\/li>)/gs, '<ul>$1</ul>');
             
-            // Remover parágrafos vazios
-            html = html.replace(/<p><br><\/p>/g, '');
+            // Adicionar espaçamento entre parágrafos
+            html = html.replace(/<br><\/p>/g, '</p>');
+            html = html.replace(/<p>/g, '<p style="margin-bottom: 1rem;">');
             
             return html;
         }
