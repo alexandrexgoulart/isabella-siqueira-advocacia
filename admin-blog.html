@@ -172,10 +172,11 @@
             <h1>Isabella Siqueira</h1>
             <p>Blog Admin - Advocacia</p>
             <form id="loginForm">
-                <input type="password" id="password" placeholder="Senha de acesso" required>
+                <input type="email" id="email" placeholder="Email de acesso" required>
+                <input type="password" id="password" placeholder="Senha" required>
                 <button type="submit">Entrar</button>
             </form>
-            <p class="login-error" id="loginError">Senha incorreta</p>
+            <p class="login-error" id="loginError">Email ou senha incorretos</p>
         </div>
     </div>
 
@@ -307,7 +308,6 @@
         const SUPABASE_URL = 'https://gpvwgogcfgohxdstoocc.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwdndnb2djZmdvaHhkc3Rvb2NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwMDgzODYsImV4cCI6MjA5MzU4NDM4Nn0.h7lXdFmdInuHhhBjsXKdn8t2ty_zl47-oU_MXtQUpNY';
         const SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwdndnb2djZmdvaHhkc3Rvb2NjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODAwODM4NiwiZXhwIjoyMDkzNTg0Mzg2fQ.zLS0IUOuhA21fPVnq316AswsE8YO6HzoG3n3IlAdygU';
-        const ADMIN_PASSWORD = 'adminisabella2026';
 
         const categorias = [
             // Previdenciário
@@ -346,15 +346,54 @@
             if (localStorage.getItem('adminBlogLogged') === 'true') showDashboard();
         }
 
-        function handleLogin(e) {
+        async function handleLogin(e) {
             e.preventDefault();
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            if (password === ADMIN_PASSWORD) {
-                localStorage.setItem('adminBlogLogged', 'true');
-                showDashboard();
-            } else {
-                document.getElementById('loginError').style.display = 'block';
+            const errorEl = document.getElementById('loginError');
+            
+            try {
+                // Buscar usuário pelo email no banco
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/admin_users?email=eq.${encodeURIComponent(email)}`, {
+                    headers: {
+                        'apikey': SERVICE_KEY,
+                        'Authorization': `Bearer ${SERVICE_KEY}`
+                    }
+                });
+                
+                const users = await response.json();
+                
+                if (users.length === 0) {
+                    errorEl.textContent = 'Usuário não encontrado';
+                    errorEl.style.display = 'block';
+                    return;
+                }
+                
+                const user = users[0];
+                
+                // Validar senha diretamente (armazenada como hash SHA-256 no banco)
+                const inputHash = await sha256(password);
+                
+                if (inputHash === user.password_hash) {
+                    localStorage.setItem('adminBlogLogged', 'true');
+                    localStorage.setItem('adminUser', user.email);
+                    showDashboard();
+                } else {
+                    errorEl.textContent = 'Senha incorreta';
+                    errorEl.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Erro no login:', error);
+                errorEl.textContent = 'Erro ao fazer login';
+                errorEl.style.display = 'block';
             }
+        }
+
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
         function logout() { localStorage.removeItem('adminBlogLogged'); location.reload(); }
