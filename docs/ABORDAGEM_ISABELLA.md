@@ -1,12 +1,37 @@
-# Abordagem para Isabella Siqueira - Projeto Website
+# Abordagem para Isabella Siqueira - Projeto Website + Blog
 
 ---
 
 ## Contexto do Projeto
 
-- **Seu site**: Premium, moderno, sem mensalidade de hospedagem
+- **Seu site**: Premium, moderno, com blog integrado, sem mensalidade de hospedagem
 - **Site atual dela**: Wix (custa ~R$ 80-150/mês)
-- **Diferencial real**: Zero custo de hospedagem + design premium
+- **Diferencial real**: Zero custo de hospedagem + design premium + blog completo com admin
+
+---
+
+## O que foi desenvolvido
+
+### Site Principal (index.html)
+- Design premium com tema Navy+Gold+Ivory
+- Seções: Header, Hero, Serviços, Sobre, FAQ, Contato, Footer
+- Totens de conversão (WhatsApp)
+- Responsivo para mobile/tablet/desktop
+- SEO otimizado
+
+### Blog Completo (blog.html + artigo.html + admin-blog.html)
+- Página pública com listagem de artigos
+- Página individual de artigo
+- Painel admin para gerenciar artigos
+- 30 categorias (todas as áreas de atuação)
+- Imagens com upload local (base64)
+- Preview de artigos
+- Barra de formatação com negrito, itálico, listas e 30 emojis
+
+### Infraestrutura
+- Hospedagem: GitHub Pages (grátis)
+- Banco de dados: Supabase
+- Autenticação: Tabela admin_users com hash SHA-256
 
 ---
 
@@ -18,14 +43,14 @@
 - Argumento correto: "Zero custo de hospedagem" (mas manutenção é cobrada por serviço prestado)
 
 ### Sobre monetização
-- Option 1: Vender o site completo (R$ 3.000-3.500)
+- Option 1: Vender o site completo (R$ 3.500-4.000)
 - Option 2: Manutenção mensal por continuar melhorando o site
 - Não oferecer "de graça" sem retorno
 
-### Sobre o blog
-- Seu site não tem blog, o dela tem
-- Isso pode ser uma solicitação futura dela
-- Você pode ofrecer como附加 (plus) no projeto
+### Sobre o blog (agora incluso!)
+- Seu site agora TEM blog completo com admin
+- Isso elimina uma weakness anterior
+- Plus: Isabela pode publicar artigos sobre direito previdenciário
 
 ### Sobre a abordagem
 - Não criar narrativa falsa ("fiz para outra advogada")
@@ -48,6 +73,7 @@ Você pode ver aqui: https://alexandrexgoulart.github.io/isabella-siqueira-advoc
 
 Diferenciais:
 • Design premium e personalizado
+• Blog completo integrado (você pode escrever artigos!)
 • Hospedagem gratuita (sem mensalidade como no Wix)
 • Totalmente responsivo (funciona no celular)
 • Otimizado para Google
@@ -91,6 +117,7 @@ Você pode conhecer aqui: https://alexandrexgoulart.github.io/isabella-siqueira-
 
 Diferenciais:
 • Design premium e personalizado
+• Blog completo integrado (escreva artigos sobre direito previdenciário!)
 • Hospedagem gratuita (sem mensalidade)
 • Otimizado para Google
 • Totalmente responsivo
@@ -99,7 +126,7 @@ Se tiver interesse em conversar sobre um site para seu escritório, ficarei feli
 
 Grande abraço,
 Alexandre Goulart
-WhatsApp: (62) 99114-4575
+WhatsApp: (62) 98300-0708
 ```
 
 ---
@@ -110,8 +137,9 @@ WhatsApp: (62) 99114-4575
 
 | Item | Valor |
 |------|-------|
-| Site completo com design premium | R$ 3.000 |
-|部署 e configuração | incluso |
+| Site completo com design premium | R$ 3.500 |
+| Blog com admin para artigos | incluso |
+| Deploy e configuração | incluso |
 | Tutorial de uso | incluso |
 | Suporte 30 dias | incluso |
 
@@ -119,8 +147,8 @@ WhatsApp: (62) 99114-4575
 
 | Item | Valor |
 |------|-------|
-| Site único | R$ 2.500 |
-| Manutenção mensal (atualizações de conteúdo) | R$ 150/mês |
+| Site completo | R$ 2.800 |
+| Manutenção mensal (atualizações + artigos) | R$ 180/mês |
 
 ### Argumentos de venda
 
@@ -128,27 +156,41 @@ WhatsApp: (62) 99114-4575
 
 > "Design profissional passa mais credibilidade. Clientes que chegam pelo site avaliam muito a primeira impressão."
 
+> "O blog permite você publicar artigos sobre direito previdenciário, mostrando autoridade e atraindo clientes."
+
 > "O site foi construído para aparecer no Google. O atual não tem SEO."
 
 ---
 
-## Pontos Fortes do Seu Site vs. Dela
+## Pontos Fortes do Seu Site vs. Della
 
-| Aspecto | Seu Site | Site Dela |
+| Aspecto | Seu Site | Site Della |
 |---------|----------|-----------|
 | Design | Premium e moderno | Genérico Wix |
+| Blog | Completo com admin | Tem (básico) |
 | Custo hospedagem | Grátis | R$ 80-150/mês |
 | Velocidade | Rápido | Lento |
 | SEO | Otimizado | Básico |
-| Blog | Não tem | Tem |
 | Manutenção | Baixo custo | Alta (Wix) |
+
+---
+
+## Credenciais de Acesso
+
+### Admin do Blog
+- URL: https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/admin-blog.html
+- Email: admin@isabella.com
+- Senha: adminisabella2026
+
+### Supabase (Banco de Dados)
+- URL: https://gpvwgogcfgohxdstoocc.supabase.co
 
 ---
 
 ## Riscos
 
 1. **Ela pode não responder** - É normal, seguir em frente
-2. **Ela pode achar caro** - Ter um valor mínimo evita客户baratos
+2. **Ela pode achar caro** - Ter um valor mínimo evita clientes baratos
 3. **Outros devs podem abordar ela** - Estar presente primeiro ajuda
 
 ---
@@ -165,8 +207,8 @@ WhatsApp: (62) 99114-4575
 ## Suas Informações
 
 - Nome completo: Alexandre Goulart
-- WhatsApp: (62) 99114-4575
+- WhatsApp: (62) 98300-0708
 
 ---
 
-*Documento criado: 05/05/2026*
+*Documento atualizado: 05/05/2026*
