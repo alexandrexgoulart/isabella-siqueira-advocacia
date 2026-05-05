@@ -44,6 +44,11 @@
             background: var(--bg-light);
             color: var(--text);
             line-height: 1.6;
+            cursor: default;
+        }
+        
+        a, button {
+            cursor: pointer;
         }
 
         /* Header */
@@ -427,8 +432,25 @@
         }
 
         .blog-footer a {
-            color: var(--accent);
+            color: var(--primary);
             text-decoration: none;
+            display: inline-block;
+        }
+        
+        .blog-footer .blog-cta {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .blog-footer .blog-cta:hover {
+            background: var(--accent-hover);
         }
 
         .blog-footer-bottom {
@@ -540,16 +562,14 @@
         const SUPABASE_URL = 'https://gpvwgogcfgohxdstoocc.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwdndnb2djZmdvaHhkc3Rvb2NjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODAwODM4NiwiZXhwIjoyMDkzNTg0Mzg2fQ.zLS0IUOuhA21fPVnq316AswsE8YO6HzoG3n3IlAdygU';
 
-        // Categorias disponíveis
+        // Categorias disponíveis (todas as 30 áreas)
         const categorias = [
-            'Aposentadoria',
-            'Benefícios',
-            'Auxílio Doença',
-            'Pensão por Morte',
-            'Salário Maternidade',
-            'BPC LOAS',
-            'Revisão de Benefícios',
-            'Geral'
+            'INSS Negado', 'Aposentadorias', 'BPC / LOAS', 'Auxílio Doença', 'Apos. Invalidez',
+            'Auxílio Acidente', 'Pensão Morte', 'Auxílio Reclusão', 'Maternidade', 'Benefícios Rurais',
+            'CNIS', 'Averbação', 'Tempo sem Contribuição', 'Tempo Exterior', 'Emissão de CTC',
+            'Consultoria', 'Revisão', 'Planejamento', 'Servidor Público', 'Cálculos',
+            'Contagem Tempo', 'Renda Mensal', 'Trabalhista', 'Cível', 'Família',
+            'Servidores Públicos', 'Consumidor', 'Criminal', 'Imobiliário', 'Bancário'
         ];
 
         // Inicializar
