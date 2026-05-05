@@ -739,14 +739,16 @@
 
         async function loadPosts() {
             const grid = document.getElementById('postsGrid');
-            const url = `${SUPABASE_URL}/rest/v1/posts?publicado=eq.true&order=created_at.desc&limit=20`;
+            // Tentativa 1: sem filtro
+            const url1 = `${SUPABASE_URL}/rest/v1/posts?select=*&limit=3`;
             
-            console.log('URL da API:', url);
+            console.log('--- DEBUG SUPABASE ---');
+            console.log('Tentando URL:', url1);
             
             try {
-                console.log('Iniciando fetch para Supabase...');
+                console.log('Iniciando fetch...');
                 
-                const response = await fetch(url, {
+                const response = await fetch(url1, {
                     headers: {
                         'apikey': SUPABASE_KEY,
                         'Authorization': `Bearer ${SUPABASE_KEY}`,
@@ -754,13 +756,17 @@
                     }
                 });
 
-                console.log('Resposta HTTP:', response.status, response.statusText);
-
+                console.log('Status:', response.status);
+                console.log('StatusText:', response.statusText);
+                
+                const responseText = await response.text();
+                console.log('Response text:', responseText);
+                
                 if (!response.ok) {
-                    throw new Error('Erro HTTP: ' + response.status + ' - ' + response.statusText);
+                    throw new Error('Erro HTTP: ' + response.status + ' - ' + response.statusText + ' - ' + responseText);
                 }
 
-                const data = await response.json();
+                const data = JSON.parse(responseText);
                 console.log('Dados recebidos:', data);
                 allPosts = data;
 
