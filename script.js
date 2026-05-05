@@ -459,6 +459,366 @@ Mensagem: ${message}`
             aboutVideoWrapper.classList.remove('video-playing');
         });
     }
+
+    // ========== ADMINISTRATIVO SIMPLES ==========
+    const ADMIN_DEFAULT_PASSWORD = 'adv2024isabella';
+    const ADMIN_SESSION_KEY = 'isabellaAdminSession';
+    const ADMIN_EDITS_KEY = 'isabellaSiteEdits';
+    const ADMIN_PASSWORD_HASH_KEY = 'isabellaAdminPasswordHash';
+
+    function hashPassword(str) {
+        let hash = 0;
+        if (!str) return '';
+        for (let i = 0; i < str.length; i++) {
+            hash = ((hash << 5) - hash) + str.charCodeAt(i);
+            hash |= 0;
+        }
+        return Math.abs(hash).toString(16);
+    }
+
+    function getAdminPassword() {
+        return localStorage.getItem(ADMIN_PASSWORD_HASH_KEY) || hashPassword(ADMIN_DEFAULT_PASSWORD);
+    }
+
+    function setAdminPasswordHash(password) {
+        localStorage.setItem(ADMIN_PASSWORD_HASH_KEY, hashPassword(password));
+    }
+
+    function isAdminAuthenticated() {
+        return localStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+    }
+
+    function saveAdminSession() {
+        localStorage.setItem(ADMIN_SESSION_KEY, 'true');
+    }
+
+    function clearAdminSession() {
+        localStorage.removeItem(ADMIN_SESSION_KEY);
+    }
+
+    function getSavedAdminEdits() {
+        return JSON.parse(localStorage.getItem(ADMIN_EDITS_KEY) || '{}');
+    }
+
+    function saveAdminEditsToStorage(edits) {
+        localStorage.setItem(ADMIN_EDITS_KEY, JSON.stringify(edits));
+    }
+
+    function createCustomVideoPlayer(videoElement, wrapper) {
+        videoElement.controls = false;
+        videoElement.controlsList = "nodownload noplaybackrate";
+        videoElement.disablePictureInPicture = true;
+        videoElement.style.cursor = 'pointer';
+        
+        const playButton = document.createElement('div');
+        playButton.innerHTML = '<i class="fas fa-play"></i>';
+        playButton.className = 'custom-play-btn';
+        playButton.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: transparent;
+            border: 3px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        `;
+        playButton.querySelector('i').style.cssText = `
+            font-size: 30px;
+            color: white;
+            margin-left: 5px;
+        `;
+        
+        const fullscreenButton = document.createElement('div');
+        fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>';
+        fullscreenButton.className = 'custom-fullscreen-btn';
+        fullscreenButton.style.cssText = `
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: transparent;
+            border: 2px solid white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        `;
+        fullscreenButton.querySelector('i').style.cssText = `
+            font-size: 20px;
+            color: white;
+        `;
+        
+        fullscreenButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            } else {
+                if (videoElement.requestFullscreen) {
+                    videoElement.requestFullscreen();
+                } else if (videoElement.webkitRequestFullscreen) {
+                    videoElement.webkitRequestFullscreen();
+                } else if (videoElement.msRequestFullscreen) {
+                    videoElement.msRequestFullscreen();
+                }
+            }
+        });
+        
+        function updateFullscreenButtonIcon() {
+            fullscreenButton.querySelector('i').style.cssText = `
+                font-size: 20px;
+                color: white;
+            `;
+        }
+        
+        document.addEventListener('fullscreenchange', function() {
+            if (document.fullscreenElement) {
+                fullscreenButton.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+            updateFullscreenButtonIcon();
+        });
+        
+        document.addEventListener('webkitfullscreenchange', function() {
+            if (document.webkitFullscreenElement) {
+                fullscreenButton.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+            updateFullscreenButtonIcon();
+        });
+        
+        let fullscreenPlayBtn = null;
+        let fullscreenFsBtn = null;
+        
+        function createFullscreenControls() {
+            videoElement.controls = false;
+            videoElement.style.cursor = 'default';
+            
+            const fsContainer = document.fullscreenElement || document.webkitFullscreenElement;
+            
+            fullscreenPlayBtn = document.createElement('div');
+            fullscreenPlayBtn.innerHTML = '<i class="fas fa-play"></i>';
+            fullscreenPlayBtn.id = 'fs-play-btn';
+            fullscreenPlayBtn.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100px;
+                height: 100px;
+                background: transparent !important;
+                border: 3px solid white !important;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                z-index: 2147483647;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            `;
+            fullscreenPlayBtn.querySelector('i').style.cssText = `
+                font-size: 40px;
+                color: white !important;
+                margin-left: 8px;
+            `;
+            
+            fullscreenFsBtn = document.createElement('div');
+            fullscreenFsBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            fullscreenFsBtn.id = 'fs-exit-btn';
+            fullscreenFsBtn.style.cssText = `
+                position: absolute;
+                bottom: 30px;
+                right: 30px;
+                width: 60px;
+                height: 60px;
+                background: transparent !important;
+                border: 2px solid white !important;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                z-index: 2147483647;
+            `;
+            fullscreenFsBtn.querySelector('i').style.cssText = `
+                font-size: 24px;
+                color: white !important;
+            `;
+            
+            fullscreenPlayBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (videoElement.paused) {
+                    videoElement.play();
+                    fullscreenPlayBtn.style.display = 'none';
+                } else {
+                    videoElement.pause();
+                    fullscreenPlayBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    fullscreenPlayBtn.querySelector('i').style.marginLeft = '8px';
+                    fullscreenPlayBtn.style.display = 'flex';
+                }
+            });
+            
+            fullscreenFsBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            });
+            
+            fsContainer.appendChild(fullscreenPlayBtn);
+            fsContainer.appendChild(fullscreenFsBtn);
+            
+            let fsControlsTimeout;
+            fsContainer.addEventListener('mousemove', function() {
+                fullscreenPlayBtn.style.opacity = '1';
+                fullscreenFsBtn.style.opacity = '1';
+                clearTimeout(fsControlsTimeout);
+                fsControlsTimeout = setTimeout(function() {
+                    if (!videoElement.paused) {
+                        fullscreenPlayBtn.style.opacity = '0';
+                        fullscreenFsBtn.style.opacity = '0';
+                    }
+                }, 3000);
+            });
+            
+            videoElement.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (!videoElement.paused) {
+                    videoElement.pause();
+                    fullscreenPlayBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    fullscreenPlayBtn.querySelector('i').style.marginLeft = '8px';
+                    fullscreenPlayBtn.style.display = 'flex';
+                    fullscreenPlayBtn.style.opacity = '1';
+                    fullscreenFsBtn.style.opacity = '1';
+                    clearTimeout(fsControlsTimeout);
+                    fsControlsTimeout = setTimeout(function() {
+                        fullscreenPlayBtn.style.opacity = '0';
+                        fullscreenFsBtn.style.opacity = '0';
+                    }, 3000);
+                }
+            });
+            
+            videoElement.addEventListener('pause', function() {
+                if (!videoElement.ended) {
+                    fullscreenPlayBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    fullscreenPlayBtn.querySelector('i').style.marginLeft = '8px';
+                    fullscreenPlayBtn.style.display = 'flex';
+                    fullscreenPlayBtn.style.opacity = '1';
+                    fullscreenFsBtn.style.opacity = '1';
+                }
+            });
+            
+            videoElement.addEventListener('ended', function() {
+                fullscreenPlayBtn.innerHTML = '<i class="fas fa-play"></i>';
+                fullscreenPlayBtn.querySelector('i').style.marginLeft = '8px';
+                fullscreenPlayBtn.style.display = 'flex';
+                fullscreenPlayBtn.style.opacity = '1';
+                fullscreenFsBtn.style.opacity = '1';
+            });
+        }
+        
+        function removeFullscreenControls() {
+            if (fullscreenPlayBtn && fullscreenPlayBtn.parentElement) {
+                fullscreenPlayBtn.parentElement.removeChild(fullscreenPlayBtn);
+                fullscreenPlayBtn = null;
+            }
+            if (fullscreenFsBtn && fullscreenFsBtn.parentElement) {
+                fullscreenFsBtn.parentElement.removeChild(fullscreenFsBtn);
+                fullscreenFsBtn = null;
+            }
+        }
+        
+        document.addEventListener('fullscreenchange', function() {
+            if (document.fullscreenElement) {
+                createFullscreenControls();
+            } else {
+                removeFullscreenControls();
+            }
+        });
+        
+        document.addEventListener('webkitfullscreenchange', function() {
+            if (document.webkitFullscreenElement) {
+                createFullscreenControls();
+            } else {
+                removeFullscreenControls();
+            }
+        });
+        
+        function updatePlayButtonIcon() {
+            playButton.querySelector('i').style.cssText = `
+                font-size: 30px;
+                color: white;
+                margin-left: 5px;
+            `;
+        }
+        
+        playButton.addEventListener('click', function() {
+            if (videoElement.paused) {
+                videoElement.play();
+                playButton.style.opacity = '0';
+                playButton.style.pointerEvents = 'none';
+            } else {
+                videoElement.pause();
+                playButton.innerHTML = '<i class="fas fa-play"></i>';
+                playButton.style.opacity = '1';
+                playButton.style.pointerEvents = 'auto';
+                updatePlayButtonIcon();
+            }
+        });
+        
+        videoElement.addEventListener('click', function() {
+            if (!videoElement.paused) {
+                videoElement.pause();
+                playButton.innerHTML = '<i class="fas fa-play"></i>';
+                playButton.style.opacity = '1';
+                playButton.style.pointerEvents = 'auto';
+                updatePlayButtonIcon();
+            }
+        });
+        
+        videoElement.parentElement.style.position = 'relative';
+        videoElement.parentElement.appendChild(playButton);
+        videoElement.parentElement.appendChild(fullscreenButton);
+        
+        videoElement.addEventListener('ended', function() {
+            playButton.innerHTML = '<i class="fas fa-play"></i>';
+            playButton.style.opacity = '1';
+            playButton.style.pointerEvents = 'auto';
+            updatePlayButtonIcon();
+        });
+        
+        videoElement.addEventListener('pause', function() {
+            if (!videoElement.ended) {
+                playButton.innerHTML = '<i class="fas fa-play"></i>';
+                playButton.style.opacity = '1';
+                playButton.style.pointerEvents = 'auto';
+                updatePlayButtonIcon();
+            }
+        });
+    }
+
+    function initAdminSystem() {
+        // Criar estilos do admin
         const adminStyles = document.createElement('style');
         adminStyles.textContent = `
             .admin-panel-overlay {
@@ -1645,479 +2005,8 @@ Mensagem: ${message}`
         }
     }
 
-    // ========== CARREGAR EDIÇÕES SALVAS ==========
+    // Inicialização do Admin reativada para MVP
+    initAdminSystem();
     loadSavedEdits();
-});
-        const SIMPLE_PASS_KEY = 'simpleEditPassword';
-        const DEFAULT_PASS = 'adminisabellaadv';
-
-        // Campos editáveis
-        const editFields = {
-            heroTitle: { selector: '#hero-title', type: 'text', label: 'Título Principal' },
-            heroDesc: { selector: '#hero-desc', type: 'textarea', label: 'Descrição' },
-            heroBtnText: { selector: '#hero-btn-text', type: 'text', label: 'Texto do Botão' },
-            heroBtnWhatsapp: { selector: '#hero-btn-whatsapp', type: 'text', label: 'Link WhatsApp' },
-            sobreText: { selector: '#sobre-text', type: 'textarea', label: 'Texto Sobre' },
-            contatoWhatsapp: { selector: '.contact-card a[href*="wa.me"]', type: 'href', label: 'WhatsApp' },
-            contatoEmail: { selector: '.contact-card a[href^="mailto:"]', type: 'href', label: 'Email' }
-        };
-
-        // Criar estilos do painel simplificado
-        function createSimpleStyles() {
-            const style = document.createElement('style');
-            style.textContent = `
-                .simple-edit-overlay {
-                    position: fixed;
-                    inset: 0;
-                    background: rgba(0,0,0,0.5);
-                    z-index: 99999;
-                    display: none;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 20px;
-                }
-                .simple-edit-overlay.open { display: flex !important; }
-                .simple-edit-panel {
-                    pointer-events: auto;
-                }
-                .simple-edit-panel {
-                    background: #fff;
-                    border-radius: 16px;
-                    max-width: 500px;
-                    width: 100%;
-                    max-height: 90vh;
-                    overflow-y: auto;
-                    box-shadow: 0 25px 80px rgba(0,0,0,0.3);
-                }
-                .simple-edit-header {
-                    background: linear-gradient(135deg, #1A2B4A, #243657);
-                    padding: 24px;
-                    color: #fff;
-                    border-radius: 16px 16px 0 0;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-                .simple-edit-header h2 { margin: 0; font-size: 18px; }
-                .simple-edit-close {
-                    background: rgba(255,255,255,0.2);
-                    border: none;
-                    color: #fff;
-                    width: 32px;
-                    height: 32px;
-                    border-radius: 50%;
-                    cursor: pointer;
-                    font-size: 18px;
-                }
-                .simple-edit-content { padding: 24px; }
-                .simple-field { margin-bottom: 20px; }
-                .simple-field label {
-                    display: block;
-                    font-weight: 600;
-                    margin-bottom: 8px;
-                    color: #1A2B4A;
-                    font-size: 14px;
-                }
-                .simple-field input,
-                .simple-field textarea {
-                    width: 100%;
-                    padding: 12px;
-                    border: 2px solid #e2e8f0;
-                    border-radius: 8px;
-                    font-size: 15px;
-                    transition: border-color 0.3s;
-                    font-family: inherit;
-                }
-                .simple-field input:focus,
-                .simple-field textarea:focus {
-                    outline: none;
-                    border-color: #C5964B;
-                }
-                .simple-field textarea { min-height: 80px; resize: vertical; }
-                .simple-image-upload {
-                    border: 2px dashed #cbd5e1;
-                    border-radius: 12px;
-                    padding: 20px;
-                    text-align: center;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                    position: relative;
-                    overflow: hidden;
-                }
-                .simple-image-upload:hover { border-color: #C5964B; }
-                .simple-image-upload img {
-                    max-width: 100%;
-                    max-height: 200px;
-                    border-radius: 8px;
-                }
-                .simple-image-upload .placeholder {
-                    color: #64748b;
-                    font-size: 14px;
-                }
-                .simple-image-upload input {
-                    display: none;
-                }
-                .simple-save-btn {
-                    width: 100%;
-                    padding: 16px;
-                    background: linear-gradient(135deg, #1A2B4A, #243657);
-                    color: #fff;
-                    border: none;
-                    border-radius: 10px;
-                    font-size: 16px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    margin-top: 10px;
-                }
-                .simple-save-btn:hover { transform: translateY(-2px); }
-                .simple-login-overlay {
-                    position: fixed;
-                    inset: 0;
-                    background: rgba(0,0,0,0.7);
-                    z-index: 200000;
-                    display: none;
-                    align-items: center;
-                    justify-content: center;
-                }
-                .simple-login-overlay.open { display: flex !important; }
-                .simple-login-box {
-                    background: #fff;
-                    padding: 40px;
-                    border-radius: 16px;
-                    max-width: 360px;
-                    width: 90%;
-                    text-align: center;
-                }
-                .simple-login-box h3 { color: #1A2B4A; margin: 0 0 8px; }
-                .simple-login-box p { color: #64748b; margin: 0 0 20px; font-size: 14px; }
-                .simple-login-box input {
-                    width: 100%;
-                    padding: 14px;
-                    border: 2px solid #e2e8f0;
-                    border-radius: 8px;
-                    font-size: 16px;
-                    margin-bottom: 12px;
-                }
-                .simple-login-box button {
-                    width: 100%;
-                    padding: 14px;
-                    background: #1A2B4A;
-                    color: #fff;
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 16px;
-                    font-weight: 600;
-                    cursor: pointer;
-                }
-                .simple-toast {
-                    position: fixed;
-                    bottom: 30px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    background: #059669;
-                    color: #fff;
-                    padding: 14px 24px;
-                    border-radius: 10px;
-                    font-weight: 600;
-                    z-index: 100001;
-                    opacity: 0;
-                    transition: opacity 0.3s;
-                }
-                .simple-toast.show { opacity: 1; }
-                .simple-field-img-preview {
-                    width: 100%;
-                    max-height: 150px;
-                    object-fit: cover;
-                    border-radius: 8px;
-                    margin-bottom: 10px;
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        // Criar elementos do DOM
-        function createSimplePanel() {
-            // Overlay do painel
-            const panel = document.createElement('div');
-            panel.className = 'simple-edit-overlay';
-            panel.id = 'simpleEditPanel';
-            panel.innerHTML = `
-                <div class="simple-edit-panel">
-                    <div class="simple-edit-header">
-                        <h2>Editar Meu Site</h2>
-                        <button class="simple-edit-close" id="simpleCloseBtn">&times;</button>
-                    </div>
-                    <div class="simple-edit-content">
-                        <div class="simple-field">
-                            <label>Título Principal</label>
-                            <input type="text" id="simple-hero-title" placeholder="Ex: Especialista em Direito Previdenciário">
-                        </div>
-                        <div class="simple-field">
-                            <label>Descrição</label>
-                            <textarea id="simple-hero-desc" placeholder="Ex: Ajudo idosos a garantir seus direitos..."></textarea>
-                        </div>
-                        <div class="simple-field">
-                            <label>Texto do Botão WhatsApp</label>
-                            <input type="text" id="simple-hero-btn" placeholder="Ex: Falar no WhatsApp">
-                        </div>
-                        <div class="simple-field">
-                            <label>Foto Principal (Sobre)</label>
-                            <div class="simple-field" id="simple-image-upload">
-                                <img id="simple-foto-preview" style="display:none" alt="Preview">
-                                <span class="placeholder" id="simple-foto-placeholder">Clique para trocar a foto</span>
-                                <input type="file" id="simple-foto-input" accept="image/*">
-                            </div>
-                        </div>
-                        <div class="simple-field">
-                            <label>Texto Sobre</label>
-                            <textarea id="simple-sobre-text" placeholder="Fale sobre você..."></textarea>
-                        </div>
-                        <div class="simple-field">
-                            <label>WhatsApp (com código do país)</label>
-                            <input type="text" id="simple-whatsapp" placeholder="Ex: 5562983000708">
-                        </div>
-                        <div class="simple-field">
-                            <label>Email</label>
-                            <input type="email" id="simple-email" placeholder="Ex: isabella@email.com">
-                        </div>
-                        <button class="simple-save-btn" id="simpleSaveBtn">Salvar Alterações</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(panel);
-
-            // Modal de login
-            const login = document.createElement('div');
-            login.className = 'simple-login-overlay';
-            login.id = 'simpleLoginModal';
-            login.innerHTML = `
-                <div class="simple-login-box">
-                    <h3>Acesso Editar Site</h3>
-                    <p>Digite a senha para continuar</p>
-                    <input type="password" id="simplePassword" placeholder="Senha">
-                    <button id="simpleLoginBtn">Entrar</button>
-                </div>
-            `;
-            document.body.appendChild(login);
-
-            // Toast
-            const toast = document.createElement('div');
-            toast.className = 'simple-toast';
-            toast.id = 'simpleToast';
-            document.body.appendChild(toast);
-        }
-
-        // Mostrar toast
-        function showSimpleToast(msg) {
-            const toast = document.getElementById('simpleToast');
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        // Carregar dados salvos do site
-        function loadSimpleData() {
-            const savedData = JSON.parse(localStorage.getItem(SIMPLE_EDIT_KEY) || '{}');
-
-            // Se não tem dados salvos, buscar do site atual
-            if (Object.keys(savedData).length === 0) {
-                // Título Principal - trim para remover espaços extras
-                const heroTitleEl = document.querySelector('#hero-title');
-                document.getElementById('simple-hero-title').value = heroTitleEl ? heroTitleEl.textContent.trim() : '';
-
-                // Descrição - trim para remover espaços extras
-                const heroDescEl = document.querySelector('#hero-desc');
-                document.getElementById('simple-hero-desc').value = heroDescEl ? heroDescEl.textContent.trim() : '';
-
-                // Texto do Botão
-                const heroBtnEl = document.querySelector('#hero-btn-text');
-                document.getElementById('simple-hero-btn').value = heroBtnEl ? heroBtnEl.textContent.trim() : '';
-
-                // WhatsApp - buscar do header (número real)
-                const headerWhatsapp = document.querySelector('#header-whatsapp-a');
-                if (headerWhatsapp) {
-                    const href = headerWhatsapp.getAttribute('href') || '';
-                    const match = href.match(/wa\.me\/(\d+)/);
-                    document.getElementById('simple-whatsapp').value = match ? match[1] : '62983000708';
-                }
-
-                // Email - buscar do contact card
-                const emailEl = document.querySelector('.contact-card a[href^="mailto:"]');
-                if (emailEl) {
-                    document.getElementById('simple-email').value = emailEl.getAttribute('href').replace('mailto:', '');
-                } else {
-                    document.getElementById('simple-email').value = 'advisabellasiqueira@gmail.com';
-                }
-
-                // Texto Sobre - buscar do about
-                const sobreEl = document.querySelector('#sobre-text');
-                if (sobreEl) {
-                    document.getElementById('simple-sobre-text').value = sobreEl.textContent.trim();
-                }
-            } else {
-                // Usar dados salvos
-                if (savedData.heroTitle) document.getElementById('simple-hero-title').value = savedData.heroTitle;
-                if (savedData.heroDesc) document.getElementById('simple-hero-desc').value = savedData.heroDesc;
-                if (savedData.heroBtnText) document.getElementById('simple-hero-btn').value = savedData.heroBtnText;
-                if (savedData.sobreText) document.getElementById('simple-sobre-text').value = savedData.sobreText;
-                if (savedData.whatsapp) document.getElementById('simple-whatsapp').value = savedData.whatsapp;
-                if (savedData.email) document.getElementById('simple-email').value = savedData.email;
-                if (savedData.foto) {
-                    const img = document.getElementById('simple-foto-preview');
-                    const placeholder = document.getElementById('simple-foto-placeholder');
-                    img.src = savedData.foto;
-                    img.style.display = 'block';
-                    placeholder.style.display = 'none';
-                }
-            }
-        }
-
-        // Aplicar alterações ao site
-        function applySimpleData(data) {
-            // Título Principal
-            if (data.heroTitle) {
-                const el = document.querySelector('#hero-title');
-                if (el) el.textContent = data.heroTitle;
-            }
-            // Descrição
-            if (data.heroDesc) {
-                const el = document.querySelector('#hero-desc');
-                if (el) el.textContent = data.heroDesc;
-            }
-            // Texto do Botão
-            if (data.heroBtnText) {
-                const el = document.querySelector('#hero-btn-text');
-                if (el) el.textContent = data.heroBtnText;
-            }
-            // WhatsApp - atualizar todos os links
-            if (data.whatsapp) {
-                const cleanPhone = data.whatsapp.replace(/\D/g, '');
-                const waLinks = document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp"]');
-                waLinks.forEach(link => {
-                    link.href = 'https://wa.me/' + cleanPhone;
-                });
-            }
-            // Email - atualizar todos os links
-            if (data.email) {
-                const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
-                emailLinks.forEach(link => {
-                    link.href = 'mailto:' + data.email;
-                });
-            }
-            // Foto - atualizar foto da advogada
-            if (data.foto) {
-                const fotoHero = document.querySelector('.hero-image');
-                const fotoAbout = document.querySelector('.lawyer-image');
-                if (fotoHero) fotoHero.src = data.foto;
-                if (fotoAbout) fotoAbout.src = data.foto;
-            }
-            // Salvar no localStorage para carregar no futuro
-            localStorage.setItem(SIMPLE_EDIT_KEY, JSON.stringify(data));
-        }
-
-        // Inicializar
-        function initSimpleEdit() {
-            createSimpleStyles();
-            createSimplePanel();
-
-            // Carregar dados salvos ao iniciar
-            const savedData = JSON.parse(localStorage.getItem(SIMPLE_EDIT_KEY) || '{}');
-            if (Object.keys(savedData).length > 0) {
-                applySimpleData(savedData);
-            }
-
-            // Abrir com Ctrl+Shift+E
-            document.addEventListener('keydown', (e) => {
-                if (e.ctrlKey && e.shiftKey && (e.key === 'e' || e.key === 'E')) {
-                    e.preventDefault();
-                    const modal = document.getElementById('simpleLoginModal');
-                    if (modal) {
-                        modal.classList.add('open');
-                        setTimeout(() => {
-                            const input = document.getElementById('simplePassword');
-                            if (input) input.focus();
-                        }, 100);
-                    }
-                }
-            });
-
-            // Login - clique
-            document.getElementById('simpleLoginBtn').addEventListener('click', () => doLogin());
-
-            // Login - Enter
-            document.getElementById('simplePassword').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') doLogin();
-            });
-
-            function doLogin() {
-                const input = document.getElementById('simplePassword');
-                const hash = btoa(input.value);
-                const passHash = localStorage.getItem(SIMPLE_PASS_KEY) || btoa(DEFAULT_PASS);
-                if (hash === passHash) {
-                    document.getElementById('simpleLoginModal').classList.remove('open');
-                    document.getElementById('simpleEditPanel').classList.add('open');
-                    loadSimpleData();
-                    input.value = '';
-                } else {
-                    showSimpleToast('Senha incorreta');
-                }
-            }
-
-            // Fechar painel
-            document.getElementById('simpleCloseBtn').addEventListener('click', () => {
-                document.getElementById('simpleEditPanel').classList.remove('open');
-            });
-
-            document.getElementById('simpleEditPanel').addEventListener('click', (e) => {
-                if (e.target.id === 'simpleEditPanel') {
-                    document.getElementById('simpleEditPanel').classList.remove('open');
-                }
-            });
-
-            // Upload de imagem
-            const imageUpload = document.getElementById('simple-image-upload');
-            const imageInput = document.getElementById('simple-foto-input');
-            const imgPreview = document.getElementById('simple-foto-preview');
-            const placeholder = document.getElementById('simple-foto-placeholder');
-
-            imageUpload.addEventListener('click', () => imageInput.click());
-
-            imageInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        imgPreview.src = e.target.result;
-                        imgPreview.style.display = 'block';
-                        placeholder.style.display = 'none';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            // Salvar
-            document.getElementById('simpleSaveBtn').addEventListener('click', () => {
-                const data = {
-                    heroTitle: document.getElementById('simple-hero-title').value,
-                    heroDesc: document.getElementById('simple-hero-desc').value,
-                    heroBtnText: document.getElementById('simple-hero-btn').value,
-                    sobreText: document.getElementById('simple-sobre-text').value,
-                    whatsapp: document.getElementById('simple-whatsapp').value.replace(/\D/g, ''),
-                    email: document.getElementById('simple-email').value,
-                    foto: imgPreview.src !== '' && imgPreview.style.display !== 'none' ? imgPreview.src : null
-                };
-
-                applySimpleData(data);
-                document.getElementById('simpleEditPanel').classList.remove('open');
-                showSimpleToast('Alterações salvas com sucesso!');
-            });
-        }
-
-        // Iniciar quando DOM estiver pronto
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initSimpleEdit);
-        } else {
-            initSimpleEdit();
-        }
-    })();
+    checkAdminSession();
 });
