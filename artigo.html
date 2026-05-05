@@ -102,9 +102,10 @@
 
         /* Article */
         .article-container {
-            max-width: 720px;
+            max-width: 680px;
             margin: 0 auto;
-            padding: 1.5rem;
+            padding: 1.5rem 2rem;
+            text-align: left;
         }
 
         .article-meta {
@@ -126,7 +127,7 @@
             color: var(--accent);
         }
 
-        .article-category {
+.article-category {
             display: inline-block;
             background: rgba(197,150,75,0.15);
             color: var(--accent);
@@ -134,18 +135,15 @@
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .article-title {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             line-height: 1.25;
-            text-align: left;
         }
 
         .article-image {
@@ -154,7 +152,7 @@
             max-height: 400px;
             height: auto;
             display: block;
-            margin: 0 auto 1.5rem auto;
+            margin: 0 auto 1.2rem auto;
             border-radius: 12px;
             object-fit: contain;
         }
@@ -164,6 +162,7 @@
             line-height: 1.75;
             color: var(--text);
             text-align: justify;
+            padding: 0 0.5rem;
         }
 
         .article-content p {
@@ -517,11 +516,24 @@
         }
 
         function formatContent(content) {
+            if (!content) return '';
+            // Converter markdown básico para HTML
+            let html = content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/_(.*?)_/g, '<em>$1</em>')
+                .replace(/__(.*?)__/g, '<u>$1</u>')
+                .replace(/^## (.*)$/gm, '<h2>$1</h2>')
+                .replace(/^- (.*)$/gm, '<li>$1</li>');
+            
             // Converter quebras de linha em parágrafos
-            return content
+            html = html
                 .split('\n\n')
                 .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
                 .join('');
+            
+            // Agrupar listas
+            html = html.replace(/(<li>.*?<\/li>)/gs, '<ul>$1</ul>');
+            return html;
         }
 
         function formatDate(dateStr) {

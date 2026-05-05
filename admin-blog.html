@@ -90,6 +90,41 @@
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); }
         .form-group textarea { min-height: 300px; resize: vertical; line-height: 1.8; }
         
+        /* Editor Toolbar */
+        .editor-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            padding: 0.5rem;
+            background: var(--bg-light);
+            border: 2px solid var(--border);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: -2px;
+        }
+        .editor-toolbar button {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: var(--bg-card);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .editor-toolbar button:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+        .toolbar-divider {
+            width: 1px;
+            background: var(--border);
+            margin: 0 0.3rem;
+        }
+        
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         
         /* Categorias Múltiplas */
@@ -214,7 +249,41 @@
 
                 <div class="form-group">
                     <label>Conteúdo do Artigo</label>
-                    <textarea id="postConteudo" placeholder="Escreva o conteúdo do artigo aqui..."></textarea>
+                    <div class="editor-toolbar">
+                        <button type="button" onclick="formatText('bold')" title="Negrito"><i class="fas fa-bold"></i></button>
+                        <button type="button" onclick="formatText('italic')" title="Itálico"><i class="fas fa-italic"></i></button>
+                        <button type="button" onclick="formatText('underline')" title="Sublinhado"><i class="fas fa-underline"></i></button>
+                        <button type="button" onclick="formatText('h2')" title="Título"><i class="fas fa-heading"></i></button>
+                        <button type="button" onclick="formatText('list')" title="Lista"><i class="fas fa-list-ul"></i></button>
+                        <span class="toolbar-divider"></span>
+                        <button type="button" onclick="insertEmoji('📌')" title="Importante">📌</button>
+                        <button type="button" onclick="insertEmoji('⚠️')" title="Atenção">⚠️</button>
+                        <button type="button" onclick="insertEmoji('✅')" title="Ok">✅</button>
+                        <button type="button" onclick="insertEmoji('❌')" title="Erro">❌</button>
+                        <button type="button" onclick="insertEmoji('💡')" title="Dica">💡</button>
+                        <button type="button" onclick="insertEmoji('📎')" title="Referência">📎</button>
+                        <button type="button" onclick="insertEmoji('🔗')" title="Link">🔗</button>
+                        <button type="button" onclick="insertEmoji('📝')" title="Nota">📝</button>
+                        <button type="button" onclick="insertEmoji('⏰')" title="Prazo">⏰</button>
+                        <button type="button" onclick="insertEmoji('💰')" title="Dinheiro">💰</button>
+                        <button type="button" onclick="insertEmoji('📊')" title="Dados">📊</button>
+                        <button type="button" onclick="insertEmoji('⚖️')" title="Justiça">⚖️</button>
+                        <button type="button" onclick="insertEmoji('👤')" title="Pessoa">👤</button>
+                        <button type="button" onclick="insertEmoji('🏥')" title="Saúde">🏥</button>
+                        <button type="button" onclick="insertEmoji('👴')" title="Idoso">👴</button>
+                        <button type="button" onclick="insertEmoji('👶')" title="Criança">👶</button>
+                        <button type="button" onclick="insertEmoji('🤰')" title="Gestante">🤰</button>
+                        <button type="button" onclick="insertEmoji('🧑‍💼')" title="Trabalhador">🧑‍💼</button>
+                        <button type="button" onclick="insertEmoji('📅')" title="Data">📅</button>
+                        <button type="button" onclick="insertEmoji('⭐')" title="Estrela">⭐</button>
+                        <button type="button" onclick="insertEmoji('🎯')" title="Objetivo">🎯</button>
+                        <button type="button" onclick="insertEmoji('📚')" title="Estudo">📚</button>
+                        <button type="button" onclick="insertEmoji('🏆')" title="Sucesso">🏆</button>
+                        <button type="button" onclick="insertEmoji('🤝')" title="Acordo">🤝</button>
+                        <button type="button" onclick="insertEmoji('📞')" title="Contato">📞</button>
+                        <button type="button" onclick="insertEmoji('✍️')" title="Assinatura">✍️</button>
+                    </div>
+                    <textarea id="postConteudo" placeholder="Escreva o conteúdo do artigo aqui... Use a barra de formatação acima ou escreva direto."></textarea>
                 </div>
 
                 <div class="form-group form-group-check">
@@ -488,6 +557,46 @@
 
         function generateSlug(text) {
             return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-');
+        }
+
+        function formatText(type) {
+            const textarea = document.getElementById('postConteudo');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            const selected = text.substring(start, end);
+            
+            let formatted = '';
+            switch(type) {
+                case 'bold':
+                    formatted = `**${selected}**`;
+                    break;
+                case 'italic':
+                    formatted = `_${selected}_`;
+                    break;
+                case 'underline':
+                    formatted = `__${selected}__`;
+                    break;
+                case 'h2':
+                    formatted = `\n## ${selected}\n`;
+                    break;
+                case 'list':
+                    formatted = `\n- ${selected}`;
+                    break;
+                default:
+                    formatted = selected;
+            }
+            
+            textarea.value = text.substring(0, start) + formatted + text.substring(end);
+            textarea.focus();
+        }
+
+        function insertEmoji(emoji) {
+            const textarea = document.getElementById('postConteudo');
+            const start = textarea.selectionStart;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + emoji + text.substring(start);
+            textarea.focus();
         }
 
         function showLoading(show) { document.getElementById('loading').classList.toggle('active', show); }
