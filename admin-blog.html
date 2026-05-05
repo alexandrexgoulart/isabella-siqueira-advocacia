@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Blog - Isabella Siqueira Advocacia</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #1A2B4A;
+            --primary-light: #243657;
+            --accent: #C5964B;
+            --accent-hover: #A87B38;
+            --bg-light: #F8F6F1;
+            --bg-card: #FFFFFF;
+            --success: #059669;
+            --danger: #e74c3c;
+            --text: #1A1A1A;
+            --text-light: #666666;
+            --border: #E5E5E5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-light);
+            color: var(--text);
+        }
+
+        /* Login Screen */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 1rem;
+        }
+
+        .login-box {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .login-box h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-box p {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-box button:hover {
+            background: var(--accent-hover);
+        }
+
+        .login-error {
+            color: var(--danger);
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* Dashboard */
+        .admin-dashboard {
+            display: none;
+        }
+
+        .admin-header {
+            background: var(--primary);
+            color: var(--bg-light);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+        }
+
+        .admin-header h1 span {
+            color: var(--accent);
+        }
+
+        .admin-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .admin-header a {
+            color: var(--bg-light);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        /* Stats */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Posts List */
+        .posts-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 2rem;
+        }
+
+        .posts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .posts-header h2 {
+            color: var(--primary);
+        }
+
+        .new-post-btn {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .new-post-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .posts-table {
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .posts-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .posts-table th {
+            background: var(--primary);
+            color: var(--bg-light);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .posts-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .posts-table tr:hover {
+            background: rgba(197,150,75,0.05);
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-published {
+            background: rgba(5,150,105,0.1);
+            color: var(--success);
+        }
+
+        .status-draft {
+            background: rgba(102,102,102,0.1);
+            color: var(--text-light);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .edit-btn {
+            background: rgba(197,150,75,0.1);
+            color: var(--accent);
+        }
+
+        .edit-btn:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .delete-btn {
+            background: rgba(231,76,60,0.1);
+            color: var(--danger);
+        }
+
+        .delete-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Editor Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            justify-content: center;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            width: 100%;
+            max-width: 900px;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            color: var(--primary);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-group textarea {
+            min-height: 300px;
+            resize: vertical;
+            line-height: 1.8;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group-check input {
+            width: auto;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .save-btn {
+            background: var(--success);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .save-btn:hover {
+            background: #048a5e;
+        }
+
+        .cancel-btn {
+            background: transparent;
+            color: var(--text);
+            padding: 1rem 2rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .cancel-btn:hover {
+            border-color: var(--text);
+        }
+
+        /* Preview */
+        .preview-btn {
+            background: var(--primary);
+            color: var(--bg-light);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Loading */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-overlay i {
+            font-size: 3rem;
+            color: var(--accent);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: var(--bg-light);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transform: translateY(100px);
+            transition: transform 0.3s;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .posts-table {
+                overflow-x: auto;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h1>Isabella Siqueira</h1>
+            <p>Blog Admin - Advocacia</p>
+            <form id="loginForm">
+                <input type="password" id="password" placeholder="Senha de acesso" required>
+                <button type="submit">Entrar</button>
+            </form>
+            <p class="login-error" id="loginError">Senha incorreta</p>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="admin-dashboard" id="dashboard">
+        <header class="admin-header">
+            <h1>Admin <span>Blog</span></h1>
+            <div class="admin-header-actions">
+                <a href="blog.html" target="_blank">Ver Blog</a>
+                <button class="logout-btn" onclick="logout()">Sair</button>
+            </div>
+        </header>
+
+        <div class="admin-stats">
+            <div class="stat-card">
+                <h3>Total de Artigos</h3>
+                <div class="value" id="totalPosts">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Publicados</h3>
+                <div class="value" id="publishedPosts">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Rascunhos</h3>
+                <div class="value" id="draftPosts">0</div>
+            </div>
+        </div>
+
+        <section class="posts-section">
+            <div class="posts-header">
+                <h2>Artigos</h2>
+                <button class="new-post-btn" onclick="openEditor()">
+                    <i class="fas fa-plus"></i> Novo Artigo
+                </button>
+            </div>
+
+            <div class="posts-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Categoria</th>
+                            <th>Status</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="postsTable">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Editor Modal -->
+    <div class="modal-overlay" id="editorModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="editorTitle">Novo Artigo</h2>
+                <button class="close-modal" onclick="closeEditor()">&times;</button>
+            </div>
+
+            <form id="postForm">
+                <input type="hidden" id="postId">
+
+                <div class="form-group">
+                    <label>Título do Artigo</label>
+                    <input type="text" id="postTitulo" placeholder="Digite o título..." required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select id="postCategoria">
+                            <option value="Geral">Geral</option>
+                            <option value="Aposentadoria">Aposentadoria</option>
+                            <option value="Benefícios">Benefícios</option>
+                            <option value="Auxílio Doença">Auxílio Doença</option>
+                            <option value="Pensão por Morte">Pensão por Morte</option>
+                            <option value="Salário Maternidade">Salário Maternidade</option>
+                            <option value="BPC LOAS">BPC LOAS</option>
+                            <option value="Revisão de Benefícios">Revisão de Benefícios</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>URL da Imagem</label>
+                        <input type="url" id="postImagem" placeholder="https://...">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Resumo (opcional)</label>
+                    <input type="text" id="postResumo" placeholder="Breve descrição para o card do blog...">
+                </div>
+
+                <div class="form-group">
+                    <label>Conteúdo do Artigo</label>
+                    <textarea id="postConteudo" placeholder="Escreva o conteúdo do artigo aqui...
+
+Dica: Use parágrafos separados por linhas em branco."></textarea>
+                </div>
+
+                <div class="form-group form-group-check">
+                    <input type="checkbox" id="postPublicado">
+                    <label for="postPublicado">Publicar artigo imediatamente</label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="preview-btn" onclick="previewPost()">Preview</button>
+                    <button type="button" class="cancel-btn" onclick="closeEditor()">Cancelar</button>
+                    <button type="submit" class="save-btn">Salvar Artigo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-overlay" id="loading">
+        <i class="fas fa-spinner"></i>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">Mensagem salva!</div>
+
+    <script>
+        // Config
+        const SUPABASE_URL = 'https://gpvwgogcfgohxdstoocc.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwdndnb2djZmdvaHhkc3Rvb2NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwMDgzODYsImV4cCI6MjA5MzU4NDM4Nn0.h7lXdFmdInuHhhBjsXKdn8t2ty_zl47-oU_MXtQUpNY';
+        
+        const ADMIN_PASSWORD = 'adminisabella2026';
+        let allPosts = [];
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            setupEventListeners();
+        });
+
+        function checkAuth() {
+            const isLogged = localStorage.getItem('adminBlogLogged');
+            if (isLogged === 'true') {
+                showDashboard();
+            }
+        }
+
+        function setupEventListeners() {
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('postForm').addEventListener('submit', handleSavePost);
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            
+            if (password === ADMIN_PASSWORD) {
+                localStorage.setItem('adminBlogLogged', 'true');
+                showDashboard();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('adminBlogLogged');
+            location.reload();
+        }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            loadPosts();
+        }
+
+        async function loadPosts() {
+            showLoading(true);
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?order=created_at.desc`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+
+                allPosts = await response.json();
+                renderStats();
+                renderPostsTable();
+
+            } catch (error) {
+                console.error('Erro:', error);
+                showToast('Erro ao carregar artigos');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function renderStats() {
+            document.getElementById('totalPosts').textContent = allPosts.length;
+            document.getElementById('publishedPosts').textContent = allPosts.filter(p => p.publicado).length;
+            document.getElementById('draftPosts').textContent = allPosts.filter(p => !p.publicado).length;
+        }
+
+        function renderPostsTable() {
+            const tbody = document.getElementById('postsTable');
+            
+            if (allPosts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-light)">Nenhum artigo encontrado</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = allPosts.map(post => `
+                <tr>
+                    <td><strong>${post.titulo}</strong></td>
+                    <td>${post.categoria}</td>
+                    <td><span class="status-badge ${post.publicado ? 'status-published' : 'status-draft'}">${post.publicado ? 'Publicado' : 'Rascunho'}</span></td>
+                    <td>${formatDate(post.created_at)}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn edit-btn" onclick="editPost('${post.id}')" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn" onclick="deletePost('${post.id}')" title="Excluir">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        // Editor
+        function openEditor(post = null) {
+            const modal = document.getElementById('editorModal');
+            const form = document.getElementById('postForm');
+            
+            if (post) {
+                document.getElementById('editorTitle').textContent = 'Editar Artigo';
+                document.getElementById('postId').value = post.id;
+                document.getElementById('postTitulo').value = post.titulo;
+                document.getElementById('postCategoria').value = post.categoria;
+                document.getElementById('postImagem').value = post.imagem_url || '';
+                document.getElementById('postResumo').value = post.resumo || '';
+                document.getElementById('postConteudo').value = post.conteudo;
+                document.getElementById('postPublicado').checked = post.publicado;
+            } else {
+                document.getElementById('editorTitle').textContent = 'Novo Artigo';
+                form.reset();
+                document.getElementById('postId').value = '';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeEditor() {
+            document.getElementById('editorModal').classList.remove('active');
+        }
+
+        function editPost(id) {
+            const post = allPosts.find(p => p.id === id);
+            if (post) {
+                openEditor(post);
+            }
+        }
+
+        async function handleSavePost(e) {
+            e.preventDefault();
+            showLoading(true);
+
+            const id = document.getElementById('postId').value;
+            const data = {
+                titulo: document.getElementById('postTitulo').value,
+                categoria: document.getElementById('postCategoria').value,
+                imagem_url: document.getElementById('postImagem').value,
+                resumo: document.getElementById('postResumo').value,
+                conteudo: document.getElementById('postConteudo').value,
+                publicado: document.getElementById('postPublicado').checked,
+                autor: 'Isabella Siqueira',
+                slug: generateSlug(document.getElementById('postTitulo').value)
+            };
+
+            try {
+                let response;
+                
+                if (id) {
+                    // Update
+                    response = await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'apikey': SUPABASE_KEY,
+                            'Authorization': `Bearer ${SUPABASE_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+                } else {
+                    // Create
+                    response = await fetch(`${SUPABASE_URL}/rest/v1/posts`, {
+                        method: 'POST',
+                        headers: {
+                            'apikey': SUPABASE_KEY,
+                            'Authorization': `Bearer ${SUPABASE_KEY}`,
+                            'Content-Type': 'application/json',
+                            'Prefer': 'return=representation'
+                        },
+                        body: JSON.stringify(data)
+                    });
+                }
+
+                if (!response.ok) throw new Error('Erro ao salvar');
+
+                showToast(id ? 'Artigo atualizado!' : 'Artigo criado!');
+                closeEditor();
+                loadPosts();
+
+            } catch (error) {
+                console.error('Erro:', error);
+                showToast('Erro ao salvar artigo');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function deletePost(id) {
+            if (!confirm('Tem certeza que deseja excluir este artigo?')) return;
+            
+            showLoading(true);
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?id=eq.${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Erro ao excluir');
+
+                showToast('Artigo excluído!');
+                loadPosts();
+
+            } catch (error) {
+                console.error('Erro:', error);
+                showToast('Erro ao excluir artigo');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function previewPost() {
+            const titulo = document.getElementById('postTitulo').value;
+            const conteudo = document.getElementById('postConteudo').value;
+            const url = `data:text/html;charset=utf-8,
+                <h1>${titulo}</h1>
+                <p>${conteudo.replace(/\n/g, '<br>')}</p>
+            `;
+            window.open(url, '_blank');
+        }
+
+        function generateSlug(text) {
+            return text
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9\s-]/g, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('active', show);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>

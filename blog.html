@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Isabella Siqueira Advocacia Previdenciária</title>
+    <meta name="description" content="Artigos e notícias sobre direito previdenciário, aposentadorias, benefícios do INSS e muito mais.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        :root {
+            --primary: #1A2B4A;
+            --primary-light: #243657;
+            --accent: #C5964B;
+            --accent-hover: #A87B38;
+            --bg-light: #F8F6F1;
+            --bg-card: #FFFFFF;
+            --success: #059669;
+            --text: #1A1A1A;
+            --text-light: #666666;
+            --border: #E5E5E5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .blog-header {
+            background: var(--primary);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .blog-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .blog-logo {
+            color: var(--bg-light);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .blog-logo span {
+            color: var(--accent);
+        }
+
+        .blog-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .blog-nav a {
+            color: var(--bg-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .blog-nav a:hover {
+            color: var(--accent);
+        }
+
+        .blog-cta {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .blog-cta:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Hero */
+        .blog-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(197,150,75,0.1) 0%, transparent 50%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .blog-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .blog-hero h1 {
+            color: var(--bg-light);
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .blog-hero p {
+            color: rgba(248,246,241,0.8);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Search & Filter */
+        .blog-filter {
+            background: var(--bg-card);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 70px;
+            z-index: 90;
+        }
+
+        .blog-filter-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--accent);
+            color: var(--primary);
+            border-color: var(--accent);
+        }
+
+        /* Posts Grid */
+        .blog-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .post-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            animation: fadeIn 0.5s ease both;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .post-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+        }
+
+        .post-content {
+            padding: 1.5rem;
+        }
+
+        .post-category {
+            display: inline-block;
+            background: rgba(197,150,75,0.1);
+            color: var(--accent);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .post-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .post-resumo {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .post-author i {
+            color: var(--accent);
+        }
+
+        .post-date {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--border);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            color: var(--accent);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .blog-footer {
+            background: var(--primary);
+            color: var(--bg-light);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .blog-footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .blog-footer h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .blog-footer p {
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .blog-footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .blog-footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 2rem;
+            padding-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.6;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .blog-hero h1 {
+                font-size: 2rem;
+            }
+
+            .blog-filter-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .category-filters {
+                justify-content: center;
+            }
+
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="blog-header">
+        <div class="blog-header-content">
+            <a href="index.html" class="blog-logo">Isabella <span>Siqueira</span></a>
+            <nav class="blog-nav">
+                <a href="index.html">Início</a>
+                <a href="#sobre">Sobre</a>
+                <a href="#servicos">Serviços</a>
+                <a href="#blog">Blog</a>
+                <a href="https://wa.me/5562983000708" class="blog-cta" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Falar com Advogada
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="blog-hero">
+        <div class="blog-hero-content">
+            <h1 data-aos="fade-up">Blog Previdenciário</h1>
+            <p data-aos="fade-up" data-aos-delay="0.2">Artigos, notícias e dicas sobre direito previdenciário, aposentadorias e benefícios do INSS.</p>
+        </div>
+    </section>
+
+    <!-- Filter -->
+    <div class="blog-filter">
+        <div class="blog-filter-content">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Buscar artigos...">
+            </div>
+            <div class="category-filters" id="categoryFilters">
+                <button class="category-btn active" data-category="all">Todos</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Posts -->
+    <main class="blog-container">
+        <div class="posts-grid" id="postsGrid">
+            <div class="loading">
+                <i class="fas fa-spinner"></i>
+                <p>Carregando artigos...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="blog-footer">
+        <div class="blog-footer-content">
+            <h3>Precisa de ajuda com seu benefício?</h3>
+            <p>Fale com uma especialista em direito previdenciário.</p>
+            <a href="https://wa.me/5562983000708" class="blog-cta" target="_blank">
+                <i class="fab fa-whatsapp"></i> Agendar Consulta
+            </a>
+            <div class="blog-footer-bottom">
+                <p>&copy; 2026 Isabella Siqueira Advocacia. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AOS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Blog JS -->
+    <script>
+        // Config Supabase
+        const SUPABASE_URL = 'https://gpvwgogcfgohxdstoocc.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwdndnb2djZmdvaHhkc3Rvb2NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwMDgzODYsImV4cCI6MjA5MzU4NDM4Nn0.h7lXdFmdInuHhhBjsXKdn8t2ty_zl47-oU_MXtQUpNY';
+
+        // Categorias disponíveis
+        const categorias = [
+            'Aposentadoria',
+            'Benefícios',
+            'Auxílio Doença',
+            'Pensão por Morte',
+            'Salário Maternidade',
+            'BPC LOAS',
+            'Revisão de Benefícios',
+            'Geral'
+        ];
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            initAOS();
+            initCategorias();
+            loadPosts();
+            initSearch();
+        });
+
+        function initAOS() {
+            AOS.init({
+                duration: 800,
+                once: true
+            });
+        }
+
+        function initCategorias() {
+            const container = document.getElementById('categoryFilters');
+            categorias.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-btn';
+                btn.dataset.category = cat;
+                btn.textContent = cat;
+                btn.addEventListener('click', () => filterByCategory(cat, btn));
+                container.appendChild(btn);
+            });
+        }
+
+        let currentCategory = 'all';
+        let allPosts = [];
+
+        async function loadPosts() {
+            const grid = document.getElementById('postsGrid');
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?publicado=eq.true&order=created_at.desc`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Erro ao carregar posts');
+
+                allPosts = await response.json();
+
+                if (allPosts.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1/-1;">
+                            <i class="fas fa-newspaper"></i>
+                            <h3>Nenhum artigo encontrado</h3>
+                            <p>Em breve publicaremos novos conteúdos sobre direito previdenciário.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                renderPosts(allPosts);
+
+            } catch (error) {
+                console.error('Erro:', error);
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Erro ao carregar artigos</h3>
+                        <p>Tente novamente mais tarde.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderPosts(posts) {
+            const grid = document.getElementById('postsGrid');
+            grid.innerHTML = posts.map((post, index) => `
+                <article class="post-card" onclick="window.location.href='artigo.html?id=${post.id}'" style="animation-delay: ${index * 0.1}s">
+                    <img src="${post.imagem_url || 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800'}" 
+                         alt="${post.titulo}" 
+                         class="post-image">
+                    <div class="post-content">
+                        <span class="post-category">${post.categoria}</span>
+                        <h2 class="post-title">${post.titulo}</h2>
+                        <p class="post-resumo">${post.resumo || post.conteudo.substring(0, 150) + '...'}</p>
+                        <div class="post-meta">
+                            <span class="post-author">
+                                <i class="fas fa-user"></i> ${post.autor}
+                            </span>
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i> ${formatDate(post.created_at)}
+                            </span>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        function filterByCategory(category, btn) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentCategory = category;
+
+            const filtered = category === 'all' 
+                ? allPosts 
+                : allPosts.filter(p => p.categoria === category);
+            
+            renderPosts(filtered);
+        }
+
+        function initSearch() {
+            const input = document.getElementById('searchInput');
+            input.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                const filtered = allPosts.filter(p => 
+                    p.titulo.toLowerCase().includes(term) || 
+                    (p.resumo && p.resumo.toLowerCase().includes(term)) ||
+                    p.categoria.toLowerCase().includes(term)
+                );
+                renderPosts(filtered);
+            });
+        }
+    </script>
+</body>
+</html>
