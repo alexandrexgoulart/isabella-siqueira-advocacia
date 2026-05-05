@@ -706,6 +706,7 @@
 
         // Inicializar
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('Blog carregado - dispositivo:', window.innerWidth < 768 ? 'mobile' : (window.innerWidth < 1024 ? 'tablet' : 'desktop'));
             initAOS();
             initCategorias();
             loadPosts();
@@ -738,37 +739,47 @@
 
         async function loadPosts() {
             const grid = document.getElementById('postsGrid');
+            const url = `${SUPABASE_URL}/rest/v1/posts?publicado=eq.true&order=created_at.desc&limit=20`;
             
-            // Timeout de 10 segundos
-            const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Tempo limite excedido')), 10000)
-            );
+            console.log('URL da API:', url);
             
             try {
-                const fetchPromise = fetch(`${SUPABASE_URL}/rest/v1/posts?publicado=eq.true&order=created_at.desc&limit=20`, {
+                console.log('Iniciando fetch para Supabase...');
+                
+                const response = await fetch(url, {
                     headers: {
                         'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                        'Content-Type': 'application/json'
                     }
                 });
-                
-                const response = await Promise.race([fetchPromise, timeoutPromise]);
 
-                if (!response.ok) throw new Error('Erro ao carregar posts');
+                console.log('Resposta HTTP:', response.status, response.statusText);
 
-                allPosts = await response.json();
+                if (!response.ok) {
+                    throw new Error('Erro HTTP: ' + response.status + ' - ' + response.statusText);
+                }
+
+                const data = await response.json();
+                console.log('Dados recebidos:', data);
+                allPosts = data;
 
                 if (allPosts.length === 0) {
+                    // Mostrar estado vazio com direção para o admin
                     grid.innerHTML = `
                         <div class="empty-state" style="grid-column: 1/-1;">
                             <i class="fas fa-newspaper"></i>
                             <h3>Nenhum artigo encontrado</h3>
                             <p>Em breve publicaremos novos conteúdos sobre direito previdenciário.</p>
+                            <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-light);">
+                                <a href="admin-blog.html" style="color: var(--accent);">Publicar primeiro artigo</a>
+                            </p>
                         </div>
                     `;
                     return;
                 }
 
+                console.log('Renderizando', allPosts.length, 'artigos');
                 displayedPosts = POSTS_PER_PAGE;
                 const initialPosts = allPosts.slice(0, displayedPosts);
                 renderPosts(initialPosts);
@@ -777,12 +788,17 @@
                     document.getElementById('loadMoreContainer').style.display = 'block';
                 }
             } catch (error) {
-                console.error('Erro:', error);
+                console.error('Erro ao carregar:', error);
+                console.error('Mensagem:', error.message);
+                console.error('Tipo:', error.name);
+                
+                // Fallback: mostrar mensagem mais útil
                 grid.innerHTML = `
                     <div class="empty-state" style="grid-column: 1/-1;">
                         <i class="fas fa-exclamation-triangle"></i>
                         <h3>Erro ao carregar artigos</h3>
-                        <p>Tente novamente mais tarde.</p>
+                        <p>Verifique sua conexão e tente novamente.</p>
+                        <p style="font-size: 0.8rem; margin-top: 0.5rem; color: #999;">${error.message}</p>
                     </div>
                 `;
             }
