@@ -158,10 +158,46 @@
         .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--primary); color: var(--bg-light); padding: 1rem 2rem; border-radius: 8px; transform: translateY(100px); transition: transform 0.3s; z-index: 3000; }
         .toast.show { transform: translateY(0); }
         
+        @media (max-width: 1024px) {
+            .admin-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 768px) {
+            .login-box { padding: 1.5rem; margin: 1rem; }
+            .login-box h1 { font-size: 1.5rem; }
+            .login-box input { padding: 0.8rem; font-size: 0.9rem; }
+            .login-box button { padding: 0.8rem; }
+            
             .form-row { grid-template-columns: 1fr; }
-            .posts-table { overflow-x: auto; }
-            .admin-header { flex-direction: column; gap: 1rem; }
+            .posts-table { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .posts-table table { min-width: 600px; }
+            .admin-header { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .admin-header h1 { font-size: 1.2rem; text-align: center; }
+            .admin-header-actions { width: 100%; justify-content: center; }
+            .admin-stats { grid-template-columns: 1fr; gap: 0.8rem; }
+            .stat-card { padding: 1rem; }
+            .stat-card .value { font-size: 1.5rem; }
+            .posts-header { flex-direction: column; gap: 1rem; align-items: stretch; }
+            .posts-header h2 { font-size: 1.3rem; }
+            .new-post-btn { width: 100%; justify-content: center; }
+            .modal { margin: 0.5rem; padding: 1rem; max-width: calc(100% - 1rem); }
+            .form-group { margin-bottom: 1rem; }
+            .form-group label { font-size: 0.9rem; }
+            .form-group input, .form-group textarea { padding: 0.7rem; font-size: 0.9rem; }
+            .category-option { padding: 0.6rem 0.8rem; font-size: 0.85rem; }
+            .btn-group { flex-direction: column; gap: 0.5rem; }
+            .btn-group button { width: 100%; justify-content: center; }
+            .preview-content { padding: 1rem; font-size: 0.9rem; }
+            .preview-content h1 { font-size: 1.4rem; }
+            .toast { left: 1rem; right: 1rem; bottom: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            .admin-header { padding: 0.8rem; }
+            .admin-stats { padding: 0 1rem; }
+            .posts-section { padding: 1rem; }
+            .stat-card h3 { font-size: 0.8rem; }
+            .stat-card .value { font-size: 1.3rem; }
         }
     </style>
 </head>
