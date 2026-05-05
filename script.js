@@ -2292,21 +2292,38 @@ Mensagem: ${message}`
 
             // Se não tem dados salvos, buscar do site atual
             if (Object.keys(savedData).length === 0) {
+                // Título Principal - trim para remover espaços extras
                 const heroTitleEl = document.querySelector('#hero-title');
+                document.getElementById('simple-hero-title').value = heroTitleEl ? heroTitleEl.textContent.trim() : '';
+
+                // Descrição - trim para remover espaços extras
                 const heroDescEl = document.querySelector('#hero-desc');
+                document.getElementById('simple-hero-desc').value = heroDescEl ? heroDescEl.textContent.trim() : '';
+
+                // Texto do Botão
                 const heroBtnEl = document.querySelector('#hero-btn-text');
-                const whatsappEl = document.querySelector('.hero-buttons a[href*="wa.me"], .btn-whatsapp[href*="wa.me"]');
-                const emailEl = document.querySelector('.contact-card a[href^="mailto:"]');
+                document.getElementById('simple-hero-btn').value = heroBtnEl ? heroBtnEl.textContent.trim() : '';
 
-                document.getElementById('simple-hero-title').value = heroTitleEl ? heroTitleEl.textContent : '';
-                document.getElementById('simple-hero-desc').value = heroDescEl ? heroDescEl.textContent : '';
-                document.getElementById('simple-hero-btn').value = heroBtnEl ? heroBtnEl.textContent : '';
-                document.getElementById('simple-email').value = emailEl ? emailEl.textContent.replace('mailto:', '') : '';
-
-                if (whatsappEl) {
-                    const href = whatsappEl.getAttribute('href') || '';
+                // WhatsApp - buscar do header (número real)
+                const headerWhatsapp = document.querySelector('#header-whatsapp-a');
+                if (headerWhatsapp) {
+                    const href = headerWhatsapp.getAttribute('href') || '';
                     const match = href.match(/wa\.me\/(\d+)/);
-                    document.getElementById('simple-whatsapp').value = match ? match[1] : '';
+                    document.getElementById('simple-whatsapp').value = match ? match[1] : '62983000708';
+                }
+
+                // Email - buscar do contact card
+                const emailEl = document.querySelector('.contact-card a[href^="mailto:"]');
+                if (emailEl) {
+                    document.getElementById('simple-email').value = emailEl.getAttribute('href').replace('mailto:', '');
+                } else {
+                    document.getElementById('simple-email').value = 'advisabellasiqueira@gmail.com';
+                }
+
+                // Texto Sobre - buscar do about
+                const sobreEl = document.querySelector('#sobre-text');
+                if (sobreEl) {
+                    document.getElementById('simple-sobre-text').value = sobreEl.textContent.trim();
                 }
             } else {
                 // Usar dados salvos
@@ -2328,29 +2345,42 @@ Mensagem: ${message}`
 
         // Aplicar alterações ao site
         function applySimpleData(data) {
+            // Título Principal
             if (data.heroTitle) {
                 const el = document.querySelector('#hero-title');
                 if (el) el.textContent = data.heroTitle;
             }
+            // Descrição
             if (data.heroDesc) {
                 const el = document.querySelector('#hero-desc');
                 if (el) el.textContent = data.heroDesc;
             }
+            // Texto do Botão
             if (data.heroBtnText) {
                 const el = document.querySelector('#hero-btn-text');
                 if (el) el.textContent = data.heroBtnText;
             }
+            // WhatsApp - atualizar todos os links
             if (data.whatsapp) {
-                const btnHref = document.querySelector('#hero-btn-whatsapp, .hero-buttons a[href*="wa.me"], .btn-whatsapp[href*="wa.me"]');
-                if (btnHref) btnHref.href = 'https://wa.me/' + data.whatsapp.replace(/\D/g, '');
+                const cleanPhone = data.whatsapp.replace(/\D/g, '');
+                const waLinks = document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp"]');
+                waLinks.forEach(link => {
+                    link.href = 'https://wa.me/' + cleanPhone;
+                });
             }
+            // Email - atualizar todos os links
             if (data.email) {
-                const emailLink = document.querySelector('.contact-card a[href^="mailto:"]');
-                if (emailLink) emailLink.href = 'mailto:' + data.email;
+                const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
+                emailLinks.forEach(link => {
+                    link.href = 'mailto:' + data.email;
+                });
             }
+            // Foto - atualizar foto da advogada
             if (data.foto) {
-                const fotoHero = document.querySelector('.hero-image, .about-image, .lawyer-image');
+                const fotoHero = document.querySelector('.hero-image');
+                const fotoAbout = document.querySelector('.lawyer-image');
                 if (fotoHero) fotoHero.src = data.foto;
+                if (fotoAbout) fotoAbout.src = data.foto;
             }
             // Salvar no localStorage para carregar no futuro
             localStorage.setItem(SIMPLE_EDIT_KEY, JSON.stringify(data));
