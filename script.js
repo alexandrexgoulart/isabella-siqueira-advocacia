@@ -2047,7 +2047,10 @@ Mensagem: ${message}`
                     justify-content: center;
                     padding: 20px;
                 }
-                .simple-edit-overlay.open { display: flex; }
+                .simple-edit-overlay.open { display: flex !important; }
+                .simple-edit-panel {
+                    pointer-events: auto;
+                }
                 .simple-edit-panel {
                     background: #fff;
                     border-radius: 16px;
@@ -2147,13 +2150,7 @@ Mensagem: ${message}`
                     align-items: center;
                     justify-content: center;
                 }
-                .simple-login-overlay.open { display: flex; }
-                .simple-login-box {
-                    pointer-events: auto;
-                }
-                .simple-login-overlay .simple-login-box * {
-                    pointer-events: auto;
-                }
+                .simple-login-overlay.open { display: flex !important; }
                 .simple-login-box {
                     background: #fff;
                     padding: 40px;
@@ -2289,21 +2286,43 @@ Mensagem: ${message}`
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // Carregar dados salvos
+        // Carregar dados salvos do site
         function loadSimpleData() {
-            const data = JSON.parse(localStorage.getItem(SIMPLE_EDIT_KEY) || '{}');
-            if (data.heroTitle) document.getElementById('simple-hero-title').value = data.heroTitle;
-            if (data.heroDesc) document.getElementById('simple-hero-desc').value = data.heroDesc;
-            if (data.heroBtnText) document.getElementById('simple-hero-btn').value = data.heroBtnText;
-            if (data.sobreText) document.getElementById('simple-sobre-text').value = data.sobreText;
-            if (data.whatsapp) document.getElementById('simple-whatsapp').value = data.whatsapp;
-            if (data.email) document.getElementById('simple-email').value = data.email;
-            if (data.foto) {
-                const img = document.getElementById('simple-foto-preview');
-                const placeholder = document.getElementById('simple-foto-placeholder');
-                img.src = data.foto;
-                img.style.display = 'block';
-                placeholder.style.display = 'none';
+            const savedData = JSON.parse(localStorage.getItem(SIMPLE_EDIT_KEY) || '{}');
+
+            // Se não tem dados salvos, buscar do site atual
+            if (Object.keys(savedData).length === 0) {
+                const heroTitleEl = document.querySelector('#hero-title');
+                const heroDescEl = document.querySelector('#hero-desc');
+                const heroBtnEl = document.querySelector('#hero-btn-text');
+                const whatsappEl = document.querySelector('.hero-buttons a[href*="wa.me"], .btn-whatsapp[href*="wa.me"]');
+                const emailEl = document.querySelector('.contact-card a[href^="mailto:"]');
+
+                document.getElementById('simple-hero-title').value = heroTitleEl ? heroTitleEl.textContent : '';
+                document.getElementById('simple-hero-desc').value = heroDescEl ? heroDescEl.textContent : '';
+                document.getElementById('simple-hero-btn').value = heroBtnEl ? heroBtnEl.textContent : '';
+                document.getElementById('simple-email').value = emailEl ? emailEl.textContent.replace('mailto:', '') : '';
+
+                if (whatsappEl) {
+                    const href = whatsappEl.getAttribute('href') || '';
+                    const match = href.match(/wa\.me\/(\d+)/);
+                    document.getElementById('simple-whatsapp').value = match ? match[1] : '';
+                }
+            } else {
+                // Usar dados salvos
+                if (savedData.heroTitle) document.getElementById('simple-hero-title').value = savedData.heroTitle;
+                if (savedData.heroDesc) document.getElementById('simple-hero-desc').value = savedData.heroDesc;
+                if (savedData.heroBtnText) document.getElementById('simple-hero-btn').value = savedData.heroBtnText;
+                if (savedData.sobreText) document.getElementById('simple-sobre-text').value = savedData.sobreText;
+                if (savedData.whatsapp) document.getElementById('simple-whatsapp').value = savedData.whatsapp;
+                if (savedData.email) document.getElementById('simple-email').value = savedData.email;
+                if (savedData.foto) {
+                    const img = document.getElementById('simple-foto-preview');
+                    const placeholder = document.getElementById('simple-foto-placeholder');
+                    img.src = savedData.foto;
+                    img.style.display = 'block';
+                    placeholder.style.display = 'none';
+                }
             }
         }
 
@@ -2363,8 +2382,15 @@ Mensagem: ${message}`
                 }
             });
 
-            // Login
-            document.getElementById('simpleLoginBtn').addEventListener('click', () => {
+            // Login - clique
+            document.getElementById('simpleLoginBtn').addEventListener('click', () => doLogin());
+
+            // Login - Enter
+            document.getElementById('simplePassword').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') doLogin();
+            });
+
+            function doLogin() {
                 const input = document.getElementById('simplePassword');
                 const hash = btoa(input.value);
                 const passHash = localStorage.getItem(SIMPLE_PASS_KEY) || btoa(DEFAULT_PASS);
@@ -2376,7 +2402,7 @@ Mensagem: ${message}`
                 } else {
                     showSimpleToast('Senha incorreta');
                 }
-            });
+            }
 
             // Fechar painel
             document.getElementById('simpleCloseBtn').addEventListener('click', () => {
