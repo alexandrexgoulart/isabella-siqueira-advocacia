@@ -413,14 +413,11 @@ document.addEventListener('DOMContentLoaded', function() {
         privacyBanner.style.display = 'none';
     }
 
-    // Formulário de contato - usar a variável já declarada acima
+    // Formulário de contato - versão simplificada
     if (contactForm) {
-        // Remover event listeners anteriores para evitar duplicação
-        const newContactForm = contactForm.cloneNode(true);
-        contactForm.parentNode.replaceChild(newContactForm, contactForm);
-        
-        newContactForm.addEventListener('submit', async function(event) {
+        contactForm.addEventListener('submit', async function(event) {
             event.preventDefault();
+            event.stopPropagation();
             
             const name = document.getElementById('contactName').value.trim();
             const email = document.getElementById('contactEmail').value.trim();
@@ -434,28 +431,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Salvar contato no Supabase
-            console.log('Salvando contato...');
             const saved = await saveContactToSupabase(name, email, phone, message);
-            console.log('Salvamento result:', saved);
 
             // Abrir WhatsApp
             const whatsappText = encodeURIComponent(
                 `Olá, sou ${name}.\nEmail: ${email}\nTelefone/WhatsApp: ${phone}\nMensagem: ${message}`
             );
             const whatsappUrl = `https://wa.me/5562983000708?text=${whatsappText}`;
-            console.log('WhatsApp URL:', whatsappUrl);
-            
-            // Abrir WhatsApp em nova aba
-            const whatsappWindow = window.open(whatsappUrl, '_blank');
-            
-            if (whatsappWindow) {
-                showToast('WhatsApp aberto! Envie a mensagem.');
-            } else {
-                showToast('Permita pop-ups para abrir o WhatsApp.');
-            }
+            window.open(whatsappUrl, '_blank');
 
             // Limpar formulário
-            newContactForm.reset();
+            contactForm.reset();
 
             // Mostrar mensagem de status
             const contactMessage = document.getElementById('contactSubmitMessage');
