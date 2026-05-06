@@ -17,72 +17,10 @@
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="styles.css?v=5">
+<link rel="stylesheet" href="styles.css?v=5">
     
     <style>
-        /* Header */
-        .blog-header {
-            background: var(--primary);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-
-        .blog-header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .blog-logo {
-            color: var(--bg-light);
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        .blog-logo span {
-            color: var(--accent);
-        }
-
-        .blog-nav {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .blog-nav a {
-            color: var(--bg-light);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .blog-nav a:hover {
-            color: var(--accent);
-        }
-
-        .blog-cta {
-            background: var(--accent);
-            color: var(--primary);
-            padding: 0.6rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .blog-cta:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-
-/* Hero */
+        /* Blog específico */
         .blog-hero {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             padding: 2.5rem 1.5rem;
@@ -588,20 +526,35 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="blog-header">
-        <div class="blog-header-content">
-            <a href="index.html" class="blog-logo">Isabella <span>Siqueira</span></a>
-            <nav class="blog-nav">
-                <a href="index.html">Início</a>
-                <a href="#sobre">Sobre</a>
-                <a href="#servicos">Serviços</a>
-                <a href="#blog">Blog</a>
-                <a href="https://wa.me/5562983000708" class="blog-cta" target="_blank">
-                    <i class="fab fa-whatsapp"></i> Falar com Advogada
+    <!-- Header - Mesma estrutura do site principal -->
+    <header class="header" id="header">
+        <nav class="navbar">
+            <div class="container nav-container">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">IS</span>
+                    <div class="logo-text">
+                        <span class="name">Isabella Siqueira</span>
+                        <span class="subtitle">Advocacia</span>
+                    </div>
                 </a>
-            </nav>
-        </div>
+                <ul class="nav-links" role="menu">
+                    <li><a href="index.html" role="menuitem">Início</a></li>
+                    <li><a href="index.html#servicos" role="menuitem">Serviços</a></li>
+                    <li><a href="index.html#sobre" role="menuitem">Sobre</a></li>
+                    <li><a href="blog.html" role="menuitem">Blog</a></li>
+                    <li><a href="index.html#contato" role="menuitem">Contato</a></li>
+                </ul>
+                <a href="https://wa.me/5562983000708" class="btn-whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>(62) 9 8300-0708</span>
+                </a>
+                <button class="mobile-toggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
     </header>
 
     <!-- Hero -->
