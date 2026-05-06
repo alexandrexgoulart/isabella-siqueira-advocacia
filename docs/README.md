@@ -187,6 +187,7 @@ Ao atualizar o CSS, incremente o número da versão.
 | 2.1 | Mai 2026 | Blog completo com admin e Supabase |
 | 2.2 | Mai 2026 | Fix RLS + GRANT permissions (blog não carregava no mobile) |
 | 2.3 | Mai 2026 | Fix admin-blog.html mobile (categorias, backgrounds, preview) |
+| 2.4 | Mai 2026 | Padroniza largura 800px em todas as etapas + white-space pre-wrap |
 
 ---
 
@@ -219,3 +220,13 @@ GRANT SELECT ON public.posts TO authenticated;
 **Causa:** object-fit: cover cortava a imagem.
 
 **Solução:** Trocado para object-fit: contain.
+
+### Emojis/texto quebra de linha diferente em cada dispositivo
+**Causa:** Larguras diferentes em cada etapa (editor 900px, preview 800px, artigo 680px).
+
+**Solução executada:**
+- Editor (admin): max-width 900px → 800px
+- Artigo publicado: max-width 680px → 800px
+- Editor textarea: adicionado `white-space: pre-wrap; word-wrap: break-word;`
+
+**Resultado:** Conteúdo digitado aparece IGUAL em qualquer dispositivo (PC, celular, tablet) e em todas as etapas (editor, preview, publicado).
