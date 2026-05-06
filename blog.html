@@ -23,10 +23,11 @@
         /* Blog específico */
         .blog-hero {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            padding: 2.5rem 1.5rem;
+            padding: 4rem 1.5rem 2.5rem;
             text-align: center;
             position: relative;
             overflow: hidden;
+            margin-top: 60px;
         }
 
         .blog-hero::before {
@@ -458,6 +459,8 @@
     </style>
 </head>
 <body>
+    <div class="premium-cursor"></div>
+    
     <!-- Header - Mesma estrutura do site principal -->
     <header class="header" id="header">
         <nav class="navbar">
@@ -578,6 +581,9 @@
 
     <!-- AOS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Main Script (cursor + AOS) -->
+    <script src="script.js"></script>
     
     <!-- Blog JS -->
     <script>
