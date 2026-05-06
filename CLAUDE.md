@@ -1,5 +1,9 @@
 # Isabella Siqueira Advocacia
 
+**IMPORTANTE:** No início de cada sessão, leia o arquivo `SESSION.md` para obter o contexto completo da última sessão e continuar de onde parou.
+
+---
+
 ## Visão Geral do Projeto
 
 Site institucional para escritório de advocacia especializado em **Direito Previdenciário** + **Blog** para artigos.
