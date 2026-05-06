@@ -29,6 +29,16 @@ Eu atualizo automaticamente ao final de cada sessão. O usuário não precisa di
 
 ---
 
+## RESUMO - Como a Memória Funciona
+
+| Situação | O que acontece |
+|---------|----------------|
+| Nova sessão iniciar | OpenCode → Lê CLAUDE.md → Instrui ler SESSION.md → Contexto carregado |
+| Memória não carregar | Usuário pode digitar: "Leia o SESSION.md para continuar" |
+| Atualização | Eu atualizo automaticamente ao final de cada sessão |
+
+---
+
 ## Contexto do Projeto
 
 ### O que é
