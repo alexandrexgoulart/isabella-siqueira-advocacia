@@ -45,9 +45,16 @@
             to { transform: rotate(360deg); }
         }
 
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .blog-hero-content {
             max-width: 600px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .blog-hero h1 {
@@ -357,60 +364,6 @@
             font-size: 0.9rem;
         }
 
-        /* Footer */
-        .blog-footer {
-            background: var(--primary);
-            color: var(--bg-light);
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-
-        .blog-footer-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .blog-footer h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .blog-footer p {
-            opacity: 0.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .blog-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .blog-footer .blog-cta {
-            background: var(--accent);
-            color: var(--primary);
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .blog-footer .blog-cta:hover {
-            background: var(--accent-hover);
-        }
-
-        .blog-footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            margin-top: 2rem;
-            padding-top: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.6;
-        }
-
         /* Tablet */
         @media (max-width: 1024px) {
             .posts-grid {
@@ -485,14 +438,6 @@
                 font-size: 1rem;
             }
 
-            .blog-footer {
-                padding: 2rem 1rem;
-            }
-            
-            .blog-footer h3 {
-                font-size: 1.2rem;
-            }
-
             /* Mobile pequeno */
         @media (max-width: 480px) {
             .blog-hero { padding: 1rem 0.8rem; }
@@ -509,8 +454,6 @@
             .post-excerpt { font-size: 0.75rem; }
             .post-meta { font-size: 0.65rem; }
             .load-more-btn { padding: 0.6rem; font-size: 0.85rem; }
-            .blog-footer { padding: 1rem; }
-            .blog-footer h3 { font-size: 1rem; }
         }
     </style>
 </head>
@@ -530,6 +473,8 @@
                     <li><a href="index.html" role="menuitem">Início</a></li>
                     <li><a href="index.html#servicos" role="menuitem">Serviços</a></li>
                     <li><a href="index.html#sobre" role="menuitem">Sobre</a></li>
+                    <li><a href="index.html#restituicao" role="menuitem">Restituição</a></li>
+                    <li><a href="index.html#duvidas" role="menuitem">Dúvidas</a></li>
                     <li><a href="blog.html" role="menuitem">Blog</a></li>
                     <li><a href="index.html#contato" role="menuitem">Contato</a></li>
                 </ul>
@@ -582,16 +527,51 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="blog-footer">
-        <div class="blog-footer-content">
-            <h3>Precisa de ajuda com seu benefício?</h3>
-            <p>Fale com uma especialista em direito previdenciário.</p>
-            <a href="https://wa.me/5562983000708" class="blog-cta" target="_blank">
-                <i class="fab fa-whatsapp"></i> Agendar Consulta
-            </a>
-            <div class="blog-footer-bottom">
+    <!-- Footer - Mesmo do site principal -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon"><i class="fas fa-balance-scale"></i></span>
+                        <span class="logo-text">Isabella Siqueira</span>
+                    </a>
+                    <p>Especialista em direito previdenciário, lutando pelos seus direitos com transparência e dedicação.</p>
+                    <div class="footer-social">
+                        <a href="https://wa.me/5562983000708" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="mailto:advisabellasiqueira@gmail.com"><i class="fas fa-envelope"></i></a>
+                        <a href="https://www.instagram.com/advisabella/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/advisabella/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.linkedin.com/in/advisabella/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html#home">Início</a></li>
+                        <li><a href="index.html#servicos">Serviços</a></li>
+                        <li><a href="index.html#sobre">Sobre</a></li>
+                        <li><a href="index.html#restituicao">Restituição</a></li>
+                        <li><a href="index.html#duvidas">Dúvidas</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="index.html#contato">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i><a href="https://wa.me/5562983000708">(62) 9 8300-0708</a></li>
+                        <li><i class="fas fa-envelope"></i><a href="mailto:advisabellasiqueira@gmail.com">advisabellasiqueira@gmail.com</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i><a href="https://maps.google.com/?q=Isabella+Siqueira+Advocacia+Goi%C3%A2nia" target="_blank">Goiás, Brasil</a></li>
+                    </ul>
+                    <a href="https://wa.me/5562983000708" class="btn-footer">
+                        <i class="fab fa-whatsapp"></i> Agendar Consulta
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
                 <p>&copy; 2026 Isabella Siqueira Advocacia. Todos os direitos reservados.</p>
+                <p class="oab">OAB/GO 50.839</p>
             </div>
         </div>
     </footer>
