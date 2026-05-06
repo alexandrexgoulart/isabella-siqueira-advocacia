@@ -273,10 +273,7 @@
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
-            // Hash simple da senha
-            const hash = simpleHash(password);
-            
-            if (email === 'admin@isabella.com' && hash === '3670096c9a4b3c5e6f8d9a0b1c2d3e4f') {
+            if (email === 'admin@isabella.com' && password === 'adminisabella2026') {
                 localStorage.setItem('adminAuth', 'true');
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
@@ -286,16 +283,7 @@
             }
         }
 
-        function simpleHash(str) {
-            let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                hash = ((hash << 5) - hash) + str.charCodeAt(i);
-                hash = hash & hash;
-            }
-            return hash.toString(16);
-        }
-
-        function logout() {
+function logout() {
             localStorage.removeItem('adminAuth');
             location.reload();
         }
