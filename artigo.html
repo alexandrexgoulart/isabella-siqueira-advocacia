@@ -25,14 +25,18 @@
         .article-container {
             max-width: 800px;
             margin: 80px auto 2rem;
-            padding: 2rem;
+            padding: 2.5rem;
             text-align: left;
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
         @media (max-width: 768px) {
             .article-container {
                 margin-top: 85px;
-                padding: 1rem;
+                padding: 1.5rem;
+                border-radius: 8px;
             }
         }
 
@@ -40,7 +44,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            color: var(--text-light);
+            color: var(--primary);
             text-decoration: none;
             margin-bottom: 1.5rem;
             font-weight: 500;
@@ -56,7 +60,7 @@
             gap: 1rem;
             flex-wrap: wrap;
             margin-bottom: 1rem;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-light);
         }
 
@@ -136,23 +140,6 @@
         .share-btn:hover {
             background: var(--accent);
             color: var(--primary);
-        }
-
-        .article-cta {
-            background: var(--success);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-            font-weight: 600;
-        }
-
-        .article-cta:hover {
-            background: #047857;
         }
 
         .error {
@@ -367,24 +354,26 @@
             text-decoration: underline;
         }
 
-        /* CTA Box */
+        /* CTA Box - Box final do artigo */
         .article-cta {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-radius: 16px;
-            padding: 2rem;
-            margin: 3rem 0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
             text-align: center;
             color: var(--bg-light);
         }
 
         .article-cta h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
         }
 
         .article-cta p {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
             opacity: 0.9;
         }
 
@@ -394,10 +383,11 @@
             gap: 0.5rem;
             background: var(--accent);
             color: var(--primary);
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.5rem;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.95rem;
             transition: all 0.3s;
         }
 
@@ -406,44 +396,47 @@
             transform: translateY(-2px);
         }
 
-        /* Share */
+        /* Share - Botões de compartilhar */
         .article-share {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-top: 2rem;
-            padding-top: 2rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
             border-top: 1px solid var(--border);
+            text-align: center;
         }
 
         .article-share span {
+            display: block;
             font-weight: 600;
-            color: var(--text-light);
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
         }
 
         .share-buttons {
             display: flex;
-            gap: 0.5rem;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
         .share-btn {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            border: 1px solid var(--border);
-            background: transparent;
+            border: none;
+            background: var(--primary);
+            color: var(--bg-light);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: var(--text-light);
             transition: all 0.3s;
+            font-size: 1.1rem;
         }
 
         .share-btn:hover {
             background: var(--accent);
             color: var(--primary);
-            border-color: var(--accent);
         }
 
         /* Related Posts */
