@@ -414,8 +414,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (contactForm) {
-        contactForm.addEventListener('submit', async function(event) {
+        // Remover event listeners anteriores para evitar duplicação
+        const newContactForm = contactForm.cloneNode(true);
+        contactForm.parentNode.replaceChild(newContactForm, contactForm);
+        
+        newContactForm.addEventListener('submit', async function(event) {
             event.preventDefault();
+            
             const name = document.getElementById('contactName').value.trim();
             const email = document.getElementById('contactEmail').value.trim();
             const phone = document.getElementById('contactPhone').value.trim();
@@ -428,28 +433,37 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Salvar contato no Supabase
+            console.log('Salvando contato...');
             const saved = await saveContactToSupabase(name, email, phone, message);
-            if (saved) {
-                showToast('Mensagem salva! Abrindo WhatsApp...');
-            }
+            console.log('Salvamento result:', saved);
 
+            // Abrir WhatsApp
             const whatsappText = encodeURIComponent(
-                `Olá, sou ${name}.
-Email: ${email}
-Telefone/WhatsApp: ${phone}
-Mensagem: ${message}`
+                `Olá, sou ${name}.\nEmail: ${email}\nTelefone/WhatsApp: ${phone}\nMensagem: ${message}`
             );
             const whatsappUrl = `https://wa.me/5562983000708?text=${whatsappText}`;
-            window.open(whatsappUrl, '_blank', 'noopener');
-            contactForm.reset();
-            showToast('WhatsApp aberto para envio.');
+            console.log('WhatsApp URL:', whatsappUrl);
+            
+            // Abrir WhatsApp em nova aba
+            const whatsappWindow = window.open(whatsappUrl, '_blank');
+            
+            if (whatsappWindow) {
+                showToast('WhatsApp aberto! Envie a mensagem.');
+            } else {
+                showToast('Permita pop-ups para abrir o WhatsApp.');
+            }
 
+            // Limpar formulário
+            newContactForm.reset();
+
+            // Mostrar mensagem de status
             const contactMessage = document.getElementById('contactSubmitMessage');
             if (contactMessage) {
                 contactMessage.textContent = saved 
-                    ? 'Mensagem salva em nosso sistema. O WhatsApp foi aberto.' 
-                    : 'O WhatsApp foi aberto para envio.';
+                    ? '✅ Mensagem salva no sistema! WhatsApp aberto.' 
+                    : 'WhatsApp aberto para envio.';
                 contactMessage.style.opacity = '1';
+                contactMessage.style.color = saved ? '#059669' : '#1A1A1A';
                 setTimeout(() => {
                     if (contactMessage) contactMessage.style.opacity = '0';
                 }, 5000);
