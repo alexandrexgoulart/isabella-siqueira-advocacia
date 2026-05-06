@@ -127,3 +127,5 @@ Ver **docs/SEGURANCA_SQL.md** para configurações de segurança do Supabase.
 - artigo.html botões compartilhar padronizados (círculos, !important)
 - artigo.html article-meta forçado em linha única (!important)
 - admin-contatos.html criado (painel para visualizar submissions do formulário)
+- admin-contatos.html corrigido login com hash SHA-256 via banco de dados
+- SQL contatos executado no Supabase (criação da tabela + políticas + grants)

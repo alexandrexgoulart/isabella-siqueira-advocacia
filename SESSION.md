@@ -209,8 +209,16 @@ Site institucional para escritório de advocacia especializado em **Direito Prev
     - Solução: !important em border, box-shadow, appearance
 
 12. **Article meta em múltiplas linhas**
-    - Causa: flex-wrap: wrap
-    - Solução: flex-wrap: nowrap !important
+     - Causa: flex-wrap: wrap
+     - Solução: flex-wrap: nowrap !important
+
+13. **admin-contatos.html login não funcionava**
+     - Causa: senha em texto plano vs hash SHA-256 no banco
+     - Solução: Login via banco de dados com hash SHA-256 (igual admin-blog)
+
+14. **admin-contatos.html não carregava contatos (403)**
+     - Causa: permission denied para service_role
+     - Solução: GRANT permissions no Supabase para service_role
 
 ---
 

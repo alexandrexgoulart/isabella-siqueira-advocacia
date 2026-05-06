@@ -1,7 +1,7 @@
 # Documentação Técnica — Isabella Siqueira Advocacia
 
 **Última atualização:** Maio 2026
-**Versão:** 2.9 — Painel Admin de Contatos
+**Versão:** 3.0 — Segurança + SQL Contatos
 
 ---
 
@@ -212,6 +212,7 @@ Ao atualizar o CSS, incremente o número da versão.
 | 2.7 | Mai 2026 | Docs comerciais atualizadas (domínio, custos, modelo profissional) |
 | 2.8 | Mai 2026 | Formulário de contato integrado ao Supabase |
 | 2.9 | Mai 2026 | Painel admin de contatos (admin-contatos.html) |
+| 3.0 | Mai 2026 | Segurança - login com hash SHA-256 via banco + SQL contatos executado |
 
 ---
 

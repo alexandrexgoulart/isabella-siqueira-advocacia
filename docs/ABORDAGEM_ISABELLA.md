@@ -429,4 +429,4 @@ https://wa.me/5562983000708?text=Oi%20Isabella!%20👋%0A%0AMeu%20nome%20é%20Al
 ---
 
 *Documento atualizado: 06/05/2026*
-*Atualizado em: 06/05/2026 - Incluído admin-contatos.html, painel de gerenciamento de contatos*
+*Atualizado em: 06/05/2026 - Segurança: login com hash SHA-256 via banco, SQL contatos executado no Supabase*
