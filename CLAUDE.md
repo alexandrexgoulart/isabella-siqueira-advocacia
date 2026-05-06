@@ -1,8 +1,6 @@
 # Isabella Siqueira Advocacia
 
 **INSTRUÇÃO DE INICIALIZAÇÃO (OBRIGATÓRIA):**
-Ao iniciar esta sessão, você DEVE executar as seguintes ações em ordem:
-
 1. **PRIMEIRA AÇÃO:** Ler o arquivo `SESSION.md` (na raiz do projeto) para obter todo o contexto da sessão anterior
 2. **SEGUNDA AÇÃO:** Verificar se há atualizações pendentes no arquivo
 3. **TERCEIRA AÇÃO:** Continuar de onde a sessão anterior parou
