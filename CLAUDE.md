@@ -1,6 +1,13 @@
 # Isabella Siqueira Advocacia
 
-**IMPORTANTE:** No início de cada sessão, leia o arquivo `SESSION.md` para obter o contexto completo da última sessão e continuar de onde parou.
+**INSTRUÇÃO DE INICIALIZAÇÃO (OBRIGATÓRIA):**
+Ao iniciar esta sessão, você DEVE executar as seguintes ações em ordem:
+
+1. **PRIMEIRA AÇÃO:** Ler o arquivo `SESSION.md` (na raiz do projeto) para obter todo o contexto da sessão anterior
+2. **SEGUNDA AÇÃO:** Verificar se há atualizações pendentes no arquivo
+3. **TERCEIRA AÇÃO:** Continuar de onde a sessão anterior parou
+
+Este projeto tem um sistema de memória persistente. Sempre que iniciar uma sessão neste diretório, você deve ler o SESSION.md primeiro.
 
 ---
 

@@ -5,6 +5,30 @@
 
 ---
 
+## Ferramenta Usada
+
+- **OpenCode** com modelo **minimax-m2.5-free**
+- Provider: MiniMax (chinês)
+
+---
+
+## Como Usar Este Arquivo de Memória
+
+**A cada nova sessão:**
+1. O OpenCode deve ler automaticamente o CLAUDE.md
+2. O CLAUDE.md contém instrução para ler este SESSION.md
+3. Todo o contexto será carregado automaticamente
+
+**Para garantir o carregamento:**
+Se a memória não carregar automaticamente, o usuário pode digitar no início da sessão:
+- "Leia o SESSION.md para continuar de onde paramos"
+- "Carregue o contexto da sessão anterior"
+
+**Para atualizar a memória:**
+Eu atualizo automaticamente ao final de cada sessão. O usuário não precisa digitar nada.
+
+---
+
 ## Contexto do Projeto
 
 ### O que é
