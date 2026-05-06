@@ -325,6 +325,6 @@ GRANT SELECT ON public.posts TO authenticated;
 | Site + Manutenção mensal | R$ 2.800 + R$ 180/mês |
 
 ### Links para Envio (prontos)
-- Versão curta: https://wa.me/5562983000708?text=Oi%20Isabella!%20👋%0A%0AVi%20seu%20site%20no%20Wix%20e%20fiz%20uma%20versão%20melhorada%20para%20você%20avaliar.%0A%0AÉ%20um%20site%20premium%20com%20blog%20integrado%2C%20sem%20mensalidade%20de%20hospedagem.%20O%20domínio%20.adv.br%20continua%20seu.%0A%0ALink%3A%20https%3A%2F%2Falexandrexgoulart.github.io%2Fisabella-siqueira-advocacia%2F%0A%0AAbs%2C%0AAlexandre%20Goulart%0AWhatsApp%3A%20(62)%2099114-4575
+- Versão curta: https://wa.me/5562983000708?text=Oi%20Dra.%20Isabella!%20👋%0A%0AVi%20seu%20site%20no%20Wix%20e%20fiz%20uma%20versão%20melhorada%20para%20você%20avaliar.%0A%0AÉ%20um%20site%20premium%20com%20blog%20integrado%2C%20sem%20mensalidade%20de%20hospedagem.%20O%20domínio%20.adv.br%20continua%20seu.%0A%0ALink%3A%20https%3A%2F%2Falexandrexgoulart.github.io%2Fisabella-siqueira-advocacia%2F%0A%0AAbs%2C%0AAlexandre%20Goulart%0AWhatsApp%3A%20(62)%2099114-4575
 
 Consulte o arquivo `docs/ABORDAGEM_ISABELLA.md` para scripts completos e objeções.

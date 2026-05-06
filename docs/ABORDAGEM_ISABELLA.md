@@ -143,7 +143,7 @@ A migração de emails envolve riscos e complexidades que devem ser tratadas com
 ### Versão Honesta e Profissional
 
 ```
-Oi Isabella! 👋
+Oi Dra. Isabella! 👋
 
 Meu nome é Alexandre Goulart, trabalho com desenvolvimento de websites e gostei muito do seu trabalho como advogada previdenciarista.
 
@@ -170,7 +170,7 @@ WhatsApp: (62) 99114-4575
 ### Versão Curta (para quebrar o gelo)
 
 ```
-Oi Isabella! 👋
+Oi Dra. Isabella! 👋
 
 Vi seu site no Wix e fiz uma versão melhorada para você avaliar.
 
