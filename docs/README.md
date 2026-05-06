@@ -188,6 +188,7 @@ Ao atualizar o CSS, incremente o número da versão.
 | 2.2 | Mai 2026 | Fix RLS + GRANT permissions (blog não carregava no mobile) |
 | 2.3 | Mai 2026 | Fix admin-blog.html mobile (categorias, backgrounds, preview) |
 | 2.4 | Mai 2026 | Padroniza largura 800px em todas as etapas + white-space pre-wrap |
+| 2.5 | Mai 2026 | Blog.html unificado com index.html (header, footer, cursor, responsivo) |
 
 ---
 
@@ -230,3 +231,25 @@ GRANT SELECT ON public.posts TO authenticated;
 - Editor textarea: adicionado `white-space: pre-wrap; word-wrap: break-word;`
 
 **Resultado:** Conteúdo digitado aparece IGUAL em qualquer dispositivo (PC, celular, tablet) e em todas as etapas (editor, preview, publicado).
+
+### Blog.html Visual Despadronizado
+**Causa:** blog.html tinha CSS inline próprio diferente do styles.css.
+
+**Solução:** Unificado header/footer com site principal, adicionado script.js para cursor/menu.
+
+### Blog Hero atrás do Header
+**Causa:** blog-hero sem margin-top adequada.
+
+**Solução:** margin-top responsivo (80px desktop, 85px mobile), adicionado fadeInUp keyframe.
+
+### Menu Mobile não abria
+**Causa:** Botão hamburger sem id="mobileToggle".
+
+**Solução:** Adicionado id="mobileToggle" ao botão.
+
+---
+
+## 12. Credenciais
+
+- **Admin Blog:** admin@isabella.com / adminisabella2026
+- **URLs:** Blog (blog.html), Admin (admin-blog.html)
