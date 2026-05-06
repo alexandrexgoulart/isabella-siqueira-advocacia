@@ -59,9 +59,18 @@
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+            align-items: center;
             margin-bottom: 1rem;
             font-size: 0.9rem;
             color: var(--text-light);
+        }
+
+        @media (max-width: 640px) {
+            .article-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
         }
 
         .article-title {
@@ -420,8 +429,8 @@
         }
 
         .share-btn {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             border: none;
             background: var(--primary);
@@ -431,12 +440,22 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            text-decoration: none;
         }
 
         .share-btn:hover {
             background: var(--accent);
             color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 640px) {
+            .share-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1.1rem;
+            }
         }
 
         /* Related Posts */
