@@ -413,10 +413,16 @@ document.addEventListener('DOMContentLoaded', function() {
         privacyBanner.style.display = 'none';
     }
 
+    console.log('Procurando formulário de contato...');
+    const contactForm = document.getElementById('contactForm');
+    console.log('contactForm encontrado:', contactForm);
+    
     if (contactForm) {
+        console.log('Formulário existe, configurando...');
         // Remover event listeners anteriores para evitar duplicação
         const newContactForm = contactForm.cloneNode(true);
         contactForm.parentNode.replaceChild(newContactForm, contactForm);
+        console.log('Formulário clonado e substituído');
         
         newContactForm.addEventListener('submit', async function(event) {
             event.preventDefault();
