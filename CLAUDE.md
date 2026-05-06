@@ -25,6 +25,7 @@ Site institucional para escritório de advocacia especializado em **Direito Prev
 ├── blog.html                   # Blog - listagem de artigos
 ├── artigo.html                 # Blog - página individual do artigo
 ├── admin-blog.html             # Blog - painel admin para criar/editar artigos
+├── admin-contatos.html         # Painel admin para visualizar contatos
 ├── styles.css                  # Estilos — paleta Navy+Gold+Ivory
 ├── script.js                   # JavaScript principal
 ├── foto_sobre.avif             # Foto da advogada (seção about)
@@ -57,6 +58,7 @@ Site institucional para escritório de advocacia especializado em **Direito Prev
 - **Tabelas:**
   - `posts` - Artigos do blog (id, titulo, conteudo, categorias, imagem_url, resumo, publicado, autor, created_at)
   - `admin_users` - Usuários admin (id, email, password_hash, nome, created_at)
+  - `contatos` - Contatos do formulário (id, nome, email, telefone, mensagem, lido, created_at)
 
 ### Credenciais de Acesso
 - **Admin Blog:** admin@isabella.com / adminisabella2026
@@ -124,3 +126,4 @@ Ver **docs/SEGURANCA_SQL.md** para configurações de segurança do Supabase.
 - artigo.html com fundo branco (bg-card) para melhor leitura
 - artigo.html botões compartilhar padronizados (círculos, !important)
 - artigo.html article-meta forçado em linha única (!important)
+- admin-contatos.html criado (painel para visualizar submissions do formulário)

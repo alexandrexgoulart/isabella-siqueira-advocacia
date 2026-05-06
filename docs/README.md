@@ -1,7 +1,7 @@
 # Documentação Técnica — Isabella Siqueira Advocacia
 
 **Última atualização:** Maio 2026
-**Versão:** 2.0 — Paleta Navy+Gold+Ivory
+**Versão:** 2.9 — Painel Admin de Contatos
 
 ---
 
@@ -9,9 +9,25 @@
 
 Site institucional single-page para escritório de advocacia especializado em Direito Previdenciário.
 
-- **URL:** https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/
+- **URL atual (demo):** https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/
+- **URL original dela:** https://www.isabellasiqueira.adv.br/
 - **Stack:** HTML5 + CSS3 + JavaScript vanilla
 - **Hospedagem:** GitHub Pages (gratuito, deploy automático)
+
+### Contexto Comercial
+
+- **Site atual dela:** Wix (~R$ 80-150/mês)
+- **Domínio dela:** isabellasiqueira.adv.br (já pago, ~R$ 50/ano)
+- **Custo com novo site:** ~R$ 50/ano (só domínio)
+- **Economia mensal:** R$ 80-150/mês
+
+### Modelo de Deploy Profissional
+
+Para oferta profissional, o site deve ficar no GitHub DELA:
+1. Isabella cria conta gratuita no GitHub
+2. Repositório criado em nome dela
+3. Domínio .adv.br aponta para o GitHub Pages dela
+4. Zero mensalidade de hospedagem
 
 ---
 
@@ -23,6 +39,7 @@ isabella-siqueira-advocacia/
 ├── blog.html               # Blog - listagem de artigos
 ├── artigo.html             # Blog - página individual do artigo
 ├── admin-blog.html         # Blog - painel admin (CRUD de artigos)
+├── admin-contatos.html     # Painel admin de contatos (visualizar submissions)
 ├── styles.css              # Estilos (~120KB)
 ├── script.js               # JavaScript principal (~92KB)
 ├── foto_sobre.avif         # Foto da advogada — seção About
@@ -154,9 +171,11 @@ Ao atualizar o CSS, incremente o número da versão.
 ### Tabelas
 - **posts** — Artigos do blog (id, titulo, conteudo, categorias, imagem_url, resumo, publicado, autor, created_at)
 - **admin_users** — Usuários admin (id, email, password_hash, nome, created_at)
+- **contatos** — Contatos recebidos do formulário (id, nome, email, telefone, mensagem, lido, created_at)
 
 ### Credenciais de Acesso Admin
-- **URL:** https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/admin-blog.html
+- **Blog:** https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/admin-blog.html
+- **Contatos:** https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/admin-contatos.html
 - **Email:** admin@isabella.com
 - **Senha:** adminisabella2026
 
@@ -190,6 +209,9 @@ Ao atualizar o CSS, incremente o número da versão.
 | 2.4 | Mai 2026 | Padroniza largura 800px em todas as etapas + white-space pre-wrap |
 | 2.5 | Mai 2026 | Blog.html unificado com index.html (header, footer, cursor, responsivo) |
 | 2.6 | Mai 2026 | Artigo.html unificado (header, footer, fundo branco, botões compartilhar) |
+| 2.7 | Mai 2026 | Docs comerciais atualizadas (domínio, custos, modelo profissional) |
+| 2.8 | Mai 2026 | Formulário de contato integrado ao Supabase |
+| 2.9 | Mai 2026 | Painel admin de contatos (admin-contatos.html) |
 
 ---
 
@@ -281,4 +303,26 @@ GRANT SELECT ON public.posts TO authenticated;
 ## 12. Credenciais
 
 - **Admin Blog:** admin@isabella.com / adminisabella2026
-- **URLs:** Blog (blog.html), Artigo (artigo.html), Admin (admin-blog.html)
+- **Admin Contatos:** admin@isabella.com / adminisabella2026
+- **URLs:** Blog (blog.html), Artigo (artigo.html), Admin Blog (admin-blog.html), Admin Contatos (admin-contatos.html)
+
+---
+
+## 13. Abordagem Comercial
+
+### Contatos
+- **Seu WhatsApp:** (62) 99114-4575
+- **WhatsApp da Isabella:** (62) 98300-0708
+- **Domínio atual dela:** isabellasiqueira.adv.br
+
+### Propostas de Valor
+
+| Item | Valor |
+|------|-------|
+| Site completo | R$ 3.500 |
+| Site + Manutenção mensal | R$ 2.800 + R$ 180/mês |
+
+### Links para Envio (prontos)
+- Versão curta: https://wa.me/5562983000708?text=Oi%20Isabella!%20👋%0A%0AVi%20seu%20site%20no%20Wix%20e%20fiz%20uma%20versão%20melhorada%20para%20você%20avaliar.%0A%0AÉ%20um%20site%20premium%20com%20blog%20integrado%2C%20sem%20mensalidade%20de%20hospedagem.%20O%20domínio%20.adv.br%20continua%20seu.%0A%0ALink%3A%20https%3A%2F%2Falexandrexgoulart.github.io%2Fisabella-siqueira-advocacia%2F%0A%0AAbs%2C%0AAlexandre%20Goulart%0AWhatsApp%3A%20(62)%2099114-4575
+
+Consulte o arquivo `docs/ABORDAGEM_ISABELLA.md` para scripts completos e objeções.

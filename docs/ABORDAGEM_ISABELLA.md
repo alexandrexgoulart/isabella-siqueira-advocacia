@@ -4,9 +4,11 @@
 
 ## Contexto do Projeto
 
-- **Seu site**: Premium, moderno, com blog integrado, sem mensalidade de hospedagem
-- **Site atual dela**: Wix (custa ~R$ 80-150/mês)
-- **Diferencial real**: Zero custo de hospedagem + design premium + blog completo com admin
+- **Site atual dela**: https://www.isabellasiqueira.adv.br (Wix)
+- **Domínio dela**: isabellasiqueira.adv.br (já pago)
+- **Custo atual (Wix)**: ~R$ 80-150/mês
+- **Custo com novo site**: ~R$ 50/ano (só o domínio)
+- **Diferencial real**: Zero custo de mensalidade de hospedagem + design premium + blog completo com admin
 
 ---
 
@@ -33,6 +35,21 @@
 - Banco de dados: Supabase
 - Autenticação: Tabela admin_users com hash SHA-256
 
+### Formulário de Contato
+- Salva contatos no Supabase (tabela `contatos`)
+- Mantém função de abrir WhatsApp
+- Isabella pode visualizar contatos no painel admin
+- SQL de criação: `docs/SQL_CONTATOS.md`
+
+### Painel Admin de Contatos (admin-contatos.html)
+- Visualizar todas as mensagens recebidas
+- Marcar como lido
+- Excluir contatos
+- Estatísticas: total, novos, visualizados
+- Filtros: Todos / Novos / Visualizados
+- Acesso: mesmo login do blog (admin@isabella.com / adminisabella2026)
+- URL: https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/admin-contatos.html
+
 ---
 
 ## Questões Clarificadas
@@ -50,11 +67,74 @@
 ### Sobre o blog (agora incluso!)
 - Seu site agora TEM blog completo com admin
 - Isso elimina uma weakness anterior
-- Plus: Isabela pode publicar artigos sobre direito previdenciário
+- Plus: Isabella pode publicar artigos sobre direito previdenciário
 
 ### Sobre a abordagem
 - Não criar narrativa falsa ("fiz para outra advogada")
-- Ser honesto: "Desenvolvi este projeto como projeto de portfólio e gostei bastante. Agora busco clientes reais para oferecê-lo."
+- Ser honesto: "Vi seu site no Wix e fiz uma versão melhorada para você avaliar"
+- É uma melhoria do site DELA, não um projeto genérico
+
+---
+
+## Modelo de Deploy Profissional
+
+### Opção Escolhida: GitHub em Nome Dela
+
+**Por que é mais profissional:**
+- O repositório fica no GitHub DELA
+- O domínio dela (isabellasiqueira.adv.br) aponta para o site DELA
+- Parece que o site é dela, não seu
+
+### Como funciona:
+1. Isabella cria uma conta gratuita no GitHub (com email dela)
+2. Você cria um repositório no GitHub DELA com o nome do site
+3. Você faz o deploy do código no repo dela
+4. Você configura o GitHub Pages no repo dela
+5. Você orienta ela a cambiar o DNS do registrador para apontar para o GitHub
+
+### Configuração DNS que ela precisaria fazer:
+
+| Tipo | Nome | Valor |
+|------|------|-------|
+| A | @ | 185.199.108.153 |
+| A | @ | 185.199.109.153 |
+| A | @ | 185.199.110.153 |
+| A | @ | 185.199.111.153 |
+| CNAME | www | seu-usuario.github.io |
+
+### Custo final para ela:
+- Domínio (.adv.br): ~R$ 50/ano (ela já paga)
+- Hospedagem (GitHub): **R$ 0**
+- **Economia mensal**: R$ 80-150/mês → R$ 0 de hospedagem
+
+---
+
+## Email: O que saber antes de abordar
+
+### Importante: Não prometer migração automática de emails
+
+A migração de emails envolve riscos e complexidades que devem ser tratadas com cautela:
+
+| Aspecto | Detalhe |
+|---------|---------|
+| **GitHub Pages** | Não oferece serviço de email — é apenas hospedagem de sites |
+| **Armazenamento** | Zoho (5GB) ou Mailbux (20GB) podem não ser suficientes se ela tem muitos emails históricos |
+| **Migração** | Pode ser feita via IMAP, mas requer tempo e conhecimento técnico |
+| **Recomendação** | Abordar como serviço adicional opcional, não como parte do projeto |
+
+### Opções de Email (se ela quiser migrar depois):
+
+| Serviço | Custo | Armazenamento | Observação |
+|---------|-------|---------------|------------|
+| **Zoho Mail** | R$ 0 (free) | 5 GB/usuário | Até 5 caixas, bom para poucos emails |
+| **Mailbux** | R$ 0 (free) | 20 GB total | Unlimited caixas, melhor para archiving |
+| **Continuar no Wix** | ~R$ 80-150/mês | O que já tem | Mais simples, mas paga mensalidade |
+
+### Na Abordagem: Como dizer
+
+> "Sobre os emails: o GitHub só hospeda sites, não oferece email. Se você quiser, posso ajudar a migrar os seus emails para um serviço gratuito depois — mas preciso avaliar quantos emails você tem com documentos, para ver se o plano gratuito suporta."
+
+**Resumo:** Na abordagem, NÃO prometer migração de email — mencionar apenas como possibilidade futura se ela tiver interesse.
 
 ---
 
@@ -67,14 +147,15 @@ Oi Isabella! 👋
 
 Meu nome é Alexandre Goulart, trabalho com desenvolvimento de websites e gostei muito do seu trabalho como advogada previdenciarista.
 
-Desenvolvi um projeto de site moderno e profissional como portfólio, e como você atua na mesma área, pensei em te apresentar.
+Vi seu site atual (isabellasiqueira.adv.br) e desenvolvi uma versão melhorada para você avaliar. É um projeto personalizado com design premium, blog integrado e sem mensalidade de hospedagem.
 
 Você pode ver aqui: https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/
 
 Diferenciais:
 • Design premium e personalizado
 • Blog completo integrado (você pode escrever artigos!)
-• Hospedagem gratuita (sem mensalidade como no Wix)
+• Hospedagem gratuita (GitHub Pages) — zero mensalidade
+• Domínio .adv.br permanece seu
 • Totalmente responsivo (funciona no celular)
 • Otimizado para Google
 
@@ -83,6 +164,7 @@ Se tiver interesse em conversar sobre um site profissional para seu escritório,
 Qualquer dúvida, estou à disposição.
 
 Alexandre Goulart
+WhatsApp: (62) 99114-4575
 ```
 
 ### Versão Curta (para quebrar o gelo)
@@ -90,35 +172,37 @@ Alexandre Goulart
 ```
 Oi Isabella! 👋
 
-Vi seu site e trabalho com criação de sites profissionais.
+Vi seu site no Wix e fiz uma versão melhorada para você avaliar.
 
-Desenvolvi um projeto premium para advogada previdenciarista, gostaria de te mostrar.
+É um site premium com blog integrado, sem mensalidade de hospedagem. O domínio .adv.br continua seu.
 
 Link: https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/
 
 Abs,
 Alexandre Goulart
+WhatsApp: (62) 99114-4575
 ```
 
 ---
 
 ## Script de Abordagem (Email)
 
-### Assunto: Projeto de site para advogada previdenciarista
+### Assunto: Versão melhorada do seu site - Isabella Siqueira Advocacia
 
 ```
 Olá Isabella,
 
-Meu nome é Alexandre Goulart e sou desenvolvedor web.
+Meu nome é Alexandre Goulart e trabalho com desenvolvimento de websites.
 
-Fiquei impressionado com seu trabalho na área previdenciária e desenvolvi um site moderno e profissional como projeto de portfólio, pensando em profissionais como você.
+Vi seu site atual (isabellasiqueira.adv.br) e desenvolvi uma versão melhorada para você avaliar. É um projeto personalizado com design premium, blog integrado e sem mensalidade de hospedagem.
 
 Você pode conhecer aqui: https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/
 
 Diferenciais:
 • Design premium e personalizado
 • Blog completo integrado (escreva artigos sobre direito previdenciário!)
-• Hospedagem gratuita (sem mensalidade)
+• Hospedagem gratuita (GitHub Pages) — zero mensalidade
+• Domínio .adv.br permanece seu
 • Otimizado para Google
 • Totalmente responsivo
 
@@ -126,7 +210,7 @@ Se tiver interesse em conversar sobre um site para seu escritório, ficarei feli
 
 Grande abraço,
 Alexandre Goulart
-WhatsApp: (62) 98300-0708
+WhatsApp: (62) 99114-4575
 ```
 
 ---
@@ -139,7 +223,7 @@ WhatsApp: (62) 98300-0708
 |------|-------|
 | Site completo com design premium | R$ 3.500 |
 | Blog com admin para artigos | incluso |
-| Deploy e configuração | incluso |
+| Deploy e configuração no GitHub dela | incluso |
 | Tutorial de uso | incluso |
 | Suporte 30 dias | incluso |
 
@@ -160,18 +244,21 @@ WhatsApp: (62) 98300-0708
 
 > "O site foi construído para aparecer no Google. O atual não tem SEO."
 
+> "Seu domínio .adv.br continua seu. A gente só migra a hospedagem para o GitHub Pages."
+
 ---
 
 ## Pontos Fortes do Seu Site vs. Della
 
-| Aspecto | Seu Site | Site Della |
-|---------|----------|-----------|
+| Aspecto | Seu Site | Site Atual (Wix) |
+|---------|----------|------------------|
 | Design | Premium e moderno | Genérico Wix |
 | Blog | Completo com admin | Tem (básico) |
 | Custo hospedagem | Grátis | R$ 80-150/mês |
 | Velocidade | Rápido | Lento |
 | SEO | Otimizado | Básico |
 | Manutenção | Baixo custo | Alta (Wix) |
+| Domínio | .adv.br dela | .adv.br dela |
 
 ---
 
@@ -179,6 +266,11 @@ WhatsApp: (62) 98300-0708
 
 ### Admin do Blog
 - URL: https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/admin-blog.html
+- Email: admin@isabella.com
+- Senha: adminisabella2026
+
+### Admin de Contatos
+- URL: https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/admin-contatos.html
 - Email: admin@isabella.com
 - Senha: adminisabella2026
 
@@ -192,6 +284,7 @@ WhatsApp: (62) 98300-0708
 1. **Ela pode não responder** - É normal, seguir em frente
 2. **Ela pode achar caro** - Ter um valor mínimo evita clientes baratos
 3. **Outros devs podem abordar ela** - Estar presente primeiro ajuda
+4. **Ela pode não querer criar GitHub** - Oferecer alternativa (você mantém, ela usa)
 
 ---
 
@@ -269,13 +362,23 @@ WhatsApp: (62) 98300-0708
 
 ---
 
+### 9. "Não quero criar conta no GitHub"
+
+**Resposta:**
+> "Sem problema! Posso manter o site no meu GitHub e você usa normalmente. A única diferença é que o código fica no meu repositório. Posso fazer a gestão completa pra você."
+
+**Técnica:** Ofereça alternativa sem forçar a criação de conta.
+
+---
+
 ## Técnica do "Sim, E"
 
-Quando a pessoa objectionar, você aceita o ponto dela E adiciona algo:
+Quando a pessoa objectivar, você aceita o ponto dela E adiciona algo:
 
 - **"Sim, o preço parece alto, E você economiza R$ 100/mês em hospedagem"**
 - **"Sim, você está ocupada, E eu posso fazer toda a manutenção pra você"**
 - **"Sim, você já tem site, E este é muito mais rápido e aparece no Google"**
+- **"Sim, você não quer criar GitHub, E eu posso manter o site pra você"**
 
 ---
 
@@ -294,19 +397,36 @@ Quando a pessoa objectionar, você aceita o ponto dela E adiciona algo:
 
 ## Próximos Passos
 
-1. [ ] Personalizar scripts com seu nome
-2. [ ] Obter número de WhatsApp (está no site atual)
-3. [ ] Enviar primeira mensagem
-4. [ ] Se não responder em 48h, enviar email
+1. [x] Personalizar scripts com seu nome
+2. [x] Seu número de WhatsApp configurado: (62) 99114-4575
+3. [x] Número da Isabella obtido: (62) 98300-0708
+4. [x] Domínio atual dela: isabellasiqueira.adv.br
+5. [x] Modelo profissional definido (GitHub dela)
+6. [x] Painel admin de contatos criado (admin-contatos.html)
+7. [ ] Enviar primeira mensagem via WhatsApp
+8. [ ] Se não responder em 48h, enviar email
 
 ---
 
-## Suas Informações
+## Seus Contatos
 
-- Nome completo: Alexandre Goulart
+- Alexandre Goulart: (62) 99114-4575
+
+## Contato da Isabella
+
 - WhatsApp: (62) 98300-0708
 
 ---
 
-*Documento atualizado: 05/05/2026*
-*Atualizado em: 05/05/2026 - Seção de objeções adicionada*
+### Link Pronto para Envio
+
+**Versão Curta:**
+https://wa.me/5562983000708?text=Oi%20Isabella!%20👋%0A%0AVi%20seu%20site%20no%20Wix%20e%20fiz%20uma%20versão%20melhorada%20para%20você%20avaliar.%0A%0AÉ%20um%20site%20premium%20com%20blog%20integrado%2C%20sem%20mensalidade%20de%20hospedagem.%20O%20domínio%20.adv.br%20continua%20seu.%0A%0ALink%3A%20https%3A%2F%2Falexandrexgoulart.github.io%2Fisabella-siqueira-advocacia%2F%0A%0AAbs%2C%0AAlexandre%20Goulart%0AWhatsApp%3A%20(62)%2099114-4575
+
+**Versão Completa:**
+https://wa.me/5562983000708?text=Oi%20Isabella!%20👋%0A%0AMeu%20nome%20é%20Alexandre%20Goulart%2C%20trabalho%20com%20desenvolvimento%20de%20websites%20e%20gostei%20muito%20do%20seu%20trabalho%20como%20advogada%20previdenciarista.%0A%0AVi%20seu%20site%20atual%20(isabellasiqueira.adv.br)%20e%20desenvolvi%20uma%20versão%20melhorada%20para%20você%20avaliar.%20É%20um%20projeto%20personalizado%20com%20design%20premium%2C%20blog%20integrado%20e%20sem%20mensalidade%20de%20hospedagem.%0A%0AVocê%20pode%20ver%20aqui%3A%20https%3A%2F%2Falexandrexgoulart.github.io%2Fisabella-siqueira-advocacia%2F%0A%0ADiferenciais%3A%0A•%20Design%20premium%20e%20personalizado%0A•%20Blog%20completo%20integrado%20(você%20pode%20escrever%20artigos!)%0A•%20Hospedagem%20gratuita%20(GitHub%20Pages)%20—%20zero%20mensalidade%0A•%20Domínio%20.adv.br%20permanece%20seu%0A•%20Totalmente%20responsivo%20(funciona%20no%20celular)%0A•%20Otimizado%20para%20Google%0A%0ASe%20tiver%20interesse%20em%20conversar%20sobre%20um%20site%20profissional%20para%20seu%20escritório%2C%20me%20manda%20uma%20mensagem!%0A%0AQualquer%20dúvida%2C%20estou%20à%20disposição.%0A%0AAlexandre%20Goulart%0AWhatsApp%3A%20(62)%2099114-4575
+
+---
+
+*Documento atualizado: 06/05/2026*
+*Atualizado em: 06/05/2026 - Incluído admin-contatos.html, painel de gerenciamento de contatos*

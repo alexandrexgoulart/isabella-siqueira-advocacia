@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Contatos - Isabella Siqueira Advocacia</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #1A2B4A;
+            --primary-light: #243657;
+            --accent: #C5964B;
+            --accent-hover: #A87B38;
+            --bg-light: #F8F6F1;
+            --bg-card: #FFFFFF;
+            --success: #059669;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --text: #1A1A1A;
+            --text-light: #666666;
+            --border: #E5E5E5;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg-light); color: var(--text); }
+        
+        /* Login */
+        .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); padding: 1rem; }
+        .login-box { background: var(--bg-card); padding: 2.5rem; border-radius: 16px; width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .login-box h1 { font-family: 'Playfair Display', serif; color: var(--primary); text-align: center; margin-bottom: 0.5rem; }
+        .login-box p { text-align: center; color: var(--text-light); margin-bottom: 2rem; }
+        .login-box input { width: 100%; padding: 1rem; border: 2px solid var(--border); border-radius: 8px; font-size: 1rem; margin-bottom: 1rem; }
+        .login-box input:focus { outline: none; border-color: var(--accent); }
+        .login-box button { width: 100%; padding: 1rem; background: var(--accent); color: var(--primary); border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .login-box button:hover { background: var(--accent-hover); }
+        .login-error { color: var(--danger); text-align: center; margin-top: 1rem; display: none; }
+        
+        /* Dashboard */
+        .admin-dashboard { display: none; }
+        .admin-header { background: var(--primary); color: var(--bg-light); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .admin-header h1 { font-family: 'Playfair Display', serif; font-size: 1.5rem; }
+        .admin-header h1 span { color: var(--accent); }
+        .admin-header-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+        .admin-header a { color: var(--bg-light); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
+        .logout-btn { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 500; }
+        .logout-btn:hover { background: var(--accent); color: var(--primary); }
+        
+        .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+        .stat-card { background: var(--bg-card); padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .stat-card h3 { font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem; }
+        .stat-card .value { font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .stat-card .value.success { color: var(--success); }
+        .stat-card .value.warning { color: var(--warning); }
+        
+        .contatos-section { max-width: 1200px; margin: 0 auto; padding: 0 2rem 2rem; }
+        .contatos-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+        .contatos-header h2 { color: var(--primary); }
+        .filter-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .filter-btn { padding: 0.5rem 1rem; border: 2px solid var(--border); background: var(--bg-card); border-radius: 6px; cursor: pointer; font-weight: 500; }
+        .filter-btn.active { background: var(--primary); color: var(--bg-light); border-color: var(--primary); }
+        
+        .contatos-table { background: var(--bg-card); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .contatos-table table { width: 100%; border-collapse: collapse; }
+        .contatos-table th { background: var(--primary); color: var(--bg-light); padding: 1rem; text-align: left; font-weight: 600; font-size: 0.9rem; }
+        .contatos-table td { padding: 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .contatos-table tr:hover { background: rgba(197,150,75,0.05); }
+        
+        .contato-nome { font-weight: 600; color: var(--primary); }
+        .contato-email { color: var(--accent); font-size: 0.9rem; }
+        .contato-telefone { color: var(--text-light); font-size: 0.9rem; }
+        .contato-mensagem { font-size: 0.9rem; color: var(--text-light); max-width: 300px; }
+        .contato-data { font-size: 0.85rem; color: var(--text-light); }
+        
+        .status-badge { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500; display: inline-block; }
+        .status-lido { background: rgba(5,150,105,0.1); color: var(--success); }
+        .status-nao-lido { background: rgba(243,156,18,0.1); color: var(--warning); }
+        
+        .action-btns { display: flex; gap: 0.5rem; }
+        .action-btn { width: 35px; height: 35px; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .view-btn { background: rgba(197,150,75,0.1); color: var(--accent); }
+        .view-btn:hover { background: var(--accent); color: var(--primary); }
+        .delete-btn { background: rgba(231,76,60,0.1); color: var(--danger); }
+        .delete-btn:hover { background: var(--danger); color: white; }
+        
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; overflow-y: auto; padding: 2rem; }
+        .modal-overlay.active { display: flex; justify-content: center; }
+        .modal { background: var(--bg-card); width: 100%; max-width: 600px; border-radius: 16px; padding: 2rem; margin: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+        .modal-header h2 { color: var(--primary); font-family: 'Playfair Display', serif; font-size: 1.3rem; }
+        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
+        
+        .modal-content { display: flex; flex-direction: column; gap: 1rem; }
+        .modal-field { display: flex; flex-direction: column; gap: 0.3rem; }
+        .modal-field label { font-weight: 600; color: var(--primary); font-size: 0.9rem; }
+        .modal-field span { color: var(--text-light); }
+        
+        .modal-actions { display: flex; gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+        .modal-btn { padding: 0.8rem 1.5rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
+        .mark-read-btn { background: var(--success); color: white; }
+        .mark-read-btn:hover { background: #048754; }
+        .delete-modal-btn { background: var(--danger); color: white; }
+        .delete-modal-btn:hover { background: #c0392b; }
+        
+        /* Toast */
+        .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--primary); color: var(--bg-light); padding: 1rem 2rem; border-radius: 8px; transform: translateY(100px); transition: transform 0.3s; z-index: 2000; }
+        .toast.show { transform: translateY(0); }
+        
+        /* Loading */
+        .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.8); display: none; justify-content: center; align-items: center; z-index: 3000; }
+        .loading-overlay.active { display: flex; }
+        .loading-overlay i { font-size: 2rem; color: var(--accent); animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        /* Empty State */
+        .empty-state { text-align: center; padding: 4rem 2rem; color: var(--text-light); }
+        .empty-state i { font-size: 3rem; margin-bottom: 1rem; color: var(--border); }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-header { padding: 1rem; }
+            .admin-stats { padding: 1rem; }
+            .contatos-section { padding: 0 1rem 1rem; }
+            .contatos-table { overflow-x: auto; }
+            .contatos-table th, .contatos-table td { white-space: nowrap; }
+            .modal { margin: 1rem; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h1>Isabella Siqueira</h1>
+            <p>Admin Contatos</p>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email de acesso" value="admin@isabella.com" required>
+                <input type="password" id="loginPassword" placeholder="Senha" value="adminisabella2026" required>
+                <button type="submit">Entrar</button>
+            </form>
+            <p class="login-error" id="loginError">Email ou senha incorretos</p>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="admin-dashboard" id="dashboard">
+        <header class="admin-header">
+            <h1>Admin <span>Contatos</span></h1>
+            <div class="admin-header-actions">
+                <a href="admin-blog.html"><i class="fas fa-blog"></i> Blog</a>
+                <a href="index.html" target="_blank"><i class="fas fa-external-link-alt"></i> Ver Site</a>
+                <button class="logout-btn" id="logoutBtn">Sair</button>
+            </div>
+        </header>
+
+        <!-- Stats -->
+        <div class="admin-stats">
+            <div class="stat-card">
+                <h3>Total de Contatos</h3>
+                <div class="value" id="totalContatos">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Novos (não lidos)</h3>
+                <div class="value warning" id="naoLidos">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Já Visualizados</h3>
+                <div class="value success" id="jaLidos">0</div>
+            </div>
+        </div>
+
+        <!-- Contatos List -->
+        <div class="contatos-section">
+            <div class="contatos-header">
+                <h2>Mensagens Recebidas</h2>
+                <div class="filter-btns">
+                    <button class="filter-btn active" data-filter="todos">Todos</button>
+                    <button class="filter-btn" data-filter="nao-lido">Novos</button>
+                    <button class="filter-btn" data-filter="lido">Visualizados</button>
+                </div>
+            </div>
+            
+            <div class="contatos-table" id="contatosTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Mensagem</th>
+                            <th>Status</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contatosBody">
+                        <!-- Contatos serão carregados aqui -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="far fa-envelope-open"></i>
+                <h3>Nenhuma mensagem recebida</h3>
+                <p>As mensagens do formulário de contato aparecerão aqui.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Visualizar Contato -->
+    <div class="modal-overlay" id="viewModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Detalhes do Contato</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-content" id="modalContent">
+                <!-- Conteúdo dinâmico -->
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn mark-read-btn" id="markReadBtn">
+                    <i class="fas fa-check"></i> Marcar como lido
+                </button>
+                <button class="modal-btn delete-modal-btn" id="deleteContactBtn">
+                    <i class="fas fa-trash"></i> Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-overlay" id="loading">
+        <i class="fas fa-spinner"></i>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">Mensagem!</div>
+
+    <script>
+        const SUPABASE_URL = 'https://gpvwgogcfgohxdstoocc.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwdndnb2djZmdvaHhkc3Rvb2NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwMDgzODYsImV4cCI6MjA5MzU4NDM4Nn0.h7lXdFmdInuHhhBjsXKdn8t2ty_zl47-oU_MXtQUpNY';
+        const SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwdndnb2djZmdvaHhkc3Rvb2NjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODAwODM4NiwiZXhwIjoyMDkzNTg0Mzg2fQ.zLS0IUOuhA21fPVnq316AswsE8YO6HzoG3n3IlAdygU';
+
+        let allContatos = [];
+        let currentFilter = 'todos';
+        let currentContactId = null;
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+
+        // Modal
+        document.getElementById('closeModal').addEventListener('click', closeModal);
+        document.getElementById('markReadBtn').addEventListener('click', markAsRead);
+        document.getElementById('deleteContactBtn').addEventListener('click', deleteContact);
+
+        // Filters
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderContatos();
+            });
+        });
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Hash simple da senha
+            const hash = simpleHash(password);
+            
+            if (email === 'admin@isabella.com' && hash === '3670096c9a4b3c5e6f8d9a0b1c2d3e4f') {
+                localStorage.setItem('adminAuth', 'true');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadContatos();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash = hash & hash;
+            }
+            return hash.toString(16);
+        }
+
+        function logout() {
+            localStorage.removeItem('adminAuth');
+            location.reload();
+        }
+
+        function checkAuth() {
+            if (localStorage.getItem('adminAuth') === 'true') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadContatos();
+            }
+        }
+
+        async function loadContatos() {
+            showLoading(true);
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/contatos?order=created_at.desc`, {
+                    headers: {
+                        'apikey': SERVICE_KEY,
+                        'Authorization': `Bearer ${SERVICE_KEY}`
+                    }
+                });
+                allContatos = await response.json();
+                updateStats();
+                renderContatos();
+            } catch (error) {
+                console.error('Erro ao carregar contatos:', error);
+                showToast('Erro ao carregar contatos');
+            }
+            showLoading(false);
+        }
+
+        function updateStats() {
+            const total = allContatos.length;
+            const naoLidos = allContatos.filter(c => !c.lido).length;
+            const jaLidos = total - naoLidos;
+            
+            document.getElementById('totalContatos').textContent = total;
+            document.getElementById('naoLidos').textContent = naoLidos;
+            document.getElementById('jaLidos').textContent = jaLidos;
+        }
+
+        function renderContatos() {
+            let contatos = allContatos;
+            
+            if (currentFilter === 'nao-lido') {
+                contatos = allContatos.filter(c => !c.lido);
+            } else if (currentFilter === 'lido') {
+                contatos = allContatos.filter(c => c.lido);
+            }
+            
+            const tbody = document.getElementById('contatosBody');
+            const emptyState = document.getElementById('emptyState');
+            const table = document.getElementById('contatosTable');
+            
+            if (contatos.length === 0) {
+                table.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            table.style.display = 'block';
+            emptyState.style.display = 'none';
+            
+            tbody.innerHTML = contatos.map(contato => `
+                <tr>
+                    <td class="contato-nome">${escapeHtml(contato.nome)}</td>
+                    <td class="contato-email">${escapeHtml(contato.email)}</td>
+                    <td class="contato-telefone">${escapeHtml(contato.telefone || '-')}</td>
+                    <td class="contato-mensagem">${truncate(escapeHtml(contato.mensagem), 80)}</td>
+                    <td>
+                        <span class="status-badge ${contato.lido ? 'status-lido' : 'status-nao-lido'}">
+                            ${contato.lido ? 'Lido' : 'Novo'}
+                        </span>
+                    </td>
+                    <td class="contato-data">${formatDate(contato.created_at)}</td>
+                    <td class="action-btns">
+                        <button class="action-btn view-btn" onclick="viewContact(${contato.id})" title="Visualizar">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="confirmDelete(${contato.id})" title="Excluir">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function viewContact(id) {
+            const contato = allContatos.find(c => c.id === id);
+            if (!contato) return;
+            
+            currentContactId = id;
+            
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <div class="modal-field">
+                    <label>Nome</label>
+                    <span>${escapeHtml(contato.nome)}</span>
+                </div>
+                <div class="modal-field">
+                    <label>Email</label>
+                    <span>${escapeHtml(contato.email)}</span>
+                </div>
+                <div class="modal-field">
+                    <label>Telefone</label>
+                    <span>${escapeHtml(contato.telefone || 'Não informado')}</span>
+                </div>
+                <div class="modal-field">
+                    <label>Mensagem</label>
+                    <span style="white-space: pre-wrap;">${escapeHtml(contato.mensagem)}</span>
+                </div>
+                <div class="modal-field">
+                    <label>Recebido em</label>
+                    <span>${formatDate(contato.created_at)}</span>
+                </div>
+            `;
+            
+            const markReadBtn = document.getElementById('markReadBtn');
+            if (contato.lido) {
+                markReadBtn.innerHTML = '<i class="fas fa-check"></i> Já visualizado';
+                markReadBtn.style.opacity = '0.5';
+                markReadBtn.disabled = true;
+            } else {
+                markReadBtn.innerHTML = '<i class="fas fa-check"></i> Marcar como lido';
+                markReadBtn.style.opacity = '1';
+                markReadBtn.disabled = false;
+            }
+            
+            document.getElementById('viewModal').classList.add('active');
+        }
+
+        async function markAsRead() {
+            if (!currentContactId || !document.getElementById('markReadBtn').disabled === false) return;
+            
+            showLoading(true);
+            try {
+                await fetch(`${SUPABASE_URL}/rest/v1/contatos?id=eq.${currentContactId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SERVICE_KEY,
+                        'Authorization': `Bearer ${SERVICE_KEY}`
+                    },
+                    body: JSON.stringify({ lido: true })
+                });
+                showToast('Marcado como lido!');
+                loadContatos();
+                closeModal();
+            } catch (error) {
+                console.error('Erro:', error);
+                showToast('Erro ao atualizar');
+            }
+            showLoading(false);
+        }
+
+        function confirmDelete(id) {
+            if (confirm('Tem certeza que deseja excluir este contato?')) {
+                deleteContactById(id);
+            }
+        }
+
+        async function deleteContact() {
+            if (!currentContactId) return;
+            
+            if (!confirm('Tem certeza que deseja excluir este contato?')) return;
+            
+            showLoading(true);
+            try {
+                await fetch(`${SUPABASE_URL}/rest/v1/contatos?id=eq.${currentContactId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'apikey': SERVICE_KEY,
+                        'Authorization': `Bearer ${SERVICE_KEY}`
+                    }
+                });
+                showToast('Contato excluído!');
+                loadContatos();
+                closeModal();
+            } catch (error) {
+                console.error('Erro:', error);
+                showToast('Erro ao excluir');
+            }
+            showLoading(false);
+        }
+
+        async function deleteContactById(id) {
+            showLoading(true);
+            try {
+                await fetch(`${SUPABASE_URL}/rest/v1/contatos?id=eq.${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'apikey': SERVICE_KEY,
+                        'Authorization': `Bearer ${SERVICE_KEY}`
+                    }
+                });
+                showToast('Contato excluído!');
+                loadContatos();
+            } catch (error) {
+                console.error('Erro:', error);
+                showToast('Erro ao excluir');
+            }
+            showLoading(false);
+        }
+
+        function closeModal() {
+            document.getElementById('viewModal').classList.remove('active');
+            currentContactId = null;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('pt-BR', { 
+                day: '2-digit', 
+                month: 'short', 
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function truncate(str, length) {
+            return str.length > length ? str.substring(0, length) + '...' : str;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('active', show);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Inicializar
+        checkAuth();
+    </script>
+</body>
+</html>

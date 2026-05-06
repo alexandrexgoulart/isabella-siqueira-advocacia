@@ -108,6 +108,42 @@ Desenvolvido com foco em **conversão, usabilidade e presença profissional**.
 | **CTA** | Chamada para ação destacada | Conversão |
 | **Contato** | Formulário + informações | Captura de leads |
 | **Footer** | Links úteis + redes sociais | SEO + UX |
+| **Blog** | Listagem + artigo individual | Sistema de artigos |
+| **Admin Blog** | Painel para gerenciar artigos | CRUD completo |
+| **Admin Contatos** | Painel para ver submissions | Visualizar/editar/excluir |
+
+---
+
+## 📝 **BLOG + SISTEMA DE ADMIN**
+
+### **Blog Público**
+- Listagem de artigos com busca e filtro por categoria
+- 30 categorias (todas as áreas de atuação)
+- Página individual do artigo com formatação completa
+- Botões de compartilhar (WhatsApp, Facebook, Copiar Link)
+- Fundo branco para melhor leitura
+
+### **Painel Admin do Blog**
+- Login seguro com hash SHA-256
+- CRUD completo de artigos (criar, editar, excluir)
+- Upload de imagens do computador (base64)
+- Preview de artigos antes de publicar
+- Toolbar de formatação + 30 emojis
+- Gerenciar: publicado/rascunho, categoria, autor
+
+### **Painel Admin de Contatos**
+- Visualizar todas as mensagens do formulário
+- Estatísticas: total, novos, visualizados
+- Marcar como lido
+- Excluir contatos
+- Filtros: Todos / Novos / Visualizados
+- Login: admin@isabella.com / adminisabella2026
+
+### **Tecnologia**
+- Banco de dados Supabase (PostgreSQL)
+- API REST para artigos e contatos
+- Hospedagem GitHub Pages (gratuito)
+- Zero mensalidade de servidor
 
 ---
 
@@ -122,7 +158,8 @@ Desenvolvido com foco em **conversão, usabilidade e presença profissional**.
 
 ### **Integração**
 - WhatsApp Business (link dinamicamente)
-- Formulário com validação
+- Formulário com validação + Supabase (salva contatos)
+- Supabase para blog (artigos + admin)
 - LocalStorage para preferences de admin
 - Google Analytics ready
 

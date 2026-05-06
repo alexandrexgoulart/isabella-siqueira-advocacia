@@ -49,9 +49,11 @@ Site institucional para escritório de advocacia especializado em **Direito Prev
 - **Blog:** https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/blog.html
 - **Artigo (exemplo):** https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/artigo.html?id=1
 - **Admin Blog:** https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/admin-blog.html
+- **Admin Contatos:** https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/admin-contatos.html
 
 ### Credenciais
 - **Admin Blog:** admin@isabella.com
+- **Admin Contatos:** admin@isabella.com
 - **Senha:** adminisabella2026
 - **Banco Supabase:** https://gpvwgogcfgohxdstoocc.supabase.co
 
@@ -64,6 +66,7 @@ Site institucional para escritório de advocacia especializado em **Direito Prev
 ├── blog.html           # Blog - listagem de artigos
 ├── artigo.html        # Artigo individual
 ├── admin-blog.html     # Painel admin para gerenciar artigos
+├── admin-contatos.html # Painel admin para ver contatos
 ├── styles.css         # Todos os estilos (Navy+Gold+Ivory)
 ├── script.js          # JavaScript principal
 ├── foto_sobre.avif    # Foto da advogada
@@ -135,6 +138,14 @@ Site institucional para escritório de advocacia especializado em **Direito Prev
 - Preview de artigos
 - Toolbar de formatação + 30 emojis
 
+### Admin Contatos (admin-contatos.html)
+- Login com hash SHA-256
+- Visualizar todas as mensagens recebidas
+- Marcar como lido
+- Excluir contatos
+- Estatísticas: total, novos, visualizados
+- Filtros: Todos / Novos / Visualizados
+
 ---
 
 ## Histórico de Versões
@@ -145,6 +156,9 @@ Site institucional para escritório de advocacia especializado em **Direito Prev
 | 2.0 | Mai 2026 | Blog completo com Supabase |
 | 2.5 | Mai 2026 | Blog.html unificado com index.html |
 | 2.6 | Mai 2026 | Artigo.html unificado |
+| 2.7 | Mai 2026 | Docs comerciais atualizadas |
+| 2.8 | Mai 2026 | Formulário de contato → Supabase |
+| 2.9 | Mai 2026 | Admin-contatos.html criado |
 
 ---
 
@@ -211,7 +225,7 @@ Site institucional para escritório de advocacia especializado em **Direito Prev
 
 - **Segurança:** Chave service_role exposta no código (mitigada por RLS + auth local)
 - **Hospedagem:** GitHub Pages (gratuito)
-- **Banco:** Supabase (posts, admin_users)
+- **Banco:** Supabase (posts, admin_users, contatos)
 - **Admin usa:** service_role key no código (RISCO已知)
 
 ---

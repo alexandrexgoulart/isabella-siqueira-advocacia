@@ -30,6 +30,9 @@ Site institucional single-page para escritório especializado em Direito Previde
 | 9 | Fix modo escuro Chrome (`color-scheme: light only`) | ✅ |
 | 10 | Schema.org JSON-LD (SEO jurídico) | ✅ |
 | 11 | Limpeza de arquivos e documentação | ✅ |
+| 12 | Blog completo com Supabase (listagem + artigo + admin) | ✅ |
+| 13 | Formulário de contato integrado ao Supabase | ✅ |
+| 14 | Painel admin de contatos (visualizar submissions) | ✅ |
 
 ---
 
@@ -74,6 +77,19 @@ Formato AVIF oferece ~50% menos tamanho que JPEG com mesma qualidade. Suportado 
 ### Vídeo Local vs YouTube Embed
 Vídeo hospedado localmente (`optimized_video/`) evita dependência do YouTube e carrega mais rápido. Reduzido de 18MB para 4.3MB com FFmpeg.
 
+### Blog com Supabase
+Sistema completo de blog com painel admin para gerenciamento de artigos:
+- **URL:** https://gpvwgogcfgohxdstoocc.supabase.co
+- **Tabelas:** posts, admin_users, contatos
+- **Admin:** admin-blog.html (CRUD artigos) + admin-contatos.html (visualizar contatos)
+- **Credenciais:** admin@isabella.com / adminisabella2026
+
+### Formulário de Contato
+Formulário salva diretamente no Supabase (tabela `contatos`) e abre WhatsApp:
+- Isabella visualiza todas as mensagens no painel admin-contatos.html
+- Pode marcar como lido ou excluir
+- Estatísticas: total, novos, visualizados
+
 ---
 
 ## 5. Problemas Identificados e Resolvidos
@@ -96,16 +112,36 @@ isabella-siqueira-advocacia/
 ├── .ai/memory/                 # Memória de IA auxiliar
 ├── .git/                       # Controle de versão Git
 ├── docs/
-│   └── README.md               # Documentação técnica completa
+│   ├── README.md               # Documentação técnica completa
+│   ├── ABORDAGEM_ISABELLA.md   # Script de abordagem comercial
+│   ├── SQL_CONTATOS.md         # SQL para tabela de contatos
+│   └── SEGURANCA_SQL.md        # Configurações de segurança
 ├── optimized_video/
 │   └── video_restituicao_optimized.mp4
-├── index.html                  # Site completo
+├── index.html                  # Site principal single-page
+├── blog.html                   # Blog — listagem de artigos
+├── artigo.html                 # Blog — página individual do artigo
+├── admin-blog.html             # Blog — painel admin (CRUD artigos)
+├── admin-contatos.html         # Painel admin de contatos
 ├── styles.css                  # Estilos — Navy+Gold+Ivory
 ├── script.js                   # JavaScript
 ├── foto_sobre.avif             # Foto — seção About
 ├── isabella_sobre.avif         # Foto — Hero
 ├── CLAUDE.md                   # Contexto Claude Code
+├── SESSION.md                  # Memória da sessão
 ├── README.md                   # README público GitHub
 ├── DOCUMENTACAO_CONSOLIDADA.md # Este arquivo
 └── PORTFOLIO_PITCH.md          # Pitch comercial
 ```
+
+---
+
+## 7. URLs do Projeto
+
+| Página | URL |
+|--------|-----|
+| Site principal | https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/ |
+| Blog | https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/blog.html |
+| Admin Blog | https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/admin-blog.html |
+| Admin Contatos | https://alexandrexgoulart.github.io/isabella-siqueira-advocacia/admin-contatos.html |
+| Supabase | https://gpvwgogcfgohxdstoocc.supabase.co |
