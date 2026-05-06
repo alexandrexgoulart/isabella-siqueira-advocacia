@@ -2030,12 +2030,37 @@ Mensagem: ${message}`
     }
 
     function showToast(message) {
-        const toast = document.getElementById('adminToast');
+        // Tentar encontrar toast no admin-blog
+        let toast = document.getElementById('adminToast');
+        
+        // Se não encontrar, criar um toast temporário na página
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'tempToast';
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: var(--primary, #1A2B4A);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                z-index: 9999;
+                font-family: 'Outfit', sans-serif;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            `;
+            document.body.appendChild(toast);
+        }
+        
         toast.textContent = message;
         toast.classList.add('show');
         
         setTimeout(() => {
             toast.classList.remove('show');
+            // Se for toast temporário, remover
+            if (toast.id === 'tempToast') {
+                toast.remove();
+            }
         }, 3000);
     }
 
