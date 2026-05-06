@@ -190,7 +190,7 @@ WhatsApp: (62) 99114-4575
 ### Assunto: Versão melhorada do seu site - Isabella Siqueira Advocacia
 
 ```
-Olá Isabella,
+Olá Dra. Isabella,
 
 Meu nome é Alexandre Goulart e trabalho com desenvolvimento de websites.
 
@@ -421,10 +421,10 @@ Quando a pessoa objectivar, você aceita o ponto dela E adiciona algo:
 ### Link Pronto para Envio
 
 **Versão Curta:**
-https://wa.me/5562983000708?text=Oi%20Isabella!%20👋%0A%0AVi%20seu%20site%20no%20Wix%20e%20fiz%20uma%20versão%20melhorada%20para%20você%20avaliar.%0A%0AÉ%20um%20site%20premium%20com%20blog%20integrado%2C%20sem%20mensalidade%20de%20hospedagem.%20O%20domínio%20.adv.br%20continua%20seu.%0A%0ALink%3A%20https%3A%2F%2Falexandrexgoulart.github.io%2Fisabella-siqueira-advocacia%2F%0A%0AAbs%2C%0AAlexandre%20Goulart%0AWhatsApp%3A%20(62)%2099114-4575
+https://wa.me/5562983000708?text=Oi%20Dra.%20Isabella!%20👋%0A%0AVi%20seu%20site%20no%20Wix%20e%20fiz%20uma%20versão%20melhorada%20para%20você%20avaliar.%0A%0AÉ%20um%20site%20premium%20com%20blog%20integrado%2C%20sem%20mensalidade%20de%20hospedagem.%20O%20domínio%20.adv.br%20continua%20seu.%0A%0ALink%3A%20https%3A%2F%2Falexandrexgoulart.github.io%2Fisabella-siqueira-advocacia%2F%0A%0AAbs%2C%0AAlexandre%20Goulart%0AWhatsApp%3A%20(62)%2099114-4575
 
 **Versão Completa:**
-https://wa.me/5562983000708?text=Oi%20Isabella!%20👋%0A%0AMeu%20nome%20é%20Alexandre%20Goulart%2C%20trabalho%20com%20desenvolvimento%20de%20websites%20e%20gostei%20muito%20do%20seu%20trabalho%20como%20advogada%20previdenciarista.%0A%0AVi%20seu%20site%20atual%20(isabellasiqueira.adv.br)%20e%20desenvolvi%20uma%20versão%20melhorada%20para%20você%20avaliar.%20É%20um%20projeto%20personalizado%20com%20design%20premium%2C%20blog%20integrado%20e%20sem%20mensalidade%20de%20hospedagem.%0A%0AVocê%20pode%20ver%20aqui%3A%20https%3A%2F%2Falexandrexgoulart.github.io%2Fisabella-siqueira-advocacia%2F%0A%0ADiferenciais%3A%0A•%20Design%20premium%20e%20personalizado%0A•%20Blog%20completo%20integrado%20(você%20pode%20escrever%20artigos!)%0A•%20Hospedagem%20gratuita%20(GitHub%20Pages)%20—%20zero%20mensalidade%0A•%20Domínio%20.adv.br%20permanece%20seu%0A•%20Totalmente%20responsivo%20(funciona%20no%20celular)%0A•%20Otimizado%20para%20Google%0A%0ASe%20tiver%20interesse%20em%20conversar%20sobre%20um%20site%20profissional%20para%20seu%20escritório%2C%20me%20manda%20uma%20mensagem!%0A%0AQualquer%20dúvida%2C%20estou%20à%20disposição.%0A%0AAlexandre%20Goulart%0AWhatsApp%3A%20(62)%2099114-4575
+https://wa.me/5562983000708?text=Oi%20Dra.%20Isabella!%20👋%0A%0AMeu%20nome%20é%20Alexandre%20Goulart%2C%20trabalho%20com%20desenvolvimento%20de%20websites%20e%20gostei%20muito%20do%20seu%20trabalho%20como%20advogada%20previdenciarista.%0A%0AVi%20seu%20site%20atual%20(isabellasiqueira.adv.br)%20e%20desenvolvi%20uma%20versão%20melhorada%20para%20você%20avaliar.%20É%20um%20projeto%20personalizado%20com%20design%20premium%2C%20blog%20integrado%20e%20sem%20mensalidade%20de%20hospedagem.%0A%0AVocê%20pode%20ver%20aqui%3A%20https%3A%2F%2Falexandrexgoulart.github.io%2Fisabella-siqueira-advocacia%2F%0A%0ADiferenciais%3A%0A•%20Design%20premium%20e%20personalizado%0A•%20Blog%20completo%20integrado%20(você%20pode%20escrever%20artigos!)%0A•%20Hospedagem%20gratuita%20(GitHub%20Pages)%20—%20zero%20mensalidade%0A•%20Domínio%20.adv.br%20permanece%20seu%0A•%20Totalmente%20responsivo%20(funciona%20no%20celular)%0A•%20Otimizado%20para%20Google%0A%0ASe%20tiver%20interesse%20em%20conversar%20sobre%20um%20site%20profissional%20para%20seu%20escritório%2C%20me%20manda%20uma%20mensagem!%0A%0AQualquer%20dúvida%2C%20estou%20à%20disposição.%0A%0AAlexandre%20Goulart%0AWhatsApp%3A%20(62)%2099114-4575
 
 ---
 
