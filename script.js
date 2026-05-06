@@ -1,4 +1,48 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // ========== SUPABASE CONFIG ==========
+    const SUPABASE_URL = 'https://gpvwgogcfgohxdstoocc.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwdndnb2djZmdvaHhkc3Rvb2NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwMDgzODYsImV4cCI6MjA5MzU4NDM4Nn0.h7lXdFmdInuHhhBjsXKdn8t2ty_zl47-oU_MXtQUpNY';
+
+    // Função para salvar contato no Supabase
+    async function saveContactToSupabase(name, email, phone, message) {
+        console.log('Iniciando salvamento no Supabase...');
+        console.log('Dados:', { nome: name, email, telefone: phone, mensagem: message });
+        
+        try {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/contatos`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
+                    'Prefer': 'return=minimal'
+                },
+                body: JSON.stringify({
+                    nome: name,
+                    email: email,
+                    telefone: phone,
+                    mensagem: message,
+                    lido: false,
+                    created_at: new Date().toISOString()
+                })
+            });
+
+            console.log('Status da resposta:', response.status);
+            
+            if (response.ok || response.status === 201) {
+                console.log('✅ Contato salvo no Supabase com sucesso!');
+                return true;
+            } else {
+                const errorText = await response.text();
+                console.error('❌ Erro ao salvar contato:', response.status, errorText);
+                return false;
+            }
+        } catch (error) {
+            console.error('❌ Erro na conexão:', error);
+            return false;
+        }
+    }
+
     // Função global para scroll dos links do footer
     window.scrollToSection = function(sectionId) {
         const target = document.getElementById(sectionId);
@@ -370,7 +414,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (contactForm) {
-        contactForm.addEventListener('submit', function(event) {
+        contactForm.addEventListener('submit', async function(event) {
             event.preventDefault();
             const name = document.getElementById('contactName').value.trim();
             const email = document.getElementById('contactEmail').value.trim();
@@ -383,6 +427,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
+            // Salvar contato no Supabase
+            const saved = await saveContactToSupabase(name, email, phone, message);
+            if (saved) {
+                showToast('Mensagem salva! Abrindo WhatsApp...');
+            }
+
             const whatsappText = encodeURIComponent(
                 `Olá, sou ${name}.
 Email: ${email}
@@ -392,11 +442,13 @@ Mensagem: ${message}`
             const whatsappUrl = `https://wa.me/5562983000708?text=${whatsappText}`;
             window.open(whatsappUrl, '_blank', 'noopener');
             contactForm.reset();
-            showToast('Dados limpos. WhatsApp aberto para envio.');
+            showToast('WhatsApp aberto para envio.');
 
             const contactMessage = document.getElementById('contactSubmitMessage');
             if (contactMessage) {
-                contactMessage.textContent = 'Pronto! Seus dados foram apagados e o WhatsApp foi aberto.';
+                contactMessage.textContent = saved 
+                    ? 'Mensagem salva em nosso sistema. O WhatsApp foi aberto.' 
+                    : 'O WhatsApp foi aberto para envio.';
                 contactMessage.style.opacity = '1';
                 setTimeout(() => {
                     if (contactMessage) contactMessage.style.opacity = '0';
