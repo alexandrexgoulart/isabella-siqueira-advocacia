@@ -347,12 +347,21 @@
                         'Authorization': `Bearer ${SERVICE_KEY}`
                     }
                 });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('Erro API:', response.status, errorData);
+                    showToast(`Erro: ${response.status} - ${errorData.message || 'Erro desconhecido'}`);
+                    showLoading(false);
+                    return;
+                }
+                
                 allContatos = await response.json();
                 updateStats();
                 renderContatos();
             } catch (error) {
                 console.error('Erro ao carregar contatos:', error);
-                showToast('Erro ao carregar contatos');
+                showToast('Erro ao carregar contatos: ' + error.message);
             }
             showLoading(false);
         }
