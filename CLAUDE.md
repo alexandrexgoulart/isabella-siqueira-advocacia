@@ -111,3 +111,7 @@ Ver **docs/SEGURANCA_SQL.md** para configurações de segurança do Supabase.
 - blog-hero corrigido (margin-top responsivo, keyframe fadeInUp)
 - menu hamburger corrigido (adicionado id="mobileToggle")
 - docs/README.md atualizado com changelog completo
+- artigo.html unificado com site principal (header, footer, fonts, cursor)
+- artigo.html com fundo branco (bg-card) para melhor leitura
+- artigo.html botões compartilhar padronizados (círculos, !important)
+- artigo.html article-meta forçado em linha única (!important)

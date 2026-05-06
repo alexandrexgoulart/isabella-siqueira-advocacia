@@ -189,6 +189,7 @@ Ao atualizar o CSS, incremente o número da versão.
 | 2.3 | Mai 2026 | Fix admin-blog.html mobile (categorias, backgrounds, preview) |
 | 2.4 | Mai 2026 | Padroniza largura 800px em todas as etapas + white-space pre-wrap |
 | 2.5 | Mai 2026 | Blog.html unificado com index.html (header, footer, cursor, responsivo) |
+| 2.6 | Mai 2026 | Artigo.html unificado (header, footer, fundo branco, botões compartilhar) |
 
 ---
 
@@ -247,9 +248,37 @@ GRANT SELECT ON public.posts TO authenticated;
 
 **Solução:** Adicionado id="mobileToggle" ao botão.
 
+### Artigo.html Visual Despadronizado
+**Causa:** article.html tinha CSS inline próprio (fontes, header, footer) diferente do styles.css.
+
+**Solução executada:**
+- Substituído header pelo mesmo do index.html/blog.html
+- Substituído footer pelo mesmo do site principal
+- Adicionado script.js para cursor premium e menu mobile
+- Importado styles.css para usar mesma paleta Navy+Gold+Ivory
+
+### Artigo com fundo muito claro (difícil leitura)
+**Causa:** Fundo usava bg-light (Ivory) que era muito claro para ler artigos longos.
+
+**Solução:** Artigo agora usa bg-card (#FFFFFF) com border-radius e box-shadow para destaque.
+
+### Botões compartilhar com bordas e sombras
+**Causa:** CSS duplicado e estilos nativos do botão (appearance, outline).
+
+**Solução executada:**
+- Removido CSS duplicado do .share-btn
+- Adicionado border: none !important
+- Adicionado box-shadow: none !important
+- Adicionado -webkit-appearance: none, appearance: none
+
+### Article meta em múltiplas linhas no mobile
+**Causa:** flex-wrap: wrap permitia quebra de linha.
+
+**Solução:** flex-wrap: nowrap !important + white-space: nowrap nos spans.
+
 ---
 
 ## 12. Credenciais
 
 - **Admin Blog:** admin@isabella.com / adminisabella2026
-- **URLs:** Blog (blog.html), Admin (admin-blog.html)
+- **URLs:** Blog (blog.html), Artigo (artigo.html), Admin (admin-blog.html)
