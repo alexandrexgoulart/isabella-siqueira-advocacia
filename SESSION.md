@@ -1,7 +1,7 @@
 # Sessão de Trabalho - Isabella Siqueira Advocacia
 
 **Última atualização:** Mai 2026
-**Status:** Projeto em andamento - Site + Blog completo
+**Status:** Mensagem comercial enviada, aguardando retorno
 
 ---
 
@@ -228,8 +228,27 @@ Site institucional para escritório de advocacia especializado em **Direito Prev
 
 ## Tarefas Próximas (Se Houver)
 
-- Apresentação comercial para Isabella
-- Possível oferta: R$ 3.500 (à vista) ou R$ 2.800 + R$ 180/mês manutenção
+- ✅ Mensagem enviada para Isabella (16:35, 06/05/2026)
+- ⏳ Aguardando retorno
+- 📅 Follow-up: amanhã às 10h se não responder
+- 💰 Possível oferta: R$ 3.500 (à vista) ou R$ 2.800 + R$ 180/mês manutenção
+
+## Mensagem Enviada
+
+```
+Oi Dra. Isabella! 👋
+
+Vi seu site no Wix (isabellasiqueira.adv.br) e gostei muito do seu trabalho como advogada previdenciarista.
+
+Desenvolvi uma versão atualizada do seu site com design premium, blog integrado e sem mensalidade de hospedagem. O domínio .adv.br continua seu.
+
+Pode ver aqui: [link enviado separadamente]
+
+Se quiser, posso te mostrar as funcionalidades — o blog por exemplo permite você publicar artigos sobre direito previdenciário, atrai clientes que buscam no Google.
+
+Alexandre Goulart
+(62) 99114-4575
+```
 
 ---
 
