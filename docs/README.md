@@ -213,6 +213,7 @@ Ao atualizar o CSS, incremente o número da versão.
 | 2.8 | Mai 2026 | Formulário de contato integrado ao Supabase |
 | 2.9 | Mai 2026 | Painel admin de contatos (admin-contatos.html) |
 | 3.0 | Mai 2026 | Segurança - login com hash SHA-256 via banco + SQL contatos executado |
+| 3.1 | Mai 2026 | Nav links no admin-blog (contatos + site) |
 
 ---
 

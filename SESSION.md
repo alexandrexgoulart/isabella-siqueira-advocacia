@@ -220,6 +220,10 @@ Site institucional para escritório de advocacia especializado em **Direito Prev
      - Causa: permission denied para service_role
      - Solução: GRANT permissions no Supabase para service_role
 
+15. **admin-blog.html sem links para admin-contatos**
+     - Causa: Ausência de nav links
+     - Solução: Adicionado links Contatos + Ver Blog + Ver Site
+
 ---
 
 ## Tarefas Próximas (Se Houver)

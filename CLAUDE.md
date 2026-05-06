@@ -129,3 +129,4 @@ Ver **docs/SEGURANCA_SQL.md** para configurações de segurança do Supabase.
 - admin-contatos.html criado (painel para visualizar submissions do formulário)
 - admin-contatos.html corrigido login com hash SHA-256 via banco de dados
 - SQL contatos executado no Supabase (criação da tabela + políticas + grants)
+- Nav links adicionados no admin-blog (contatos + site + blog)
