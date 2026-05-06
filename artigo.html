@@ -9,7 +9,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -17,7 +17,12 @@
     <!-- AOS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="styles.css?v=5">
+    
     <style>
+        /* Article-specific styles - overrides only when needed */
+        .article-content {
         :root {
             --primary: #1A2B4A;
             --primary-light: #243657;
@@ -103,9 +108,16 @@
         /* Article */
         .article-container {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 80px auto 2rem;
             padding: 1.5rem 2rem;
             text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .article-container {
+                margin-top: 85px;
+                padding: 1rem;
+            }
         }
 
         .article-meta {
@@ -436,15 +448,39 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="article-header">
-        <div class="article-header-content">
-            <a href="index.html" class="article-logo">Isabella <span>Siqueira</span></a>
-            <nav class="article-nav">
-                <a href="index.html">Início</a>
-                <a href="blog.html">Blog</a>
-            </nav>
-        </div>
+    <div class="premium-cursor"></div>
+    
+    <!-- Header - Mesma estrutura do site principal -->
+    <header class="header" id="header">
+        <nav class="navbar">
+            <div class="container nav-container">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">IS</span>
+                    <div class="logo-text">
+                        <span class="name">Isabella Siqueira</span>
+                        <span class="subtitle">Advocacia</span>
+                    </div>
+                </a>
+                <ul class="nav-links" role="menu">
+                    <li><a href="index.html" role="menuitem">Início</a></li>
+                    <li><a href="index.html#servicos" role="menuitem">Serviços</a></li>
+                    <li><a href="index.html#sobre" role="menuitem">Sobre</a></li>
+                    <li><a href="index.html#restituicao" role="menuitem">Restituição</a></li>
+                    <li><a href="index.html#duvidas" role="menuitem">Dúvidas</a></li>
+                    <li><a href="blog.html" role="menuitem">Blog</a></li>
+                    <li><a href="index.html#contato" role="menuitem">Contato</a></li>
+                </ul>
+                <a href="https://wa.me/5562983000708" class="btn-whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>(62) 9 8300-0708</span>
+                </a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
     </header>
 
     <!-- Article -->
@@ -454,6 +490,55 @@
             <p>Carregando artigo...</p>
         </div>
     </main>
+
+    <!-- Footer - Mesmo do site principal -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon"><i class="fas fa-balance-scale"></i></span>
+                        <span class="logo-text">Isabella Siqueira</span>
+                    </a>
+                    <p>Especialista em direito previdenciário, lutando pelos seus direitos com transparência e dedicação.</p>
+                    <div class="footer-social">
+                        <a href="https://wa.me/5562983000708" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="mailto:advisabellasiqueira@gmail.com"><i class="fas fa-envelope"></i></a>
+                        <a href="https://www.instagram.com/advisabella/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/advisabella/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.linkedin.com/in/advisabella/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html#home">Início</a></li>
+                        <li><a href="index.html#servicos">Serviços</a></li>
+                        <li><a href="index.html#sobre">Sobre</a></li>
+                        <li><a href="index.html#restituicao">Restituição</a></li>
+                        <li><a href="index.html#duvidas">Dúvidas</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="index.html#contato">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i><a href="https://wa.me/5562983000708">(62) 9 8300-0708</a></li>
+                        <li><i class="fas fa-envelope"></i><a href="mailto:advisabellasiqueira@gmail.com">advisabellasiqueira@gmail.com</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i><a href="https://maps.google.com/?q=Isabella+Siqueira+Advocacia+Goi%C3%A2nia" target="_blank">Goiás, Brasil</a></li>
+                    </ul>
+                    <a href="https://wa.me/5562983000708" class="btn-footer">
+                        <i class="fab fa-whatsapp"></i> Agendar Consulta
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Isabella Siqueira Advocacia. Todos os direitos reservados.</p>
+                <p class="oab">OAB/GO 50.839</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- AOS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -628,5 +713,8 @@
             alert('Link copiado!');
         }
     </script>
+    
+    <!-- Main Script (cursor + AOS + menu mobile) -->
+    <script src="script.js"></script>
 </body>
 </html>
